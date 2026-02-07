@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-    const [theme, setTheme] = useState('classic'); // 'classic', 'midnight', 'forest', 'rose'
+    const [theme, setTheme] = useState('rose'); // 'classic', 'midnight', 'forest', 'rose'
 
     useEffect(() => {
         // Remove all theme classes first

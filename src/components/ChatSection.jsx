@@ -47,6 +47,10 @@ const ChatSection = () => {
                 const transcript = event.results[0][0].transcript;
                 setInput(transcript);
                 setIsListening(false);
+                // Trigger auto-send after a short delay to let state update or pass directly
+                setTimeout(() => {
+                    document.getElementById('send-trigger')?.click();
+                }, 100);
             };
 
             recog.onend = () => {
@@ -164,8 +168,8 @@ const ChatSection = () => {
                             <button
                                 onClick={() => setIsVoiceMode(!isVoiceMode)}
                                 className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all text-sm font-medium ${isVoiceMode
-                                        ? 'bg-sky/20 text-sky-700 dark:text-sky-400'
-                                        : 'bg-slate-100 text-slate-500 dark:bg-navy/40 dark:text-sage/40'
+                                    ? 'bg-sky/20 text-sky-700 dark:text-sky-400'
+                                    : 'bg-slate-100 text-slate-500 dark:bg-navy/40 dark:text-sage/40'
                                     }`}
                                 title={isVoiceMode ? "Turn Off Voice Mode" : "Turn On Voice Mode"}
                             >
@@ -222,20 +226,20 @@ const ChatSection = () => {
                         )}
                     </div>
 
-                    <div className="p-4 border-t border-sage/10 dark:border-slate/10 flex gap-2">
+                    <div className="p-4 border-t border-sage/10 dark:border-slate/10 flex items-center gap-2">
                         <input
                             type="text"
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                            placeholder={isListening ? "Listening..." : "Type or speak to me..."}
+                            placeholder={isListening ? "Listening..." : "Type or speak..."}
                             disabled={isLoading}
-                            className="flex-1 bg-sage/20 dark:bg-navy/30 rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-sky/50 disabled:opacity-50"
+                            className="flex-1 min-w-0 bg-sage/20 dark:bg-navy/30 rounded-full px-4 md:px-6 py-3 focus:outline-none focus:ring-2 focus:ring-sky/50 disabled:opacity-50 text-sm md:text-base"
                         />
                         <button
                             onClick={toggleListening}
                             disabled={isLoading}
-                            className={`p-3 rounded-full transition-all ${isListening
+                            className={`p-3 rounded-full transition-all flex-shrink-0 ${isListening
                                 ? 'bg-red-500 text-white animate-pulse'
                                 : 'bg-sage/40 dark:bg-navy/40 text-slate-600 dark:text-sage hover:bg-sky/30'
                                 }`}
@@ -244,9 +248,10 @@ const ChatSection = () => {
                             {isListening ? <MicOff size={20} /> : <Mic size={20} />}
                         </button>
                         <button
+                            id="send-trigger"
                             onClick={() => handleSend()}
                             disabled={isLoading}
-                            className="bg-sky hover:bg-sky/80 text-slate-800 p-3 rounded-full transition-all disabled:opacity-50 shadow-lg shadow-sky/20"
+                            className="bg-sky hover:bg-sky/80 text-slate-800 p-3 rounded-full transition-all disabled:opacity-50 shadow-lg shadow-sky/20 flex-shrink-0"
                         >
                             <Send size={20} />
                         </button>

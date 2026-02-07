@@ -64,12 +64,12 @@ const WellnessHub = () => {
 
                 <div className="space-y-12 mb-24">
                     <h3 className="text-2xl font-black text-slate-800 dark:text-sage mb-8">Guided Exercises</h3>
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {exercises.map((ex, i) => (
                             <motion.div
                                 key={i}
                                 whileHover={{ y: -10 }}
-                                className={`${ex.bg} p-8 rounded-[24px] shadow-sm border border-slate-100 dark:border-navy/20 flex flex-col h-full`}
+                                className={`${ex.bg} p-6 md:p-8 rounded-[24px] shadow-sm border border-slate-100 dark:border-navy/20 flex flex-col h-full`}
                             >
                                 <div className="w-12 h-12 bg-white dark:bg-navy/40 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
                                     {ex.icon}

@@ -318,16 +318,16 @@ const ZenQuest = () => {
                         <Gamepad2 size={14} /> The Calm Quest
                     </div>
                     <h2 className="text-4xl md:text-5xl font-black text-slate-800 dark:text-sage mb-4">Make Peace a <span className="text-sky-600">Habit</span></h2>
-                    <div className="flex justify-center gap-2 mt-8">
+                    <div className="flex flex-wrap justify-center gap-2 mt-8 px-2">
                         {[
-                            { id: 'garden', label: 'Virtual Garden', icon: <Leaf size={16} /> },
-                            { id: 'games', label: 'Mind Games', icon: <Gamepad2 size={16} /> },
+                            { id: 'garden', label: 'Garden', icon: <Leaf size={16} /> },
+                            { id: 'games', label: 'Games', icon: <Gamepad2 size={16} /> },
                             { id: 'worrybox', label: 'Worry Box', icon: <Trash2 size={16} /> }
                         ].map((t) => (
                             <button
                                 key={t.id}
                                 onClick={() => setActiveTab(t.id)}
-                                className={`px-8 py-3 rounded-2xl font-black text-sm flex items-center gap-2 transition-all ${activeTab === t.id
+                                className={`px-4 md:px-8 py-3 rounded-2xl font-black text-xs md:text-sm flex items-center gap-2 transition-all ${activeTab === t.id
                                     ? 'bg-slate-800 text-white dark:bg-sky dark:text-slate-900 shadow-xl scale-105'
                                     : 'bg-white dark:bg-navy/50 text-slate-500 border border-sage/10'
                                     }`}

@@ -193,7 +193,7 @@ const VideoGenSection = () => {
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     whileInView={{ opacity: 1, scale: 1 }}
-                    className="bg-white dark:bg-slate/40 rounded-[3rem] p-8 md:p-12 shadow-2xl border border-sage/20 dark:border-slate/10 text-center relative overflow-hidden"
+                    className="bg-white dark:bg-slate/40 rounded-[2rem] md:rounded-[3rem] p-6 md:p-12 shadow-2xl border border-sage/20 dark:border-slate/10 text-center relative overflow-hidden"
                 >
                     <div className="mb-8">
                         <h2 className="text-3xl md:text-4xl font-black mb-3 text-slate dark:text-sage flex items-center justify-center gap-3">
