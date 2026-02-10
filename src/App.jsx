@@ -27,7 +27,7 @@ const SplashScreen = ({ onComplete }) => {
       initial={{ opacity: 1 }}
       exit={{ opacity: 0, scale: 1.1 }}
       transition={{ duration: 0.8 }}
-      className="fixed inset-0 z-[200] bg-sand dark:bg-[#0f172a] flex items-center justify-center p-6"
+      className="fixed inset-0 z-[200] bg-white dark:bg-[#0f172a] flex items-center justify-center p-6"
     >
       <div className="text-center">
         <motion.div
@@ -67,8 +67,8 @@ const SplashScreen = ({ onComplete }) => {
 
 const Hero = () => (
   <header className="relative py-32 overflow-hidden">
-    <div className="absolute top-0 right-0 -z-10 w-96 h-96 bg-sky-500/10 blur-[100px] rounded-full" />
-    <div className="absolute bottom-0 left-0 -z-10 w-96 h-96 bg-slate-500/10 blur-[100px] rounded-full" />
+    <div className="absolute top-0 right-0 -z-10 w-96 h-96 bg-sky-500/10 blur-[120px] rounded-full" />
+    <div className="absolute bottom-0 left-0 -z-10 w-96 h-96 bg-emerald-500/5 blur-[120px] rounded-full" />
 
     <div className="max-w-6xl mx-auto px-4 text-center">
       <motion.div
