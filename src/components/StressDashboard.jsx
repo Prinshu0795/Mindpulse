@@ -150,17 +150,17 @@ const StressDashboard = () => {
     ];
 
     return (
-        <section id="dashboard" className="py-24 px-4 bg-sand/30 dark:bg-navy/20 min-h-screen">
+        <section id="dashboard" className="py-24 px-4 bg-slate-50 dark:bg-[#0f172a]/50 scroll-mt-20">
             <div className="max-w-6xl mx-auto">
                 {/* Header */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
                     <div>
-                        <h2 className="text-4xl font-black text-slate-800 dark:text-sage mb-2">Well-being Dashboard</h2>
-                        <p className="text-slate-500 dark:text-sage/60 font-medium">Track your inner balance and daily progress.</p>
+                        <h2 className="text-4xl font-black text-slate-900 dark:text-white mb-2">Well-being Dashboard</h2>
+                        <p className="text-slate-600 dark:text-slate-400 font-medium">Track your inner balance and daily progress.</p>
                     </div>
                     <button
                         onClick={() => setIsCheckInOpen(true)}
-                        className="group flex items-center gap-3 bg-sky text-slate-800 px-8 py-4 rounded-3xl font-bold shadow-xl shadow-sky/20 hover:scale-105 transition-all"
+                        className="group flex items-center gap-3 bg-sky-500 text-white px-8 py-4 rounded-3xl font-bold shadow-xl shadow-sky-500/20 hover:scale-105 transition-all"
                     >
                         <Activity className="group-hover:animate-pulse" size={20} />
                         Daily Check-in
@@ -173,16 +173,16 @@ const StressDashboard = () => {
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        className="lg:col-span-2 bg-white dark:bg-slate rounded-[3rem] p-8 shadow-2xl shadow-sage/5 border border-sage/10 dark:border-slate/10"
+                        className="lg:col-span-2 bg-white dark:bg-slate-800 rounded-[3rem] p-8 shadow-xl border border-slate-200 dark:border-slate-700"
                     >
                         <div className="flex justify-between items-center mb-8">
-                            <h3 className="text-xl font-bold text-slate-700 dark:text-sage flex items-center gap-2">
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
                                 <History className="text-sky-500" size={20} />
                                 Mood Wave (Last 7 Days)
                             </h3>
                             <div className="flex gap-4 text-xs font-bold uppercase tracking-widest text-slate-400">
-                                <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-sky" /> Stress</span>
-                                <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-sage" /> Anxiety</span>
+                                <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-sky-500" /> Stress</span>
+                                <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-500" /> Anxiety</span>
                             </div>
                         </div>
                         <div className="h-72 w-full">
@@ -235,9 +235,9 @@ const StressDashboard = () => {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="bg-white dark:bg-slate rounded-[3rem] p-8 shadow-2xl shadow-sage/5 border border-sage/10 dark:border-slate/10 flex flex-col items-center justify-center text-center"
+                        className="bg-white dark:bg-slate-800 rounded-[3rem] p-8 shadow-xl border border-slate-200 dark:border-slate-700 flex flex-col items-center justify-center text-center"
                     >
-                        <h3 className="text-xl font-bold text-slate-700 dark:text-sage mb-6 flex items-center gap-2 self-start">
+                        <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2 self-start">
                             <AlertTriangle className="text-amber-500" size={20} />
                             Current Balance
                         </h3>
@@ -263,19 +263,19 @@ const StressDashboard = () => {
                                 </PieChart>
                             </ResponsiveContainer>
                             <div className="absolute top-[60%] text-center">
-                                <span className="text-4xl font-black text-slate-800 dark:text-sage">{currentLevel.stress}</span>
+                                <span className="text-4xl font-black text-slate-900 dark:text-white">{currentLevel.stress}</span>
                                 <p className="text-xs font-black uppercase text-slate-400 tracking-widest -mt-1">Pts</p>
                             </div>
                         </div>
 
-                        <div className="mt-4 p-4 bg-sage/5 dark:bg-navy/30 rounded-2xl w-full">
+                        <div className="mt-4 p-4 bg-slate-50 dark:bg-slate-900 rounded-2xl w-full border border-slate-100 dark:border-slate-800">
                             <div className="flex justify-between items-center mb-1">
-                                <span className="text-sm font-bold text-slate-500 dark:text-sage/60">Stress Level</span>
-                                <span className="text-sm font-black text-sky-600">{getStressInfo(currentLevel.stress).label}</span>
+                                <span className="text-sm font-bold text-slate-500 dark:text-slate-400">Stress Level</span>
+                                <span className="text-sm font-black text-sky-600 dark:text-sky-400">{getStressInfo(currentLevel.stress).label}</span>
                             </div>
                             <div className="flex justify-between items-center">
-                                <span className="text-sm font-bold text-slate-500 dark:text-sage/60">Anxiety Level</span>
-                                <span className="text-sm font-black text-emerald-600">{getAnxietyInfo(currentLevel.anxiety).label}</span>
+                                <span className="text-sm font-bold text-slate-500 dark:text-slate-400">Anxiety Level</span>
+                                <span className="text-sm font-black text-emerald-600 dark:text-emerald-400">{getAnxietyInfo(currentLevel.anxiety).label}</span>
                             </div>
                         </div>
                     </motion.div>
@@ -286,9 +286,9 @@ const StressDashboard = () => {
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
-                        className="bg-white dark:bg-slate rounded-[3rem] p-8 shadow-2xl shadow-sage/5 border border-sage/10 dark:border-slate/10"
+                        className="bg-white dark:bg-slate-800 rounded-[3rem] p-8 shadow-xl border border-slate-200 dark:border-slate-700"
                     >
-                        <h3 className="text-xl font-bold text-slate-700 dark:text-sage mb-6 flex items-center gap-2">
+                        <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
                             <BarChart3 className="text-emerald-500" size={20} />
                             Stress Triggers
                         </h3>
@@ -297,8 +297,8 @@ const StressDashboard = () => {
                                 const count = history.filter(h => h.trigger === trigger).length;
                                 return (
                                     <div key={trigger} className="flex items-center gap-4">
-                                        <span className="w-16 text-xs font-bold text-slate-400">{trigger}</span>
-                                        <div className="grow h-3 bg-sage/10 dark:bg-navy/30 rounded-full overflow-hidden">
+                                        <span className="w-16 text-xs font-bold text-slate-500 dark:text-slate-400">{trigger}</span>
+                                        <div className="grow h-3 bg-slate-100 dark:bg-slate-900 rounded-full overflow-hidden border border-slate-200 dark:border-slate-800">
                                             <motion.div
                                                 initial={{ width: 0 }}
                                                 whileInView={{ width: `${(count / 7) * 100}%` }}
@@ -314,19 +314,19 @@ const StressDashboard = () => {
                     <motion.div
                         initial={{ opacity: 0, x: 20 }}
                         whileInView={{ opacity: 1, x: 0 }}
-                        className="bg-sky/40 dark:bg-sky/10 rounded-[3rem] p-8 shadow-2xl flex flex-col justify-between items-start"
+                        className="bg-sky-500/10 dark:bg-sky-500/5 rounded-[3rem] p-8 shadow-sm flex flex-col justify-between items-start border border-sky-200/50 dark:border-sky-800/30"
                     >
-                        <div className="p-4 bg-white dark:bg-slate rounded-3xl shadow-lg mb-6 text-sky-600">
+                        <div className="p-4 bg-white dark:bg-slate-800 rounded-2xl shadow-md mb-6 text-sky-500 border border-slate-100 dark:border-slate-700">
                             <Info size={32} />
                         </div>
                         <div>
-                            <h3 className="text-2xl font-black text-slate-800 dark:text-sage mb-2">Did you know?</h3>
-                            <p className="text-slate-600 dark:text-sage/60 font-medium leading-relaxed mb-6 italic">
+                            <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-2">Did you know?</h3>
+                            <p className="text-slate-600 dark:text-slate-400 font-medium leading-relaxed mb-6 italic">
                                 "Deep rhythmic breathing for just 5 minutes can lower your cortisol (stress hormone) levels by up to 20%."
                             </p>
                             <button
                                 onClick={() => document.getElementById('connect')?.scrollIntoView({ behavior: 'smooth' })}
-                                className="px-6 py-3 bg-white text-sky-600 rounded-2xl font-bold text-sm shadow-xl hover:scale-105 transition-transform"
+                                className="px-6 py-3 bg-white dark:bg-slate-800 text-sky-600 dark:text-sky-400 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-sm shadow-md hover:scale-105 transition-transform"
                             >
                                 Try Breathing Now
                             </button>
@@ -350,20 +350,20 @@ const StressDashboard = () => {
                             initial={{ scale: 0.9, opacity: 0, y: 20 }}
                             animate={{ scale: 1, opacity: 1, y: 0 }}
                             exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                            className="relative w-full max-w-lg bg-white dark:bg-slate rounded-[3rem] shadow-2xl overflow-hidden overflow-y-auto max-h-[90vh]"
+                            className="relative w-full max-w-lg bg-white dark:bg-slate-800 rounded-[3rem] shadow-2xl overflow-hidden overflow-y-auto max-h-[90vh] border border-slate-200 dark:border-slate-700"
                         >
                             {checkInStep === 0 && (
                                 <div className="p-10 text-center">
-                                    <div className="w-20 h-20 bg-sky/20 rounded-3xl flex items-center justify-center text-sky-600 mx-auto mb-6">
+                                    <div className="w-20 h-20 bg-sky-100 dark:bg-sky-900/30 rounded-3xl flex items-center justify-center text-sky-600 dark:text-sky-400 mx-auto mb-6 shadow-sm border border-sky-200 dark:border-sky-800">
                                         <Activity size={40} />
                                     </div>
-                                    <h3 className="text-3xl font-black text-slate-800 dark:text-sage mb-4">Mind Check-in</h3>
-                                    <p className="text-slate-500 dark:text-sage/60 mb-8 font-medium">Which metric would you like to track today?</p>
+                                    <h3 className="text-3xl font-black text-slate-900 dark:text-white mb-4">Mind Check-in</h3>
+                                    <p className="text-slate-600 dark:text-slate-400 mb-8 font-medium">Which metric would you like to track today?</p>
 
                                     <div className="grid grid-cols-1 gap-4">
                                         <button
                                             onClick={() => { setActiveType('PSS-10'); setCheckInStep(1); }}
-                                            className="group flex items-center justify-between p-6 bg-sage/5 hover:bg-sky hover:text-white transition-all rounded-3xl text-left border border-sage/10"
+                                            className="group flex items-center justify-between p-6 bg-slate-50 dark:bg-slate-900 hover:bg-sky-500 dark:hover:bg-sky-600 hover:text-white transition-all rounded-3xl text-left border border-slate-200 dark:border-slate-800"
                                         >
                                             <div>
                                                 <h4 className="font-black text-lg">Stress Level (PSS-10)</h4>
@@ -373,7 +373,7 @@ const StressDashboard = () => {
                                         </button>
                                         <button
                                             onClick={() => { setActiveType('GAD-7'); setCheckInStep(1); }}
-                                            className="group flex items-center justify-between p-6 bg-sage/5 hover:bg-emerald-500 hover:text-white transition-all rounded-3xl text-left border border-sage/10"
+                                            className="group flex items-center justify-between p-6 bg-slate-50 dark:bg-slate-900 hover:bg-emerald-500 dark:hover:bg-emerald-600 hover:text-white transition-all rounded-3xl text-left border border-slate-200 dark:border-slate-800"
                                         >
                                             <div>
                                                 <h4 className="font-black text-lg">Anxiety Level (GAD-7)</h4>
@@ -388,14 +388,14 @@ const StressDashboard = () => {
                             {checkInStep === 1 && (
                                 <div className="p-10">
                                     <div className="flex justify-between items-center mb-10">
-                                        <span className="px-3 py-1 bg-sky/10 text-sky-600 rounded-full text-[10px] font-black uppercase tracking-widest">
+                                        <span className="px-3 py-1 bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400 rounded-full text-[10px] font-black uppercase tracking-widest border border-sky-200 dark:border-sky-800">
                                             {activeType}
                                         </span>
                                         <span className="text-sm font-bold text-slate-400">
                                             {currentQuestionIdx + 1} of {activeType === 'PSS-10' ? pssQuestions.length : gadQuestions.length}
                                         </span>
                                     </div>
-                                    <h3 className="text-2xl font-black text-slate-800 dark:text-sage mb-10 leading-snug">
+                                    <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-10 leading-snug">
                                         {activeType === 'PSS-10' ? pssQuestions[currentQuestionIdx] : gadQuestions[currentQuestionIdx]}
                                     </h3>
 
@@ -405,7 +405,7 @@ const StressDashboard = () => {
                                                 <button
                                                     key={label}
                                                     onClick={() => handleAnswer(i)}
-                                                    className="w-full p-4 rounded-2xl bg-sage/5 dark:bg-navy/30 border border-sage/10 hover:border-sky hover:bg-sky/5 text-left text-sm font-bold group transition-all"
+                                                    className="w-full p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-sky-500 hover:bg-sky-50 dark:hover:bg-sky-900/20 text-left text-sm font-bold group transition-all text-slate-700 dark:text-slate-300 dark:hover:text-sky-400"
                                                 >
                                                     <span className="grow">{label}</span>
                                                 </button>
@@ -415,7 +415,7 @@ const StressDashboard = () => {
                                                 <button
                                                     key={label}
                                                     onClick={() => handleAnswer(i)}
-                                                    className="w-full p-4 rounded-2xl bg-sage/5 dark:bg-navy/30 border border-sage/10 hover:border-emerald-500 hover:bg-emerald-50/5 text-left text-sm font-bold group transition-all"
+                                                    className="w-full p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 text-left text-sm font-bold group transition-all text-slate-700 dark:text-slate-300 dark:hover:text-emerald-400"
                                                 >
                                                     <span className="grow">{label}</span>
                                                 </button>
@@ -427,14 +427,14 @@ const StressDashboard = () => {
 
                             {checkInStep === 2 && (
                                 <div className="p-12 text-center">
-                                    <div className="w-24 h-24 bg-emerald-500/20 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <div className="w-24 h-24 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-6 border border-emerald-200 dark:border-emerald-800">
                                         <CheckCircle2 size={48} />
                                     </div>
-                                    <h3 className="text-3xl font-black text-slate-800 dark:text-sage mb-2">Complete!</h3>
-                                    <p className="text-slate-500 dark:text-sage/60 font-medium mb-8">Your well-being dashboard has been updated with today's metrics.</p>
+                                    <h3 className="text-3xl font-black text-slate-900 dark:text-white mb-2">Complete!</h3>
+                                    <p className="text-slate-600 dark:text-slate-400 font-medium mb-8">Your well-being dashboard has been updated with today's metrics.</p>
                                     <button
                                         onClick={resetCheckIn}
-                                        className="w-full py-5 bg-sky text-slate-800 rounded-3xl font-black text-lg shadow-xl shadow-sky/20"
+                                        className="w-full py-5 bg-sky-500 text-white rounded-3xl font-black text-lg shadow-xl shadow-sky-500/20"
                                     >
                                         View My Results
                                     </button>

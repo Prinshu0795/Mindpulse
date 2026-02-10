@@ -201,14 +201,14 @@ const ChatSection = () => {
                                 className={`flex ${msg.isAI ? 'justify-start' : 'justify-end'}`}
                             >
                                 <div className={`relative group max-w-[80%] p-4 rounded-2xl ${msg.isAI
-                                    ? 'bg-sky dark:bg-navy text-slate-800 dark:text-sage rounded-tl-none'
-                                    : 'bg-sage dark:bg-slate text-slate-800 dark:text-sage rounded-tr-none'
+                                    ? 'bg-sky-500 text-white dark:bg-sky-600 rounded-tl-none'
+                                    : 'bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-100 rounded-tr-none'
                                     }`}>
                                     {msg.text}
                                     {msg.isAI && (
                                         <button
                                             onClick={() => speakResponse(msg.text)}
-                                            className="absolute -right-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 p-1 text-slate-400 hover:text-sky transition-all"
+                                            className="absolute -right-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 p-1 text-slate-400 hover:text-sky-500 transition-all"
                                         >
                                             <Volume2 size={16} />
                                         </button>
@@ -218,15 +218,15 @@ const ChatSection = () => {
                         ))}
                         {isLoading && (
                             <div className="flex justify-start">
-                                <div className="bg-sky/50 dark:bg-navy/50 p-4 rounded-2xl rounded-tl-none flex items-center gap-2">
-                                    <Loader2 className="animate-spin text-sky-600" size={16} />
-                                    <span className="text-sm italic">MindPulse is thinking...</span>
+                                <div className="bg-sky-100 dark:bg-sky-900/30 p-4 rounded-2xl rounded-tl-none flex items-center gap-2 border border-sky-200 dark:border-sky-800/50">
+                                    <Loader2 className="animate-spin text-sky-600 dark:text-sky-400" size={16} />
+                                    <span className="text-sm italic text-sky-800 dark:text-sky-200">MindPulse is thinking...</span>
                                 </div>
                             </div>
                         )}
                     </div>
 
-                    <div className="p-4 border-t border-sage/10 dark:border-slate/10 flex items-center gap-2">
+                    <div className="p-4 border-t border-slate-200 dark:border-slate-800 flex items-center gap-2">
                         <input
                             type="text"
                             value={input}
@@ -234,14 +234,14 @@ const ChatSection = () => {
                             onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                             placeholder={isListening ? "Listening..." : "Type or speak..."}
                             disabled={isLoading}
-                            className="flex-1 min-w-0 bg-sage/20 dark:bg-navy/30 rounded-full px-4 md:px-6 py-3 focus:outline-none focus:ring-2 focus:ring-sky/50 disabled:opacity-50 text-sm md:text-base"
+                            className="flex-1 min-w-0 bg-slate-50 dark:bg-slate-900 rounded-full px-4 md:px-6 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500/50 disabled:opacity-50 text-slate-800 dark:text-slate-100 text-sm md:text-base border border-slate-200 dark:border-slate-800"
                         />
                         <button
                             onClick={toggleListening}
                             disabled={isLoading}
                             className={`p-3 rounded-full transition-all flex-shrink-0 ${isListening
                                 ? 'bg-red-500 text-white animate-pulse'
-                                : 'bg-sage/40 dark:bg-navy/40 text-slate-600 dark:text-sage hover:bg-sky/30'
+                                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-sky-100 dark:hover:bg-sky-900/30'
                                 }`}
                             title="Voice Input"
                         >
@@ -251,7 +251,7 @@ const ChatSection = () => {
                             id="send-trigger"
                             onClick={() => handleSend()}
                             disabled={isLoading}
-                            className="bg-sky hover:bg-sky/80 text-slate-800 p-3 rounded-full transition-all disabled:opacity-50 shadow-lg shadow-sky/20 flex-shrink-0"
+                            className="bg-sky-500 hover:bg-sky-600 text-white p-3 rounded-full transition-all disabled:opacity-50 shadow-lg shadow-sky-500/20 flex-shrink-0"
                         >
                             <Send size={20} />
                         </button>

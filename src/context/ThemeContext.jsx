@@ -3,22 +3,22 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-    const [theme, setTheme] = useState('rose'); // 'classic', 'midnight', 'forest', 'rose'
+    const [theme, setTheme] = useState(() => localStorage.getItem('mindpulse-theme') || 'classic');
 
     useEffect(() => {
-        // Remove all theme classes first
-        const themes = ['classic', 'midnight', 'forest', 'rose'];
+        // Remove existing theme classes
+        const themes = ['classic', 'dark'];
         themes.forEach(t => document.documentElement.classList.remove(`theme-${t}`));
+        document.documentElement.classList.remove('dark');
 
         // Add current theme class
         document.documentElement.classList.add(`theme-${theme}`);
-
-        // Also handle standard 'dark' class for basic tailwind compatibility if needed
-        if (theme === 'midnight') {
+        if (theme === 'dark') {
             document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
         }
+
+        // Save to localStorage
+        localStorage.setItem('mindpulse-theme', theme);
     }, [theme]);
 
     const changeTheme = (newTheme) => setTheme(newTheme);

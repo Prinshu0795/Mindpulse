@@ -279,31 +279,36 @@ const ZenQuest = () => {
     return (
         <section id="quest" className="py-24 px-4 bg-sage/5 dark:bg-navy/10 scroll-mt-20">
             <div className="max-w-6xl mx-auto">
-                <div className="flex flex-wrap items-center justify-between gap-6 mb-16 bg-white/60 dark:bg-slate/50 backdrop-blur-xl p-6 rounded-[2.5rem] border border-sage/10 shadow-xl shadow-sage/5">
-                    <div className="flex gap-10">
-                        <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 bg-sky/20 rounded-2xl flex items-center justify-center text-sky-600">
-                                <Zap size={24} />
-                            </div>
-                            <div>
-                                <p className="text-xs font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Zen Streak</p>
-                                <p className="text-xl font-black text-slate-800 dark:text-sage">{streak} Days</p>
-                            </div>
+                <div className="flex flex-col md:flex-row justify-between items-center bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] border border-slate-200 dark:border-slate-700 shadow-xl mb-12 gap-8 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-sky-500/5 blur-[100px] -mr-32 -mt-32" />
+
+                    <div className="flex items-center gap-6">
+                        <div className="w-16 h-16 bg-sky-100 dark:bg-sky-900/30 rounded-2xl flex items-center justify-center text-sky-600 dark:text-sky-400 shadow-sm border border-sky-200 dark:border-sky-800">
+                            <Zap size={32} />
                         </div>
-                        <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-2xl flex items-center justify-center text-amber-500">
-                                <Sparkles size={24} />
+                        <div>
+                            <div className="text-4xl font-black text-slate-900 dark:text-white leading-none mb-1">{points}</div>
+                            <div className="text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Seeds Planted</div>
+                        </div>
+
+                        <div className="h-12 w-px bg-slate-200 dark:bg-slate-700 mx-2" />
+
+                        <div className="space-y-2">
+                            <div className="flex gap-1.5">
+                                {[1, 2, 3, 4, 5].map((d) => (
+                                    <div
+                                        key={d}
+                                        className={`w-2.5 h-6 rounded-full transition-all duration-500 ${d <= 3 ? 'bg-emerald-500 shadow-lg shadow-emerald-500/20' : 'bg-slate-200 dark:bg-slate-700'}`}
+                                    />
+                                ))}
                             </div>
-                            <div>
-                                <p className="text-xs font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Mind Points</p>
-                                <p className="text-xl font-black text-slate-800 dark:text-sage">{points}</p>
-                            </div>
+                            <div className="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">3 Day Streak!</div>
                         </div>
                     </div>
                     <div className="flex gap-3">
-                        <div className={`p-4 rounded-2xl flex items-center gap-3 transition-colors ${unlockedSounds ? 'bg-sky/10 text-sky-600' : 'bg-slate-100 dark:bg-navy/60 text-slate-400'}`}>
+                        <div className={`p-4 rounded-2xl flex items-center gap-3 transition-colors ${unlockedSounds ? 'bg-sky-50 dark:bg-sky-900/20 text-sky-700 dark:text-sky-400 border border-sky-100 dark:border-sky-800' : 'bg-slate-50 dark:bg-slate-900 text-slate-400 border border-slate-100 dark:border-slate-800'}`}>
                             {unlockedSounds ? <Volume2 size={24} /> : <Lock size={20} />}
-                            <span className="text-xs font-black uppercase tracking-widest">
+                            <span className="text-xs font-bold uppercase tracking-widest">
                                 {unlockedSounds ? 'Soundscapes Unlocked' : '3-Day Reward Locked'}
                             </span>
                         </div>
@@ -314,10 +319,10 @@ const ZenQuest = () => {
                 </div>
 
                 <div className="text-center mb-12">
-                    <div className="inline-flex items-center gap-2 bg-sky/10 text-sky-600 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4">
+                    <div className="inline-flex items-center gap-2 bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4">
                         <Gamepad2 size={14} /> The Calm Quest
                     </div>
-                    <h2 className="text-4xl md:text-5xl font-black text-slate-800 dark:text-sage mb-4">Make Peace a <span className="text-sky-600">Habit</span></h2>
+                    <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4 px-2">Make Peace a <span className="text-sky-600 dark:text-sky-500">Habit</span></h2>
                     <div className="flex flex-wrap justify-center gap-2 mt-8 px-2">
                         {[
                             { id: 'garden', label: 'Garden', icon: <Leaf size={16} /> },
@@ -328,8 +333,8 @@ const ZenQuest = () => {
                                 key={t.id}
                                 onClick={() => setActiveTab(t.id)}
                                 className={`px-4 md:px-8 py-3 rounded-2xl font-black text-xs md:text-sm flex items-center gap-2 transition-all ${activeTab === t.id
-                                    ? 'bg-slate-800 text-white dark:bg-sky dark:text-slate-900 shadow-xl scale-105'
-                                    : 'bg-white dark:bg-navy/50 text-slate-500 border border-sage/10'
+                                    ? 'bg-slate-900 text-white dark:bg-sky-500 dark:text-slate-900 shadow-xl scale-105'
+                                    : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700'
                                     }`}
                             >
                                 {t.icon}

@@ -34,7 +34,7 @@ const SplashScreen = ({ onComplete }) => {
           initial={{ scale: 0.5, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: "spring", damping: 12 }}
-          className="w-24 h-24 bg-sky rounded-[2rem] flex items-center justify-center text-white mx-auto mb-8 shadow-2xl"
+          className="w-24 h-24 bg-sky-500 rounded-[2rem] flex items-center justify-center text-white mx-auto mb-8 shadow-2xl"
         >
           <motion.div
             animate={{ rotate: [0, 10, -10, 0] }}
@@ -48,7 +48,7 @@ const SplashScreen = ({ onComplete }) => {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="text-4xl md:text-5xl font-black text-slate dark:text-sage mb-4"
+          className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white mb-4"
         >
           MindPulse
         </motion.h1>
@@ -56,7 +56,7 @@ const SplashScreen = ({ onComplete }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
-          className="text-lg text-slate-500 dark:text-sage/60 font-medium"
+          className="text-lg text-slate-600 dark:text-slate-400 font-medium"
         >
           Welcome to your peaceful space.
         </motion.p>
@@ -67,8 +67,8 @@ const SplashScreen = ({ onComplete }) => {
 
 const Hero = () => (
   <header className="relative py-32 overflow-hidden">
-    <div className="absolute top-0 right-0 -z-10 w-96 h-96 bg-sky/30 blur-[100px] rounded-full" />
-    <div className="absolute bottom-0 left-0 -z-10 w-96 h-96 bg-sage/30 blur-[100px] rounded-full" />
+    <div className="absolute top-0 right-0 -z-10 w-96 h-96 bg-sky-500/10 blur-[100px] rounded-full" />
+    <div className="absolute bottom-0 left-0 -z-10 w-96 h-96 bg-slate-500/10 blur-[100px] rounded-full" />
 
     <div className="max-w-6xl mx-auto px-4 text-center">
       <motion.div
@@ -76,15 +76,15 @@ const Hero = () => (
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, type: "spring" }}
       >
-        <h1 className="text-6xl md:text-8xl font-black text-slate dark:text-sage mb-6 tracking-tight leading-none">
-          Breathe in <br /><span className="text-sky-600">Peace.</span>
+        <h1 className="text-6xl md:text-8xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-none">
+          Breathe in <br /><span className="text-sky-500">Peace.</span>
         </h1>
-        <p className="text-xl md:text-2xl text-slate-600 dark:text-sage/60 max-w-2xl mx-auto mb-10">
+        <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto mb-10">
           Connecting your mind to meaningful virtual experiences and professional support.
         </p>
         <motion.div
           whileHover={{ scale: 1.05 }}
-          className="inline-flex items-center gap-2 bg-white/50 dark:bg-navy/30 backdrop-blur-md border border-sage/20 px-6 py-3 rounded-2xl text-sm font-bold text-slate-600 dark:text-sage/60"
+          className="inline-flex items-center gap-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-6 py-3 rounded-2xl text-sm font-bold text-slate-700 dark:text-slate-200"
         >
           <Sparkles size={16} className="text-sky-500" />
           Your Journey Starts Here
@@ -98,7 +98,7 @@ const AppContent = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   return (
-    <div className="min-h-screen selection:bg-sky/30">
+    <div className="min-h-screen selection:bg-sky-500/30 bg-white dark:bg-[#0f172a] transition-colors duration-500">
       <AnimatePresence>
         {!isLoaded && <SplashScreen onComplete={() => setIsLoaded(true)} />}
       </AnimatePresence>
@@ -121,7 +121,6 @@ const AppContent = () => {
             <div id="experts"><ExpertsSection /></div>
           </main>
           <Footer />
-          <ThemeToggle />
           <CustomerService />
           <AuthModal />
         </motion.div>

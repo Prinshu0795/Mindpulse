@@ -10,40 +10,25 @@
 }
 
 :root {
-  /* Default: Classic */
-  --color-primary: #e2eadd;
-  --color-secondary: #d4eaf7;
-  --color-bg: #fdf6ec;
-  --color-text: #0a192f;
-  --color-card: #ffffff;
+  /* Classic White Theme */
+  --color-primary: #f8fafc;
+  --color-secondary: #0f172a;
+  --color-bg: #ffffff;
+  --color-text: #0f172a;
+  --color-card: #f1f5f9;
   --color-accent: #3b82f6;
+  --color-border: #e2e8f0;
 }
 
-.theme-midnight {
+.theme-dark {
+  /* Classic Dark Theme */
   --color-primary: #1e293b;
-  --color-secondary: #3b82f6;
+  --color-secondary: #f8fafc;
   --color-bg: #0f172a;
-  --color-text: #f8fafc;
+  --color-text: #f1f5f9;
   --color-card: #1e293b;
   --color-accent: #60a5fa;
-}
-
-.theme-forest {
-  --color-primary: #365314;
-  --color-secondary: #a3e635;
-  --color-bg: #052e16;
-  --color-text: #ecfdf5;
-  --color-card: #064e3b;
-  --color-accent: #10b981;
-}
-
-.theme-rose {
-  --color-primary: #9d174d;
-  --color-secondary: #fbcfe8;
-  --color-bg: #fff1f2;
-  --color-text: #4c0519;
-  --color-card: #ffffff;
-  --color-accent: #f43f5e;
+  --color-border: #334155;
 }
 
 body {

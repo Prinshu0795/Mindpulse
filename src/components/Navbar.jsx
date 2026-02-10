@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { User, LogOut, Home, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import ThemeToggle from './ThemeToggle';
 
 const Navbar = () => {
     const { user, logout, setIsAuthModalOpen } = useAuth();
@@ -28,10 +29,13 @@ const Navbar = () => {
 
                 {/* Desktop Links */}
                 <div className="hidden lg:flex gap-6 xl:gap-8 text-sm font-bold text-slate-600 dark:text-sage/60 items-center">
-                    <a href="/" className="flex items-center gap-1.5 text-sky-600 dark:text-sky-400">
-                        <Home size={18} />
-                        Home
-                    </a>
+                    <div className="flex items-center gap-2">
+                        <a href="/" className="flex items-center gap-1.5 text-sky-600 dark:text-sky-400 hover:opacity-80 transition-opacity">
+                            <Home size={18} />
+                            Home
+                        </a>
+                        <ThemeToggle />
+                    </div>
                     {navLinks.map((link) => (
                         <a
                             key={link.name}

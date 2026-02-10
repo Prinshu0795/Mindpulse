@@ -149,7 +149,7 @@ const ExpertsSection = () => {
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    className="max-w-4xl mx-auto flex flex-col md:flex-row gap-4 bg-white dark:bg-slate p-4 rounded-[2rem] shadow-xl border border-sage/20 dark:border-slate/10"
+                    className="max-w-4xl mx-auto flex flex-col md:flex-row gap-4 bg-white dark:bg-slate-800 p-4 rounded-[2rem] shadow-xl border border-slate-200 dark:border-slate-700"
                 >
                     <div className="flex-1 relative">
                         <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -158,7 +158,7 @@ const ExpertsSection = () => {
                             placeholder="Search by name or specialty..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-12 pr-4 py-3 rounded-2xl bg-sage/10 dark:bg-navy/30 focus:outline-none focus:ring-2 focus:ring-sky/50 text-slate-700 dark:text-sage font-medium"
+                            className="w-full pl-12 pr-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500/50 text-slate-700 dark:text-slate-200 font-medium placeholder:text-slate-400"
                         />
                     </div>
                     <div className="md:w-64 relative">
@@ -166,10 +166,10 @@ const ExpertsSection = () => {
                         <select
                             value={selectedCity}
                             onChange={(e) => setSelectedCity(e.target.value)}
-                            className="w-full pl-12 pr-4 py-3 rounded-2xl bg-sage/10 dark:bg-navy/30 focus:outline-none focus:ring-2 focus:ring-sky/50 text-slate-700 dark:text-sage appearance-none cursor-pointer font-medium"
+                            className="w-full pl-12 pr-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500/50 text-slate-700 dark:text-slate-200 appearance-none cursor-pointer font-medium"
                         >
                             {cities.map(city => (
-                                <option key={city} value={city} className="text-black">{city}</option>
+                                <option key={city} value={city} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">{city}</option>
                             ))}
                         </select>
                     </div>
@@ -199,12 +199,12 @@ const ExpertsSection = () => {
 
                             <div className="text-center mb-6 flex-grow">
                                 <div className="flex items-center justify-center gap-2 mb-1">
-                                    <h3 className="text-xl font-black text-slate dark:text-sage leading-tight">{expert.name}</h3>
-                                    {expert.featured && <span className="text-[9px] bg-sky/20 text-sky-600 px-2 py-0.5 rounded-full font-black uppercase tracking-tighter">Featured</span>}
+                                    <h3 className="text-xl font-black text-slate-900 dark:text-white leading-tight">{expert.name}</h3>
+                                    {expert.featured && <span className="text-[9px] bg-sky-100 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400 px-2 py-0.5 rounded-full font-black uppercase tracking-tighter border border-sky-200 dark:border-sky-800">Featured</span>}
                                 </div>
                                 <p className="text-sky-600 dark:text-sky-400 text-sm font-bold mb-4">{expert.role}</p>
 
-                                <div className="flex flex-col items-center gap-2.5 text-xs text-slate-500 dark:text-sage/60">
+                                <div className="flex flex-col items-center gap-2.5 text-xs text-slate-500 dark:text-slate-400">
                                     <div className="flex items-center gap-2">
                                         <Award size={14} className="text-sky-500" />
                                         <span className="font-bold">{expert.qualification}</span>
@@ -215,7 +215,7 @@ const ExpertsSection = () => {
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <IndianRupee size={14} className="text-emerald-500" />
-                                        <span className="font-black text-slate-800 dark:text-sage">₹{expert.charges} Session</span>
+                                        <span className="font-black text-slate-900 dark:text-white">₹{expert.charges} Session</span>
                                     </div>
                                 </div>
                             </div>

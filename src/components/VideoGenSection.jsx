@@ -188,28 +188,28 @@ const VideoGenSection = () => {
     };
 
     return (
-        <section className="py-20 px-4 bg-sky/20 dark:bg-slate/20 min-h-[600px] flex items-center justify-center">
+        <section className="py-20 px-4 bg-slate-50 dark:bg-slate-900/50 min-h-[600px] flex items-center justify-center">
             <div className="max-w-xl w-full">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     whileInView={{ opacity: 1, scale: 1 }}
-                    className="bg-white dark:bg-slate/40 rounded-[2rem] md:rounded-[3rem] p-6 md:p-12 shadow-2xl border border-sage/20 dark:border-slate/10 text-center relative overflow-hidden"
+                    className="bg-white dark:bg-slate-800 rounded-[2rem] md:rounded-[3rem] p-6 md:p-12 shadow-xl border border-slate-200 dark:border-slate-700 text-center relative overflow-hidden"
                 >
                     <div className="mb-8">
-                        <h2 className="text-3xl md:text-4xl font-black mb-3 text-slate dark:text-sage flex items-center justify-center gap-3">
+                        <h2 className="text-3xl md:text-4xl font-black mb-3 text-slate-900 dark:text-white flex items-center justify-center gap-3">
                             <Sparkles className="text-sky-500" />
                             AI Video Presence
                         </h2>
-                        <p className="text-slate-600 dark:text-sage/60 font-medium tracking-tight">Animate your photos into talking digital beings.</p>
+                        <p className="text-slate-600 dark:text-slate-400 font-medium tracking-tight">Animate your photos into talking digital beings.</p>
                     </div>
 
                     <div className="relative group mb-8">
                         {/* Coming Soon Overlay */}
-                        <div className="absolute inset-0 z-20 bg-white/60 dark:bg-slate/60 backdrop-blur-md rounded-[2.5rem] flex flex-col items-center justify-center border-4 border-dashed border-sky/30">
-                            <div className="bg-sky text-slate-800 px-6 py-2 rounded-full font-black text-sm shadow-xl flex items-center gap-2 mb-2">
+                        <div className="absolute inset-0 z-20 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-[2.5rem] flex flex-col items-center justify-center border-2 border-dashed border-sky-500/30">
+                            <div className="bg-sky-500 text-white px-6 py-2 rounded-full font-black text-sm shadow-xl flex items-center gap-2 mb-2">
                                 <Sparkles size={16} /> Coming Soon
                             </div>
-                            <p className="text-xs font-bold text-slate-500 max-w-[200px]">Service is under maintenance for higher quality output.</p>
+                            <p className="text-xs font-bold text-slate-500 dark:text-slate-400 max-w-[200px]">Service is under maintenance for higher quality output.</p>
                         </div>
 
                         <AnimatePresence mode="wait">
