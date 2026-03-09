@@ -57,7 +57,11 @@ export const AuthProvider = ({ children }) => {
             }
         } catch (err) {
             console.error('Registration API Error at:', `${API_URL}/auth/signup`, err);
-            setError('Could not connect to authentication server. Please ensure the backend is running.');
+            if (window.location.protocol === 'https:' && API_URL.startsWith('http://localhost')) {
+                setError('Mixed Content Error: You are accessing an HTTPS site trying to connect to a local HTTP backend. This is blocked by browsers. Use HTTP locally for testing.');
+            } else {
+                setError('Could not connect to authentication server at ' + API_URL + '. Ensure the backend is running and CORS is configured.');
+            }
             return { success: false, message: err.message };
         }
     };
@@ -65,6 +69,7 @@ export const AuthProvider = ({ children }) => {
     const login = async (email, password) => {
         try {
             setError(null);
+            console.log('Attempting login at:', `${API_URL}/auth/login`);
             const response = await fetch(`${API_URL}/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -82,7 +87,11 @@ export const AuthProvider = ({ children }) => {
             }
         } catch (err) {
             console.error('Login API Error at:', `${API_URL}/auth/login`, err);
-            setError('Could not connect to authentication server. Please ensure the backend is running.');
+            if (window.location.protocol === 'https:' && API_URL.startsWith('http://localhost')) {
+                setError('Mixed Content Error: You are accessing an HTTPS site (Vercel) trying to connect to a local HTTP backend. This is blocked by browsers. Run locally or deploy backend.');
+            } else {
+                setError('Could not connect to authentication server at ' + API_URL + '. Ensure the backend is running.');
+            }
             return { success: false, message: err.message };
         }
     };

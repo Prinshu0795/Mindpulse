@@ -130,6 +130,32 @@ The project is maintained on GitHub for version control. Every push to the `main
 
 ---
 
+## 7. Development & Troubleshooting
+
+### 🌐 Browser Note (Vercel vs Localhost)
+If you are visiting your **Vercel link** (`https://...`), the authentication will **NOT** work with your local backend (`http://localhost:5000`). Browsers block "Mixed Content" (HTTPS calling HTTP) for security.
+- To test authentication, **run the project locally** using `npm run fullstack` and visit `http://localhost:5173`.
+- For the Vercel version to work, you must **deploy the backend** to a service like Render or Railway and update `VITE_API_URL` in Vercel.
+
+### 🛠️ Common Fixes
+- **CORS Error**: Ensure your Vite port (usually 5173 or 5174) is allowed in `backend/server.js`. I've added automatic support for common local ports.
+- **Port Busy**: If port 5000 is taken, the backend will fail to start. You can change the `PORT` in `backend/.env`.
+
+---
+
+## 8. Deployment Process
+
+### GitHub
+The project is maintained on GitHub for version control. Every push to the `main` branch triggers an automatic build.
+
+### Vercel Deployment
+1.  Connect GitHub account to Vercel.
+2.  Import the `MindPulse` repository.
+3.  **Critical**: Configure Environment Variables in the Vercel Dashboard to match your local `.env`.
+4.  The site is live at: [https://mindpulse-steel.vercel.app/](https://mindpulse-steel.vercel.app/)
+
+---
+
 ## 9. Future Improvements
 - **Mobile App**: Develop a React Native version for a native mobile experience.
 - **AI Video Chat**: Full integration of live-talking AI avatars using the D-ID API.
