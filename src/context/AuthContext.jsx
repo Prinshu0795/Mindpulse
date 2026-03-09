@@ -56,7 +56,8 @@ export const AuthProvider = ({ children }) => {
                 return { success: false, message: data.message };
             }
         } catch (err) {
-            setError(err.message);
+            console.error('Registration API Error at:', `${API_URL}/auth/signup`, err);
+            setError('Could not connect to authentication server. Please ensure the backend is running.');
             return { success: false, message: err.message };
         }
     };
@@ -80,31 +81,8 @@ export const AuthProvider = ({ children }) => {
                 return { success: false, message: data.message };
             }
         } catch (err) {
-            setError(err.message);
-            return { success: false, message: err.message };
-        }
-    };
-
-    const googleAuth = async (googleData) => {
-        try {
-            setError(null);
-            const response = await fetch(`${API_URL}/auth/google`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(googleData)
-            });
-            const data = await response.json();
-            if (data.success) {
-                setUser(data.user);
-                localStorage.setItem('mindpulse_token', data.token);
-                setIsAuthModalOpen(false);
-                return { success: true };
-            } else {
-                setError(data.message);
-                return { success: false, message: data.message };
-            }
-        } catch (err) {
-            setError(err.message);
+            console.error('Login API Error at:', `${API_URL}/auth/login`, err);
+            setError('Could not connect to authentication server. Please ensure the backend is running.');
             return { success: false, message: err.message };
         }
     };
@@ -119,7 +97,6 @@ export const AuthProvider = ({ children }) => {
             user,
             login,
             register,
-            googleAuth,
             logout,
             isAuthModalOpen,
             setIsAuthModalOpen,

@@ -101,21 +101,18 @@ To run MindPulse locally, follow these steps:
     ```
 
 2.  **Setup Backend**:
-    ```bash
-    cd backend
-    npm install
-    # Create .env based on .env.example
-    npm run dev
-    ```
+    - Navigate to `backend/` and run `npm install`.
+    - Create a `.env` file in the `backend/` directory using `.env.example`.
+    - Add your `MONGO_URI` (MongoDB connection string) and a `JWT_SECRET`.
 
 3.  **Setup Frontend**:
+    - Run `npm install` in the root directory.
+
+4.  **Run Full-Stack**:
     ```bash
-    # Open a new terminal
-    npm install
-    # Create .env based on .env.example
-    npm run dev
+    npm run fullstack
     ```
-    Open [http://localhost:5173](http://localhost:5173) in your browser.
+    This will start both the frontend (Port 5173) and backend (Port 5000) simultaneously. Open [http://localhost:5173](http://localhost:5173) in your browser.
     Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ---

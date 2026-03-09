@@ -43,9 +43,7 @@ exports.login = async (req, res) => {
         // Check for user
         const user = await User.findOne({ email }).select('+password');
 
-        if (!user || user.google_id) {
-            // In real app, we might want to say 'please login with Google' if they have a Google account
-            // but 'Invalid credentials' is safer for security
+        if (!user) {
             return res.status(401).json({ success: false, message: 'Invalid credentials' });
         }
 
@@ -54,41 +52,6 @@ exports.login = async (req, res) => {
 
         if (!isMatch) {
             return res.status(401).json({ success: false, message: 'Invalid credentials' });
-        }
-
-        sendTokenResponse(user, 200, res);
-    } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
-    }
-};
-
-// @desc    Google OAuth Login/Signup
-// @route   POST /api/auth/google
-// @access  Public
-exports.googleAuth = async (req, res) => {
-    try {
-        const { name, email, google_id } = req.body;
-
-        if (!email || !google_id) {
-            return res.status(400).json({ success: false, message: 'Missing Google credentials' });
-        }
-
-        // Check if user exists by email or google_id
-        let user = await User.findOne({ $or: [{ email }, { google_id }] });
-
-        if (user) {
-            // Update user with google_id if they already exist with email
-            if (!user.google_id) {
-                user.google_id = google_id;
-                await user.save();
-            }
-        } else {
-            // Create user
-            user = await User.create({
-                name,
-                email,
-                google_id
-            });
         }
 
         sendTokenResponse(user, 200, res);

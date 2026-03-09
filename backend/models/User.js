@@ -17,15 +17,9 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: function () {
-            return !this.google_id; // Password is required if not using Google login
-        },
+        required: [true, 'Please add a password'],
         minlength: 6,
         select: false // Don't return password by default
-    },
-    google_id: {
-        type: String,
-        default: null
     },
     created_at: {
         type: Date,

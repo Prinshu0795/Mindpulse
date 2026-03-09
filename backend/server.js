@@ -29,6 +29,9 @@ app.use(cors({
 }));
 
 // Mount routers
+app.get('/', (req, res) => {
+    res.send('MindPulse API is running...');
+});
 app.use('/api/auth', auth);
 app.use('/api/user', user);
 

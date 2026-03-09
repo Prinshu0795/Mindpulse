@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { X, Mail, User, Lock, Chrome, Loader2 } from 'lucide-react';
+import { X, Mail, User, Lock, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 
 const AuthModal = () => {
-    const { isAuthModalOpen, setIsAuthModalOpen, login, register, googleAuth, error } = useAuth();
+    const { isAuthModalOpen, setIsAuthModalOpen, login, register, error } = useAuth();
     const [isLogin, setIsLogin] = useState(true);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -22,16 +22,6 @@ const AuthModal = () => {
             await register(name, email, password);
         }
         setLoading(false);
-    };
-
-    const handleGoogleLogin = () => {
-        // In a real app, this would trigger Google OAuth popup/redirect
-        // For demonstration, we'll simulate the response from Google
-        googleAuth({
-            name: 'Google User',
-            email: 'user@gmail.com',
-            google_id: 'google_123456789'
-        });
     };
 
     return (
@@ -64,19 +54,6 @@ const AuthModal = () => {
                         <p className="text-slate-500 dark:text-sage/60">
                             {isLogin ? 'Join MindPulse to personalize your experience.' : 'Start your wellness journey today.'}
                         </p>
-                    </div>
-
-                    <button
-                        onClick={handleGoogleLogin}
-                        className="w-full flex items-center justify-center gap-3 bg-white border border-sage/30 dark:border-slate/10 py-3 rounded-xl mb-6 hover:bg-sage/10 transition-all font-medium text-slate-700 dark:text-sage"
-                    >
-                        <Chrome size={20} className="text-blue-500" />
-                        Continue with Google
-                    </button>
-
-                    <div className="relative mb-6">
-                        <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-sage/20"></span></div>
-                        <div className="relative flex justify-center text-xs uppercase"><span className="bg-white dark:bg-slate px-2 text-slate-400">Or use email</span></div>
                     </div>
 
                     {error && (
