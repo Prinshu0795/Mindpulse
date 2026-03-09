@@ -1,25 +1,37 @@
 import React, { useState } from 'react';
-import { X, Mail, User, Lock, Chrome } from 'lucide-react';
+import { X, Mail, User, Lock, Chrome, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 
 const AuthModal = () => {
-    const { isAuthModalOpen, setIsAuthModalOpen, login } = useAuth();
+    const { isAuthModalOpen, setIsAuthModalOpen, login, register, googleAuth, error } = useAuth();
+    const [isLogin, setIsLogin] = useState(true);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
     if (!isAuthModalOpen) return null;
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (name.trim()) {
-            login({ name, email });
+        setLoading(true);
+        if (isLogin) {
+            await login(email, password);
+        } else {
+            await register(name, email, password);
         }
+        setLoading(false);
     };
 
     const handleGoogleLogin = () => {
-        // Simulating Google Login
-        login({ name: 'Google User', email: 'user@gmail.com' });
+        // In a real app, this would trigger Google OAuth popup/redirect
+        // For demonstration, we'll simulate the response from Google
+        googleAuth({
+            name: 'Google User',
+            email: 'user@gmail.com',
+            google_id: 'google_123456789'
+        });
     };
 
     return (
@@ -46,8 +58,12 @@ const AuthModal = () => {
                     </button>
 
                     <div className="text-center mb-8">
-                        <h3 className="text-3xl font-bold text-slate dark:text-sage mb-2">Welcome Back</h3>
-                        <p className="text-slate-500 dark:text-sage/60">Join MindPulse to personalize your experience.</p>
+                        <h3 className="text-3xl font-bold text-slate dark:text-sage mb-2">
+                            {isLogin ? 'Welcome Back' : 'Create Account'}
+                        </h3>
+                        <p className="text-slate-500 dark:text-sage/60">
+                            {isLogin ? 'Join MindPulse to personalize your experience.' : 'Start your wellness journey today.'}
+                        </p>
                     </div>
 
                     <button
@@ -63,21 +79,32 @@ const AuthModal = () => {
                         <div className="relative flex justify-center text-xs uppercase"><span className="bg-white dark:bg-slate px-2 text-slate-400">Or use email</span></div>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                        <div>
-                            <label className="block text-sm font-medium mb-1 text-slate-600 dark:text-sage/70">Your Name</label>
-                            <div className="relative">
-                                <User size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                                <input
-                                    required
-                                    type="text"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    placeholder="John Doe"
-                                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-sage/30 dark:border-slate/10 bg-sage/10 dark:bg-navy/30 focus:outline-none focus:ring-2 focus:ring-sky/50 text-slate-800 dark:text-sage"
-                                />
-                            </div>
+                    {error && (
+                        <div className="mb-4 p-3 rounded-xl bg-red-100 text-red-600 text-sm font-medium border border-red-200">
+                            {error}
                         </div>
+                    )}
+
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        {!isLogin && (
+                            <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                            >
+                                <label className="block text-sm font-medium mb-1 text-slate-600 dark:text-sage/70">Your Name</label>
+                                <div className="relative">
+                                    <User size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                                    <input
+                                        required={!isLogin}
+                                        type="text"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        placeholder="John Doe"
+                                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-sage/30 dark:border-slate/10 bg-sage/10 dark:bg-navy/30 focus:outline-none focus:ring-2 focus:ring-sky/50 text-slate-800 dark:text-sage"
+                                    />
+                                </div>
+                            </motion.div>
+                        )}
                         <div>
                             <label className="block text-sm font-medium mb-1 text-slate-600 dark:text-sage/70">Email Address</label>
                             <div className="relative">
@@ -92,13 +119,37 @@ const AuthModal = () => {
                                 />
                             </div>
                         </div>
+                        <div>
+                            <label className="block text-sm font-medium mb-1 text-slate-600 dark:text-sage/70">Password</label>
+                            <div className="relative">
+                                <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                                <input
+                                    required
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    placeholder="••••••••"
+                                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-sage/30 dark:border-slate/10 bg-sage/10 dark:bg-navy/30 focus:outline-none focus:ring-2 focus:ring-sky/50 text-slate-800 dark:text-sage"
+                                />
+                            </div>
+                        </div>
                         <button
                             type="submit"
-                            className="w-full bg-sky text-slate-800 py-4 rounded-xl font-bold hover:bg-sky/80 transition-all mt-2 shadow-lg shadow-sky/20"
+                            disabled={loading}
+                            className="w-full bg-sky text-slate-800 py-4 rounded-xl font-bold hover:bg-sky/80 transition-all mt-2 shadow-lg shadow-sky/20 flex items-center justify-center gap-2"
                         >
-                            Sign In to MindPulse
+                            {loading ? <Loader2 className="animate-spin" size={20} /> : (isLogin ? 'Sign In' : 'Create Account')}
                         </button>
                     </form>
+
+                    <div className="mt-6 text-center">
+                        <button
+                            onClick={() => setIsLogin(!isLogin)}
+                            className="text-sm font-medium text-slate-500 dark:text-sage/60 hover:text-sky transition-colors"
+                        >
+                            {isLogin ? "Don't have an account? Sign Up" : "Already have an account? Log In"}
+                        </button>
+                    </div>
                 </motion.div>
             </div>
         </AnimatePresence>

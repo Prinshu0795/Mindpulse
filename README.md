@@ -48,53 +48,49 @@ MindPulse is a sophisticated, AI-powered web platform designed to provide intera
 | :--- | :--- | :--- |
 | **Frontend** | React.js | Core UI framework for component-based architecture. |
 | **Styling** | Tailwind CSS v4 | Modern, utility-first styling with custom CSS variables. |
+| **Backend** | Node.js / Express | Robust server-side logic and RESTful API endpoints. |
+| **Database** | MongoDB | NoSQL database for flexible and scalable data storage. |
+| **Auth** | JWT / Bcrypt / OAuth | Secure authentication with JSON Web Tokens and Google Login. |
 | **Animations** | Framer Motion | Smooth transitions, micro-animations, and menu reveals. |
 | **Icons** | Lucide React | Consistent, high-quality stroke icons across the platform. |
 | **AI (Chat)** | Groq SDK | High-speed inference using Llama 3 models for the chatbot. |
 | **Voice** | Web Speech API | Browser-native SpeechRecognition and SpeechSynthesis. |
-| **Visuals** | Recharts | Data visualization for the user's stress dashboard. |
-| **Deployment** | Vercel | Production hosting with automatic CI/CD from GitHub. |
+| **Deployment** | Vercel / Render | Frontend and backend deployment with CI/CD. |
 
 ---
 
 ## 4. System Architecture
 
-1.  **User Input**: User interacts via Text (Input Field) or Voice (Microphone).
-2.  **Voice Processing**: If voice is used, the `Web Speech API` converts audio to text.
-3.  **AI Engine**: The text is sent to the `Groq API` along with a system prompt ensuring a compassionate, therapeutic persona.
-4.  **Response Generation**: The AI generates a text response, which is then:
-    - Displayed in the chat UI.
-    - Converted back to audio using `SpeechSynthesis` for a complete "Virtual Presence" experience.
-5.  **State Management**: User preferences, theme choices, and stress logs are persisted using `React Context` and `LocalStorage`.
+1.  **Frontend**: React components communicate with the backend via REST APIs.
+2.  **Authentication**: Users can sign up with email/password or Google. Passwords are hashed with Bcrypt, and sessions are managed via JWT.
+3.  **Backend Logic**: Express.js handles routing and controllers for auth, user profiles, and AI integrations.
+4.  **Database**: MongoDB stores user information securely.
+5.  **AI Engine**: Chat requests are proxied through the backend or handled client-side with appropriate API keys.
+6.  **Voice Processing**: Native browser APIs handle STT and TTS.
 
 ---
 
-## 5. API Integrations
-
--   **Groq API**: Handles the natural language processing (NLP) for the companion. Uses the `llama-3.3-70b-versatile` model.
--   **D-ID API**: (Integrated/Maintenance) Used for generating high-quality AI video avatars from static photos.
--   **Web Speech API**: Native browser API used for real-time speech-to-text and text-to-speech without external costs.
-
----
-
-## 6. Folder Structure
+## 5. Folder Structure
 
 ```text
-src/
-├── assets/             # Images and static assets
-├── components/         # Reusable UI components (Navbar, Sections, Modals)
-│   ├── ChatSection.jsx # AI Chat & Voice logic
-│   ├── ZenQuest.jsx    # Gamified activities
-│   └── ExpertsSection.jsx # Expert directory & booking
-├── context/            # Global state (Auth, Theme)
-├── utils/              # Helper functions (Image cropping, etc.)
-├── App.jsx             # Main layout and routing
-└── index.css           # Global styles and Tailind 4 configuration
+/
+├── backend/            # Express.js Server & MongoDB Models
+│   ├── config/         # DB connection & Passport config
+│   ├── controllers/    # API Refresh logic
+│   ├── middleware/     # Auth & error handling
+│   ├── models/         # Mongoose User schema
+│   ├── routes/         # Backend API routes
+│   └── server.js       # Main server entry
+├── src/                # React Frontend
+│   ├── assets/         # Images and static assets
+│   ├── components/     # UI components (Navbar, AuthModal, etc.)
+│   ├── context/        # Auth & Theme Context
+│   └── App.jsx         # Frontend routing
 ```
 
 ---
 
-## 7. Setup Instructions
+## 6. Setup Instructions
 
 To run MindPulse locally, follow these steps:
 
@@ -104,22 +100,22 @@ To run MindPulse locally, follow these steps:
     cd Mindpulse
     ```
 
-2.  **Install Dependencies**:
+2.  **Setup Backend**:
     ```bash
+    cd backend
     npm install
-    ```
-
-3.  **Setup Environment Variables**:
-    Create a `.env` file in the root directory and add your keys:
-    ```env
-    VITE_GROQ_API_KEY=your_groq_key_here
-    VITE_DID_API_KEY=your_did_key_here
-    ```
-
-4.  **Start Development Server**:
-    ```bash
+    # Create .env based on .env.example
     npm run dev
     ```
+
+3.  **Setup Frontend**:
+    ```bash
+    # Open a new terminal
+    npm install
+    # Create .env based on .env.example
+    npm run dev
+    ```
+    Open [http://localhost:5173](http://localhost:5173) in your browser.
     Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ---
