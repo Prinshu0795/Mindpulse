@@ -25,6 +25,8 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
+}, {
+    bufferCommands: false // Fail fast if DB is disconnected
 });
 
 // Encrypt password using bcrypt
