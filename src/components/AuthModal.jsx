@@ -32,32 +32,32 @@ const AuthModal = () => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     onClick={() => setIsAuthModalOpen(false)}
-                    className="absolute inset-0 bg-navy/60 backdrop-blur-sm"
+                    className="absolute inset-0 bg-black/50 backdrop-blur-sm"
                 />
                 <motion.div
-                    initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                    animate={{ scale: 1, opacity: 1, y: 0 }}
-                    exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                    className="relative bg-white dark:bg-slate rounded-3xl p-8 max-w-md w-full shadow-2xl overflow-hidden border border-sage/20 dark:border-slate/10"
+                    initial={{ scale: 0.95, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.95, opacity: 0 }}
+                    className="relative bg-surface rounded-xl p-8 max-w-md w-full shadow-xl border border-border overflow-hidden"
                 >
                     <button
                         onClick={() => setIsAuthModalOpen(false)}
-                        className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-sage transition-colors"
+                        className="absolute top-4 right-4 p-2 text-text-secondary hover:text-text-primary hover:bg-bg rounded-lg transition-colors"
                     >
-                        <X size={24} />
+                        <X size={20} />
                     </button>
 
                     <div className="text-center mb-8">
-                        <h3 className="text-3xl font-bold text-slate dark:text-sage mb-2">
+                        <h3 className="text-2xl font-bold text-text-primary mb-2">
                             {isLogin ? 'Welcome Back' : 'Create Account'}
                         </h3>
-                        <p className="text-slate-500 dark:text-sage/60">
+                        <p className="text-text-secondary text-sm">
                             {isLogin ? 'Join MindPulse to personalize your experience.' : 'Start your wellness journey today.'}
                         </p>
                     </div>
 
                     {error && (
-                        <div className="mb-4 p-3 rounded-xl bg-red-100 text-red-600 text-sm font-medium border border-red-200">
+                        <div className="mb-6 p-4 rounded-xl bg-red-50 text-red-600 text-sm font-medium border border-red-100">
                             {error}
                         </div>
                     )}
@@ -68,52 +68,52 @@ const AuthModal = () => {
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: 'auto' }}
                             >
-                                <label className="block text-sm font-medium mb-1 text-slate-600 dark:text-sage/70">Your Name</label>
+                                <label className="block text-sm font-medium mb-1.5 text-text-secondary">Your Name</label>
                                 <div className="relative">
-                                    <User size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                                    <User size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" />
                                     <input
                                         required={!isLogin}
                                         type="text"
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
                                         placeholder="John Doe"
-                                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-sage/30 dark:border-slate/10 bg-sage/10 dark:bg-navy/30 focus:outline-none focus:ring-2 focus:ring-sky/50 text-slate-800 dark:text-sage"
+                                        className="w-full pl-10 pr-4 py-3 rounded-lg border border-border bg-bg focus:outline-none focus:border-accent text-text-primary transition-colors"
                                     />
                                 </div>
                             </motion.div>
                         )}
                         <div>
-                            <label className="block text-sm font-medium mb-1 text-slate-600 dark:text-sage/70">Email Address</label>
+                            <label className="block text-sm font-medium mb-1.5 text-text-secondary">Email Address</label>
                             <div className="relative">
-                                <Mail size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                                <Mail size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" />
                                 <input
                                     required
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="john@example.com"
-                                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-sage/30 dark:border-slate/10 bg-sage/10 dark:bg-navy/30 focus:outline-none focus:ring-2 focus:ring-sky/50 text-slate-800 dark:text-sage"
+                                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-border bg-bg focus:outline-none focus:border-accent text-text-primary transition-colors"
                                 />
                             </div>
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1 text-slate-600 dark:text-sage/70">Password</label>
+                            <label className="block text-sm font-medium mb-1.5 text-text-secondary">Password</label>
                             <div className="relative">
-                                <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                                <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" />
                                 <input
                                     required
                                     type="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="••••••••"
-                                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-sage/30 dark:border-slate/10 bg-sage/10 dark:bg-navy/30 focus:outline-none focus:ring-2 focus:ring-sky/50 text-slate-800 dark:text-sage"
+                                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-border bg-bg focus:outline-none focus:border-accent text-text-primary transition-colors"
                                 />
                             </div>
                         </div>
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-sky text-slate-800 py-4 rounded-xl font-bold hover:bg-sky/80 transition-all mt-2 shadow-lg shadow-sky/20 flex items-center justify-center gap-2"
+                            className="w-full bg-accent text-white py-3.5 rounded-lg font-bold hover:bg-accent/90 transition-colors mt-6 flex items-center justify-center gap-2"
                         >
                             {loading ? <Loader2 className="animate-spin" size={20} /> : (isLogin ? 'Sign In' : 'Create Account')}
                         </button>
@@ -122,7 +122,7 @@ const AuthModal = () => {
                     <div className="mt-6 text-center">
                         <button
                             onClick={() => setIsLogin(!isLogin)}
-                            className="text-sm font-medium text-slate-500 dark:text-sage/60 hover:text-sky transition-colors"
+                            className="text-sm font-medium text-text-secondary hover:text-accent transition-colors"
                         >
                             {isLogin ? "Don't have an account? Sign Up" : "Already have an account? Log In"}
                         </button>

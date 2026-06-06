@@ -16,12 +16,11 @@ const ChatSection = () => {
     const [language, setLanguage] = useState("English");
     const [isLoading, setIsLoading] = useState(false);
     const [isListening, setIsListening] = useState(false);
-    const [isVoiceMode, setIsVoiceMode] = useState(true); // Default to on
+    const [isVoiceMode, setIsVoiceMode] = useState(true);
     const [recognition, setRecognition] = useState(null);
 
     const languages = ["English", "Hindi", "Spanish"];
 
-    // Update initial message when user logs in/out
     useEffect(() => {
         setMessages(prev => {
             const firstMsg = prev[0];
@@ -47,40 +46,27 @@ const ChatSection = () => {
                 const transcript = event.results[0][0].transcript;
                 setInput(transcript);
                 setIsListening(false);
-                // Trigger auto-send after a short delay to let state update or pass directly
                 setTimeout(() => {
                     document.getElementById('send-trigger')?.click();
                 }, 100);
             };
 
-            recog.onend = () => {
-                setIsListening(false);
-            };
-
-            recog.onerror = () => {
-                setIsListening(false);
-            };
+            recog.onend = () => setIsListening(false);
+            recog.onerror = () => setIsListening(false);
 
             setRecognition(recog);
         }
     }, []);
 
     const speakResponse = useCallback((text) => {
-        if (!isVoiceMode) return; // Don't speak if voice mode is off
-
+        if (!isVoiceMode) return;
         if ('speechSynthesis' in window) {
             window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
-
-            const langMap = {
-                'English': 'en-US',
-                'Hindi': 'hi-IN',
-                'Spanish': 'es-ES'
-            };
+            const langMap = { 'English': 'en-US', 'Hindi': 'hi-IN', 'Spanish': 'es-ES' };
             utterance.lang = langMap[language] || 'en-US';
             utterance.rate = 0.9;
             utterance.pitch = 1;
-
             window.speechSynthesis.speak(utterance);
         }
     }, [language, isVoiceMode]);
@@ -99,17 +85,9 @@ const ChatSection = () => {
                 messages: [
                     {
                         role: "system",
-                        content: `You are a compassionate mental health support assistant named MindPulse AI. 
-            The current user's name is ${user ? user.name : 'Unknown'}. 
-            The current selected language for communication is ${language}. 
-            Keep your responses concise, soothing, and empathetic. 
-            If you know the user's name, use it naturally in conversation to make them feel heard.
-            Always respond in ${language}.`,
+                        content: `You are a compassionate mental health support assistant named MindPulse AI. The current user's name is ${user ? user.name : 'Unknown'}. The current selected language for communication is ${language}. Keep your responses concise, soothing, and empathetic. If you know the user's name, use it naturally in conversation to make them feel heard. Always respond in ${language}.`,
                     },
-                    {
-                        role: "user",
-                        content: textToSend,
-                    },
+                    { role: "user", content: textToSend },
                 ],
                 model: "llama-3.3-70b-versatile",
             });
@@ -119,10 +97,7 @@ const ChatSection = () => {
             speakResponse(responseText);
         } catch (error) {
             console.error("Groq Error:", error);
-            setMessages(prev => [...prev, {
-                text: `I'm having trouble connecting to my creative centers. Error: ${error.message || 'Unknown'}. Please try again shortly.`,
-                isAI: true
-            }]);
+            setMessages(prev => [...prev, { text: `Error: ${error.message || 'Unknown'}. Please try again shortly.`, isAI: true }]);
         } finally {
             setIsLoading(false);
         }
@@ -133,11 +108,7 @@ const ChatSection = () => {
             recognition?.stop();
         } else {
             if (recognition) {
-                const langMap = {
-                    'English': 'en-US',
-                    'Hindi': 'hi-IN',
-                    'Spanish': 'es-ES'
-                };
+                const langMap = { 'English': 'en-US', 'Hindi': 'hi-IN', 'Spanish': 'es-ES' };
                 recognition.lang = langMap[language] || 'en-US';
                 recognition.start();
                 setIsListening(true);
@@ -148,28 +119,23 @@ const ChatSection = () => {
     };
 
     return (
-        <section className="py-20 px-4">
+        <section className="px-4">
             <div className="max-w-3xl mx-auto">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    className="bg-white/80 dark:bg-slate/50 backdrop-blur-lg rounded-3xl shadow-xl overflow-hidden border border-sage/20 dark:border-slate/10"
-                >
-                    <div className="p-6 border-b border-sage/10 dark:border-slate/10 flex justify-between items-center">
-                        <div className="flex items-center gap-2">
-                            <h2 className="text-2xl font-semibold text-slate dark:text-sage">Virtual Connection</h2>
-                            <div className="flex items-center gap-1 bg-green-100 dark:bg-green-900/30 px-2 py-0.5 rounded-full">
-                                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                                <span className="text-[10px] font-bold text-green-600 dark:text-green-400 uppercase">Live AI</span>
+                <div className="bg-surface rounded-xl border border-border overflow-hidden flex flex-col">
+                    <div className="p-4 md:p-6 border-b border-border flex flex-wrap justify-between items-center gap-4">
+                        <div className="flex items-center gap-3">
+                            <h2 className="text-xl font-bold text-text-primary">Virtual Connection</h2>
+                            <div className="flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-900/20 px-2.5 py-1 rounded-md border border-emerald-100 dark:border-emerald-800/30">
+                                <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+                                <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 tracking-wide uppercase">Live AI</span>
                             </div>
                         </div>
-                        <div className="flex items-center gap-4">
-                            {/* Voice Mode Toggle */}
+                        <div className="flex items-center gap-3">
                             <button
                                 onClick={() => setIsVoiceMode(!isVoiceMode)}
-                                className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all text-sm font-medium ${isVoiceMode
-                                    ? 'bg-sky/20 text-sky-700 dark:text-sky-400'
-                                    : 'bg-slate-100 text-slate-500 dark:bg-navy/40 dark:text-sage/40'
+                                className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors text-sm font-medium border min-h-[44px] ${isVoiceMode
+                                    ? 'bg-accent/10 border-accent/20 text-accent'
+                                    : 'bg-bg border-border text-text-secondary hover:text-text-primary'
                                     }`}
                                 title={isVoiceMode ? "Turn Off Voice Mode" : "Turn On Voice Mode"}
                             >
@@ -177,56 +143,52 @@ const ChatSection = () => {
                                 <span className="hidden sm:inline">{isVoiceMode ? "Voice On" : "Text Only"}</span>
                             </button>
 
-                            <div className="flex items-center gap-2 bg-sage/30 dark:bg-navy/50 p-1 rounded-full px-3">
-                                <Globe size={16} className="text-slate-500" />
+                            <div className="flex items-center gap-2 bg-bg border border-border px-3 py-2 rounded-lg min-h-[44px]">
+                                <Globe size={16} className="text-text-secondary" />
                                 <select
                                     value={language}
                                     onChange={(e) => setLanguage(e.target.value)}
-                                    className="bg-transparent text-sm focus:outline-none cursor-pointer"
+                                    className="bg-transparent text-sm text-text-primary focus:outline-none cursor-pointer"
                                 >
                                     {languages.map(lang => (
-                                        <option key={lang} value={lang} className="text-black">{lang}</option>
+                                        <option key={lang} value={lang} className="text-slate-900">{lang}</option>
                                     ))}
                                 </select>
                             </div>
                         </div>
                     </div>
 
-                    <div className="h-96 overflow-y-auto p-6 space-y-4">
+                    <div className="h-[400px] overflow-y-auto p-4 md:p-6 space-y-4">
                         {messages.map((msg, i) => (
-                            <motion.div
-                                initial={{ opacity: 0, x: msg.isAI ? -20 : 20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                key={i}
-                                className={`flex ${msg.isAI ? 'justify-start' : 'justify-end'}`}
-                            >
-                                <div className={`relative group max-w-[80%] p-4 rounded-2xl ${msg.isAI
-                                    ? 'bg-sky-500 text-white dark:bg-sky-600 rounded-tl-none'
-                                    : 'bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-100 rounded-tr-none'
+                            <div key={i} className={`flex ${msg.isAI ? 'justify-start' : 'justify-end'}`}>
+                                <div className={`relative group max-w-[85%] md:max-w-[75%] p-4 rounded-xl ${msg.isAI
+                                    ? 'bg-bg border border-border text-text-primary rounded-tl-sm'
+                                    : 'bg-accent text-white rounded-tr-sm'
                                     }`}>
-                                    {msg.text}
+                                    <p className="text-sm md:text-base leading-relaxed">{msg.text}</p>
                                     {msg.isAI && (
                                         <button
                                             onClick={() => speakResponse(msg.text)}
-                                            className="absolute -right-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 p-1 text-slate-400 hover:text-sky-500 transition-all"
+                                            className="absolute -right-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 p-2 text-text-secondary hover:text-accent transition-all"
+                                            aria-label="Speak response"
                                         >
                                             <Volume2 size={16} />
                                         </button>
                                     )}
                                 </div>
-                            </motion.div>
+                            </div>
                         ))}
                         {isLoading && (
                             <div className="flex justify-start">
-                                <div className="bg-sky-100 dark:bg-sky-900/30 p-4 rounded-2xl rounded-tl-none flex items-center gap-2 border border-sky-200 dark:border-sky-800/50">
-                                    <Loader2 className="animate-spin text-sky-600 dark:text-sky-400" size={16} />
-                                    <span className="text-sm italic text-sky-800 dark:text-sky-200">MindPulse is thinking...</span>
+                                <div className="bg-bg border border-border p-4 rounded-xl rounded-tl-sm flex items-center gap-3">
+                                    <Loader2 className="animate-spin text-accent" size={16} />
+                                    <span className="text-sm font-medium text-text-secondary">MindPulse is thinking...</span>
                                 </div>
                             </div>
                         )}
                     </div>
 
-                    <div className="p-4 border-t border-slate-200 dark:border-slate-800 flex items-center gap-2">
+                    <div className="p-4 bg-surface border-t border-border flex items-center gap-2 md:gap-3">
                         <input
                             type="text"
                             value={input}
@@ -234,14 +196,14 @@ const ChatSection = () => {
                             onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                             placeholder={isListening ? "Listening..." : "Type or speak..."}
                             disabled={isLoading}
-                            className="flex-1 min-w-0 bg-slate-50 dark:bg-slate-900 rounded-full px-4 md:px-6 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500/50 disabled:opacity-50 text-slate-800 dark:text-slate-100 text-sm md:text-base border border-slate-200 dark:border-slate-800"
+                            className="flex-1 min-w-0 bg-bg border border-border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-accent/50 disabled:opacity-50 text-text-primary text-sm md:text-base min-h-[44px]"
                         />
                         <button
                             onClick={toggleListening}
                             disabled={isLoading}
-                            className={`p-3 rounded-full transition-all flex-shrink-0 ${isListening
-                                ? 'bg-red-500 text-white animate-pulse'
-                                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-sky-100 dark:hover:bg-sky-900/30'
+                            className={`p-3 flex items-center justify-center rounded-lg transition-colors border min-w-[44px] min-h-[44px] ${isListening
+                                ? 'bg-red-50 border-red-200 text-red-600 animate-pulse'
+                                : 'bg-bg border-border text-text-secondary hover:text-text-primary hover:bg-surface'
                                 }`}
                             title="Voice Input"
                         >
@@ -251,12 +213,12 @@ const ChatSection = () => {
                             id="send-trigger"
                             onClick={() => handleSend()}
                             disabled={isLoading}
-                            className="bg-sky-500 hover:bg-sky-600 text-white p-3 rounded-full transition-all disabled:opacity-50 shadow-lg shadow-sky-500/20 flex-shrink-0"
+                            className="bg-accent hover:bg-accent/90 text-white p-3 flex items-center justify-center rounded-lg transition-colors disabled:opacity-50 min-w-[44px] min-h-[44px]"
                         >
                             <Send size={20} />
                         </button>
                     </div>
-                </motion.div>
+                </div>
             </div>
         </section>
     );

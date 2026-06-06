@@ -2,14 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     BarChart3,
-    Brain,
-    ChevronRight,
-    ChevronLeft,
+    History,
     Activity,
     Info,
-    History,
     CheckCircle2,
-    AlertTriangle
+    AlertTriangle,
+    ChevronRight
 } from 'lucide-react';
 import {
     AreaChart,
@@ -21,10 +19,7 @@ import {
     ResponsiveContainer,
     PieChart,
     Pie,
-    Cell,
-    ScatterChart,
-    Scatter,
-    ZAxis
+    Cell
 } from 'recharts';
 
 // PSS-10 Questions
@@ -55,18 +50,16 @@ const gadQuestions = [
 const StressDashboard = () => {
     const [history, setHistory] = useState([]);
     const [isCheckInOpen, setIsCheckInOpen] = useState(false);
-    const [checkInStep, setCheckInStep] = useState(0); // 0: Start, 1: Questions, 2: Complete
+    const [checkInStep, setCheckInStep] = useState(0);
     const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0);
-    const [activeType, setActiveType] = useState('PSS-10'); // 'PSS-10' or 'GAD-7'
+    const [activeType, setActiveType] = useState('PSS-10');
     const [answers, setAnswers] = useState([]);
 
-    // Load history from localStorage
     useEffect(() => {
         const saved = localStorage.getItem('mindpulse_stats');
         if (saved) {
             setHistory(JSON.parse(saved));
         } else {
-            // Mock data for first time users
             const mockData = [
                 { date: 'Mon', stress: 18, anxiety: 8, trigger: 'Work' },
                 { date: 'Tue', stress: 22, anxiety: 12, trigger: 'Social' },
@@ -102,10 +95,8 @@ const StressDashboard = () => {
         if (currentQuestionIdx < questions.length - 1) {
             setCurrentQuestionIdx(currentQuestionIdx + 1);
         } else {
-            // Calculate Score
             let score = 0;
             if (activeType === 'PSS-10') {
-                // PSS-10 Scoring: Questions 4, 5, 7, 8 are reverse scored
                 newAnswers.forEach((ans, idx) => {
                     if ([3, 4, 6, 7].includes(idx)) {
                         score += (4 - ans);
@@ -118,7 +109,7 @@ const StressDashboard = () => {
             }
 
             saveStats(score, activeType);
-            setCheckInStep(2); // Complete
+            setCheckInStep(2);
         }
     };
 
@@ -129,60 +120,52 @@ const StressDashboard = () => {
         setAnswers([]);
     };
 
-    // Gauge Data Helper
     const currentLevel = history[history.length - 1] || { stress: 0, anxiety: 0 };
     const getStressInfo = (score) => {
-        if (score <= 13) return { label: 'Low', color: '#82ca9d' };
-        if (score <= 26) return { label: 'Moderate', color: '#ffc658' };
-        return { label: 'High', color: '#ff7c7c' };
+        if (score <= 13) return { label: 'Low', color: '#10B981' };
+        if (score <= 26) return { label: 'Moderate', color: '#F59E0B' };
+        return { label: 'High', color: '#EF4444' };
     };
 
     const getAnxietyInfo = (score) => {
-        if (score <= 4) return { label: 'Minimal', color: '#82ca9d' };
-        if (score <= 9) return { label: 'Mild', color: '#82ca9d' };
-        if (score <= 14) return { label: 'Moderate', color: '#ffc658' };
-        return { label: 'Severe', color: '#ff7c7c' };
+        if (score <= 4) return { label: 'Minimal', color: '#10B981' };
+        if (score <= 9) return { label: 'Mild', color: '#10B981' };
+        if (score <= 14) return { label: 'Moderate', color: '#F59E0B' };
+        return { label: 'Severe', color: '#EF4444' };
     };
 
     const gaugeData = [
         { name: 'Level', value: currentLevel.stress, fill: getStressInfo(currentLevel.stress).color },
-        { name: 'Remaining', value: 40 - currentLevel.stress, fill: '#f1f1f1' }
+        { name: 'Remaining', value: 40 - currentLevel.stress, fill: '#E5E7EB' }
     ];
 
     return (
-        <section id="dashboard" className="py-24 px-4 bg-slate-50 dark:bg-[#0f172a]/50 scroll-mt-20">
+        <section id="dashboard" className="px-4 scroll-mt-24">
             <div className="max-w-6xl mx-auto">
-                {/* Header */}
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
                     <div>
-                        <h2 className="text-4xl font-black text-slate-900 dark:text-white mb-2">Well-being Dashboard</h2>
-                        <p className="text-slate-600 dark:text-slate-400 font-medium">Track your inner balance and daily progress.</p>
+                        <h2 className="text-3xl font-bold text-text-primary mb-2">Well-being Dashboard</h2>
+                        <p className="text-text-secondary">Track your inner balance and daily progress.</p>
                     </div>
                     <button
                         onClick={() => setIsCheckInOpen(true)}
-                        className="group flex items-center gap-3 bg-sky-500 text-white px-8 py-4 rounded-3xl font-bold shadow-xl shadow-sky-500/20 hover:scale-105 transition-all"
+                        className="flex items-center gap-2 bg-accent text-white px-6 py-3 rounded-xl font-medium hover:bg-accent/90 transition-colors"
                     >
-                        <Activity className="group-hover:animate-pulse" size={20} />
+                        <Activity size={20} />
                         Daily Check-in
                     </button>
                 </div>
 
-                {/* Quick Stats Grid */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-                    {/* Mood Wave Card */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        className="lg:col-span-2 bg-white dark:bg-slate-800 rounded-[3rem] p-8 shadow-xl border border-slate-200 dark:border-slate-700"
-                    >
-                        <div className="flex justify-between items-center mb-8">
-                            <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                                <History className="text-sky-500" size={20} />
-                                Mood Wave (Last 7 Days)
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                    <div className="lg:col-span-2 bg-surface rounded-xl p-6 border border-border">
+                        <div className="flex justify-between items-center mb-6">
+                            <h3 className="text-lg font-bold text-text-primary flex items-center gap-2">
+                                <History size={20} className="text-text-secondary" />
+                                Mood Wave
                             </h3>
-                            <div className="flex gap-4 text-xs font-bold uppercase tracking-widest text-slate-400">
-                                <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-sky-500" /> Stress</span>
-                                <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-500" /> Anxiety</span>
+                            <div className="flex gap-4 text-xs font-semibold uppercase text-text-secondary">
+                                <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full" style={{backgroundColor: '#4F46E5'}} /> Stress</span>
+                                <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full" style={{backgroundColor: '#10B981'}} /> Anxiety</span>
                             </div>
                         </div>
                         <div className="h-72 w-full">
@@ -190,152 +173,96 @@ const StressDashboard = () => {
                                 <AreaChart data={history}>
                                     <defs>
                                         <linearGradient id="colorStress" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.3} />
-                                            <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0} />
+                                            <stop offset="5%" stopColor="#4F46E5" stopOpacity={0.3} />
+                                            <stop offset="95%" stopColor="#4F46E5" stopOpacity={0} />
                                         </linearGradient>
                                         <linearGradient id="colorAnxiety" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor="#81a89a" stopOpacity={0.3} />
-                                            <stop offset="95%" stopColor="#81a89a" stopOpacity={0} />
+                                            <stop offset="5%" stopColor="#10B981" stopOpacity={0.3} />
+                                            <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
                                         </linearGradient>
                                     </defs>
-                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f1f1" />
-                                    <XAxis
-                                        dataKey="date"
-                                        axisLine={false}
-                                        tickLine={false}
-                                        tick={{ fill: '#94a3b8', fontSize: 12, fontWeight: 600 }}
-                                    />
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
+                                    <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fill: '#6B7280', fontSize: 12 }} />
                                     <YAxis hide />
-                                    <Tooltip
-                                        contentStyle={{ borderRadius: '1rem', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
-                                    />
-                                    <Area
-                                        type="monotone"
-                                        dataKey="stress"
-                                        stroke="#0ea5e9"
-                                        strokeWidth={3}
-                                        fillOpacity={1}
-                                        fill="url(#colorStress)"
-                                    />
-                                    <Area
-                                        type="monotone"
-                                        dataKey="anxiety"
-                                        stroke="#81a89a"
-                                        strokeWidth={3}
-                                        fillOpacity={1}
-                                        fill="url(#colorAnxiety)"
-                                    />
+                                    <Tooltip contentStyle={{ borderRadius: '8px', border: '1px solid #E5E7EB' }} />
+                                    <Area type="monotone" dataKey="stress" stroke="#4F46E5" strokeWidth={2} fillOpacity={1} fill="url(#colorStress)" />
+                                    <Area type="monotone" dataKey="anxiety" stroke="#10B981" strokeWidth={2} fillOpacity={1} fill="url(#colorAnxiety)" />
                                 </AreaChart>
                             </ResponsiveContainer>
                         </div>
-                    </motion.div>
+                    </div>
 
-                    {/* Anxiety Meter Card */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1 }}
-                        className="bg-white dark:bg-slate-800 rounded-[3rem] p-8 shadow-xl border border-slate-200 dark:border-slate-700 flex flex-col items-center justify-center text-center"
-                    >
-                        <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2 self-start">
-                            <AlertTriangle className="text-amber-500" size={20} />
+                    <div className="bg-surface rounded-xl p-6 border border-border flex flex-col items-center justify-center text-center">
+                        <h3 className="text-lg font-bold text-text-primary mb-4 flex items-center gap-2 self-start">
+                            <AlertTriangle size={20} className="text-amber-500" />
                             Current Balance
                         </h3>
-
                         <div className="relative w-full h-48 flex items-center justify-center">
                             <ResponsiveContainer width="100%" height="100%">
                                 <PieChart>
-                                    <Pie
-                                        data={gaugeData}
-                                        cx="50%"
-                                        cy="80%"
-                                        startAngle={180}
-                                        endAngle={0}
-                                        innerRadius={60}
-                                        outerRadius={90}
-                                        paddingAngle={0}
-                                        dataKey="value"
-                                    >
-                                        {gaugeData.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={entry.fill} />
-                                        ))}
+                                    <Pie data={gaugeData} cx="50%" cy="80%" startAngle={180} endAngle={0} innerRadius={60} outerRadius={80} paddingAngle={0} dataKey="value">
+                                        {gaugeData.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.fill} />)}
                                     </Pie>
                                 </PieChart>
                             </ResponsiveContainer>
                             <div className="absolute top-[60%] text-center">
-                                <span className="text-4xl font-black text-slate-900 dark:text-white">{currentLevel.stress}</span>
-                                <p className="text-xs font-black uppercase text-slate-400 tracking-widest -mt-1">Pts</p>
+                                <span className="text-3xl font-bold text-text-primary">{currentLevel.stress}</span>
                             </div>
                         </div>
-
-                        <div className="mt-4 p-4 bg-slate-50 dark:bg-slate-900 rounded-2xl w-full border border-slate-100 dark:border-slate-800">
-                            <div className="flex justify-between items-center mb-1">
-                                <span className="text-sm font-bold text-slate-500 dark:text-slate-400">Stress Level</span>
-                                <span className="text-sm font-black text-sky-600 dark:text-sky-400">{getStressInfo(currentLevel.stress).label}</span>
+                        <div className="mt-4 p-4 bg-bg rounded-lg w-full border border-border">
+                            <div className="flex justify-between items-center mb-2">
+                                <span className="text-sm font-medium text-text-secondary">Stress Level</span>
+                                <span className="text-sm font-bold text-text-primary">{getStressInfo(currentLevel.stress).label}</span>
                             </div>
                             <div className="flex justify-between items-center">
-                                <span className="text-sm font-bold text-slate-500 dark:text-slate-400">Anxiety Level</span>
-                                <span className="text-sm font-black text-emerald-600 dark:text-emerald-400">{getAnxietyInfo(currentLevel.anxiety).label}</span>
+                                <span className="text-sm font-medium text-text-secondary">Anxiety Level</span>
+                                <span className="text-sm font-bold text-text-primary">{getAnxietyInfo(currentLevel.anxiety).label}</span>
                             </div>
                         </div>
-                    </motion.div>
+                    </div>
                 </div>
 
-                {/* Trigger Analysis Card */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        className="bg-white dark:bg-slate-800 rounded-[3rem] p-8 shadow-xl border border-slate-200 dark:border-slate-700"
-                    >
-                        <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-                            <BarChart3 className="text-emerald-500" size={20} />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="bg-surface rounded-xl p-6 border border-border">
+                        <h3 className="text-lg font-bold text-text-primary mb-6 flex items-center gap-2">
+                            <BarChart3 size={20} className="text-text-secondary" />
                             Stress Triggers
                         </h3>
                         <div className="space-y-4">
-                            {['Work', 'Health', 'Family', 'Social', 'Money'].map((trigger, idx) => {
+                            {['Work', 'Health', 'Family', 'Social', 'Money'].map((trigger) => {
                                 const count = history.filter(h => h.trigger === trigger).length;
                                 return (
                                     <div key={trigger} className="flex items-center gap-4">
-                                        <span className="w-16 text-xs font-bold text-slate-500 dark:text-slate-400">{trigger}</span>
-                                        <div className="grow h-3 bg-slate-100 dark:bg-slate-900 rounded-full overflow-hidden border border-slate-200 dark:border-slate-800">
-                                            <motion.div
-                                                initial={{ width: 0 }}
-                                                whileInView={{ width: `${(count / 7) * 100}%` }}
-                                                className="h-full bg-sky-500 rounded-full"
-                                            />
+                                        <span className="w-16 text-sm font-medium text-text-secondary">{trigger}</span>
+                                        <div className="grow h-2.5 bg-bg rounded-full overflow-hidden border border-border">
+                                            <motion.div initial={{ width: 0 }} whileInView={{ width: `${(count / 7) * 100}%` }} className="h-full bg-accent rounded-full" />
                                         </div>
                                     </div>
                                 );
                             })}
                         </div>
-                    </motion.div>
+                    </div>
 
-                    <motion.div
-                        initial={{ opacity: 0, x: 20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        className="bg-sky-500/10 dark:bg-sky-500/5 rounded-[3rem] p-8 shadow-sm flex flex-col justify-between items-start border border-sky-200/50 dark:border-sky-800/30"
-                    >
-                        <div className="p-4 bg-white dark:bg-slate-800 rounded-2xl shadow-md mb-6 text-sky-500 border border-slate-100 dark:border-slate-700">
-                            <Info size={32} />
+                    <div className="bg-surface rounded-xl p-6 border border-border flex flex-col justify-between">
+                        <div className="mb-6 flex items-center gap-3">
+                            <div className="p-3 bg-bg rounded-lg text-accent border border-border">
+                                <Info size={24} />
+                            </div>
+                            <h3 className="text-lg font-bold text-text-primary">Did you know?</h3>
                         </div>
-                        <div>
-                            <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-2">Did you know?</h3>
-                            <p className="text-slate-600 dark:text-slate-400 font-medium leading-relaxed mb-6 italic">
-                                "Deep rhythmic breathing for just 5 minutes can lower your cortisol (stress hormone) levels by up to 20%."
-                            </p>
-                            <button
-                                onClick={() => document.getElementById('connect')?.scrollIntoView({ behavior: 'smooth' })}
-                                className="px-6 py-3 bg-white dark:bg-slate-800 text-sky-600 dark:text-sky-400 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-sm shadow-md hover:scale-105 transition-transform"
-                            >
-                                Try Breathing Now
-                            </button>
-                        </div>
-                    </motion.div>
+                        <p className="text-text-secondary leading-relaxed mb-6">
+                            "Deep rhythmic breathing for just 5 minutes can lower your cortisol levels by up to 20%."
+                        </p>
+                        <button
+                            onClick={() => document.getElementById('connect')?.scrollIntoView({ behavior: 'smooth' })}
+                            className="px-6 py-3 bg-bg text-text-primary border border-border rounded-xl font-medium hover:bg-border transition-colors w-full"
+                        >
+                            Try Breathing Now
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            {/* Daily Check-in Modal */}
             <AnimatePresence>
                 {isCheckInOpen && (
                     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
@@ -344,58 +271,58 @@ const StressDashboard = () => {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={resetCheckIn}
-                            className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
+                            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
                         />
                         <motion.div
-                            initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                            animate={{ scale: 1, opacity: 1, y: 0 }}
-                            exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                            className="relative w-full max-w-lg bg-white dark:bg-slate-800 rounded-[3rem] shadow-2xl overflow-hidden overflow-y-auto max-h-[90vh] border border-slate-200 dark:border-slate-700"
+                            initial={{ scale: 0.95, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.95, opacity: 0 }}
+                            className="relative w-full max-w-lg bg-surface rounded-xl shadow-xl overflow-hidden overflow-y-auto max-h-[90vh] border border-border"
                         >
                             {checkInStep === 0 && (
-                                <div className="p-10 text-center">
-                                    <div className="w-20 h-20 bg-sky-100 dark:bg-sky-900/30 rounded-3xl flex items-center justify-center text-sky-600 dark:text-sky-400 mx-auto mb-6 shadow-sm border border-sky-200 dark:border-sky-800">
-                                        <Activity size={40} />
+                                <div className="p-6 md:p-8 text-center">
+                                    <div className="w-16 h-16 bg-bg rounded-xl flex items-center justify-center text-accent mx-auto mb-6 border border-border">
+                                        <Activity size={32} />
                                     </div>
-                                    <h3 className="text-3xl font-black text-slate-900 dark:text-white mb-4">Mind Check-in</h3>
-                                    <p className="text-slate-600 dark:text-slate-400 mb-8 font-medium">Which metric would you like to track today?</p>
+                                    <h3 className="text-2xl font-bold text-text-primary mb-2">Mind Check-in</h3>
+                                    <p className="text-text-secondary mb-8">Which metric would you like to track today?</p>
 
                                     <div className="grid grid-cols-1 gap-4">
                                         <button
                                             onClick={() => { setActiveType('PSS-10'); setCheckInStep(1); }}
-                                            className="group flex items-center justify-between p-6 bg-slate-50 dark:bg-slate-900 hover:bg-sky-500 dark:hover:bg-sky-600 hover:text-white transition-all rounded-3xl text-left border border-slate-200 dark:border-slate-800"
+                                            className="group flex items-center justify-between p-5 bg-bg hover:bg-border transition-colors rounded-xl text-left border border-border"
                                         >
                                             <div>
-                                                <h4 className="font-black text-lg">Stress Level (PSS-10)</h4>
-                                                <p className="text-xs group-hover:text-white/80 font-medium">10 questions • 2 mins</p>
+                                                <h4 className="font-semibold text-text-primary">Stress Level (PSS-10)</h4>
+                                                <p className="text-sm text-text-secondary mt-1">10 questions • 2 mins</p>
                                             </div>
-                                            <ChevronRight />
+                                            <ChevronRight className="text-text-secondary group-hover:text-text-primary" />
                                         </button>
                                         <button
                                             onClick={() => { setActiveType('GAD-7'); setCheckInStep(1); }}
-                                            className="group flex items-center justify-between p-6 bg-slate-50 dark:bg-slate-900 hover:bg-emerald-500 dark:hover:bg-emerald-600 hover:text-white transition-all rounded-3xl text-left border border-slate-200 dark:border-slate-800"
+                                            className="group flex items-center justify-between p-5 bg-bg hover:bg-border transition-colors rounded-xl text-left border border-border"
                                         >
                                             <div>
-                                                <h4 className="font-black text-lg">Anxiety Level (GAD-7)</h4>
-                                                <p className="text-xs group-hover:text-white/80 font-medium">7 questions • 1 min</p>
+                                                <h4 className="font-semibold text-text-primary">Anxiety Level (GAD-7)</h4>
+                                                <p className="text-sm text-text-secondary mt-1">7 questions • 1 min</p>
                                             </div>
-                                            <ChevronRight />
+                                            <ChevronRight className="text-text-secondary group-hover:text-text-primary" />
                                         </button>
                                     </div>
                                 </div>
                             )}
 
                             {checkInStep === 1 && (
-                                <div className="p-10">
-                                    <div className="flex justify-between items-center mb-10">
-                                        <span className="px-3 py-1 bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400 rounded-full text-[10px] font-black uppercase tracking-widest border border-sky-200 dark:border-sky-800">
+                                <div className="p-6 md:p-8">
+                                    <div className="flex justify-between items-center mb-8">
+                                        <span className="px-3 py-1 bg-bg text-text-primary border border-border rounded-full text-xs font-bold uppercase">
                                             {activeType}
                                         </span>
-                                        <span className="text-sm font-bold text-slate-400">
+                                        <span className="text-sm font-medium text-text-secondary">
                                             {currentQuestionIdx + 1} of {activeType === 'PSS-10' ? pssQuestions.length : gadQuestions.length}
                                         </span>
                                     </div>
-                                    <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-10 leading-snug">
+                                    <h3 className="text-xl font-bold text-text-primary mb-8 leading-snug">
                                         {activeType === 'PSS-10' ? pssQuestions[currentQuestionIdx] : gadQuestions[currentQuestionIdx]}
                                     </h3>
 
@@ -405,9 +332,9 @@ const StressDashboard = () => {
                                                 <button
                                                     key={label}
                                                     onClick={() => handleAnswer(i)}
-                                                    className="w-full p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-sky-500 hover:bg-sky-50 dark:hover:bg-sky-900/20 text-left text-sm font-bold group transition-all text-slate-700 dark:text-slate-300 dark:hover:text-sky-400"
+                                                    className="w-full p-4 rounded-xl bg-bg border border-border hover:border-accent text-left text-sm font-medium transition-colors text-text-primary"
                                                 >
-                                                    <span className="grow">{label}</span>
+                                                    {label}
                                                 </button>
                                             ))
                                         ) : (
@@ -415,9 +342,9 @@ const StressDashboard = () => {
                                                 <button
                                                     key={label}
                                                     onClick={() => handleAnswer(i)}
-                                                    className="w-full p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 text-left text-sm font-bold group transition-all text-slate-700 dark:text-slate-300 dark:hover:text-emerald-400"
+                                                    className="w-full p-4 rounded-xl bg-bg border border-border hover:border-accent text-left text-sm font-medium transition-colors text-text-primary"
                                                 >
-                                                    <span className="grow">{label}</span>
+                                                    {label}
                                                 </button>
                                             ))
                                         )}
@@ -426,17 +353,17 @@ const StressDashboard = () => {
                             )}
 
                             {checkInStep === 2 && (
-                                <div className="p-12 text-center">
-                                    <div className="w-24 h-24 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-6 border border-emerald-200 dark:border-emerald-800">
-                                        <CheckCircle2 size={48} />
+                                <div className="p-6 md:p-8 text-center">
+                                    <div className="w-20 h-20 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                                        <CheckCircle2 size={40} />
                                     </div>
-                                    <h3 className="text-3xl font-black text-slate-900 dark:text-white mb-2">Complete!</h3>
-                                    <p className="text-slate-600 dark:text-slate-400 font-medium mb-8">Your well-being dashboard has been updated with today's metrics.</p>
+                                    <h3 className="text-2xl font-bold text-text-primary mb-2">Complete!</h3>
+                                    <p className="text-text-secondary mb-8">Your well-being dashboard has been updated.</p>
                                     <button
                                         onClick={resetCheckIn}
-                                        className="w-full py-5 bg-sky-500 text-white rounded-3xl font-black text-lg shadow-xl shadow-sky-500/20"
+                                        className="w-full py-4 bg-accent text-white rounded-xl font-medium transition-colors hover:bg-accent/90"
                                     >
-                                        View My Results
+                                        View Results
                                     </button>
                                 </div>
                             )}

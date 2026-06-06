@@ -1,88 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-    Gamepad2,
-    Leaf,
-    Zap,
-    Trash2,
-    Wind,
-    Lock,
-    Volume2,
-    Trophy,
-    MousePointer2,
-    Sparkles,
-    Eye,
-    Hand,
-    Ear,
-    Smile,
-    Activity
-} from 'lucide-react';
+import { Gamepad2, Leaf, Zap, Trash2, Wind, Lock, Volume2, Trophy, MousePointer2, Sparkles, Eye, Hand, Ear, Smile, Activity, ChevronRight } from 'lucide-react';
 
-// --- Sub-components moved outside to prevent re-mounting and focus loss ---
 const GardenView = ({ points }) => {
     const stage = Math.min(Math.floor(points / 50), 4);
     return (
-        <div className="flex flex-col items-center justify-center p-8 bg-white dark:bg-slate rounded-[3rem] border border-sage/10 min-h-[400px]">
+        <div className="flex flex-col items-center justify-center p-6 md:p-8 bg-surface rounded-xl border border-border min-h-[400px]">
             <div className="relative w-64 h-64 flex items-center justify-center">
-                <div className="absolute bottom-4 w-32 h-8 bg-amber-800/20 rounded-full blur-sm" />
                 <motion.svg viewBox="0 0 100 100" className="w-full h-full">
-                    <ellipse cx="50" cy="85" rx="30" ry="8" fill="#d4cca3" />
-                    <motion.path
-                        d="M50 85 Q50 60 50 40"
-                        fill="none"
-                        stroke="#81a89a"
-                        strokeWidth="4"
-                        strokeLinecap="round"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: stage >= 1 ? 1 : 0.1 }}
-                        transition={{ duration: 1.5 }}
-                    />
+                    <ellipse cx="50" cy="85" rx="30" ry="8" fill="#E5E7EB" />
+                    <motion.path d="M50 85 Q50 60 50 40" fill="none" stroke="#10B981" strokeWidth="4" strokeLinecap="round" initial={{ pathLength: 0 }} animate={{ pathLength: stage >= 1 ? 1 : 0.1 }} transition={{ duration: 1.5 }} />
                     <AnimatePresence>
-                        {stage >= 2 && (
-                            <motion.path
-                                key="leaf1"
-                                initial={{ scale: 0 }} animate={{ scale: 1 }}
-                                d="M50 70 Q30 60 40 50 Q50 60 50 70" fill="#E8F3EE" stroke="#81a89a"
-                            />
-                        )}
-                        {stage >= 3 && (
-                            <motion.path
-                                key="leaf2"
-                                initial={{ scale: 0 }} animate={{ scale: 1 }}
-                                d="M50 60 Q70 60 60 40 Q50 50 50 60" fill="#E8F3EE" stroke="#81a89a"
-                            />
-                        )}
-                        {stage >= 4 && (
-                            <motion.circle
-                                key="bloom"
-                                initial={{ scale: 0 }} animate={{ scale: 1 }}
-                                cx="50" cy="40" r="10" fill="#0ea5e9" opacity="0.6"
-                            />
-                        )}
+                        {stage >= 2 && <motion.path key="leaf1" initial={{ scale: 0 }} animate={{ scale: 1 }} d="M50 70 Q30 60 40 50 Q50 60 50 70" fill="#D1FAE5" stroke="#10B981" />}
+                        {stage >= 3 && <motion.path key="leaf2" initial={{ scale: 0 }} animate={{ scale: 1 }} d="M50 60 Q70 60 60 40 Q50 50 50 60" fill="#D1FAE5" stroke="#10B981" />}
+                        {stage >= 4 && <motion.circle key="bloom" initial={{ scale: 0 }} animate={{ scale: 1 }} cx="50" cy="40" r="10" fill="#4F46E5" opacity="0.8" />}
                     </AnimatePresence>
                 </motion.svg>
-                {stage >= 4 && (
-                    <motion.div
-                        animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
-                        transition={{ repeat: Infinity, duration: 3 }}
-                        className="absolute top-10 w-24 h-24 bg-sky/20 rounded-full blur-2xl"
-                    />
-                )}
             </div>
             <div className="text-center mt-6">
-                <h4 className="text-2xl font-black text-slate-800 dark:text-sage flex items-center justify-center gap-2">
+                <h4 className="text-xl font-bold text-text-primary flex items-center justify-center gap-2">
                     Level {stage + 1} Garden
-                    <Sparkles size={20} className="text-sky-500" />
+                    <Sparkles size={18} className="text-accent" />
                 </h4>
-                <p className="text-slate-500 dark:text-sage/60 font-medium text-sm mt-2">
-                    Your Zen Garden grows as you complete activities.
-                </p>
-                <div className="mt-6 w-64 h-2 bg-sage/10 rounded-full overflow-hidden mx-auto">
-                    <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: `${(points % 50) * 2}%` }}
-                        className="h-full bg-sky-500"
-                    />
+                <p className="text-text-secondary text-sm mt-2 font-medium">Your Zen Garden grows as you complete activities.</p>
+                <div className="mt-6 w-64 h-2 bg-bg rounded-full overflow-hidden mx-auto border border-border">
+                    <motion.div initial={{ width: 0 }} animate={{ width: `${(points % 50) * 2}%` }} className="h-full bg-accent" />
                 </div>
             </div>
         </div>
@@ -90,53 +32,46 @@ const GardenView = ({ points }) => {
 };
 
 const MindGamesView = ({ bubbles, popBubble, groundingStep, setGroundingStep, completeGrounding }) => (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-white dark:bg-slate p-8 rounded-[3rem] border border-sage/10 text-center">
-            <div className="flex justify-between items-center mb-6">
-                <h4 className="text-xl font-black text-slate-800 dark:text-sage flex items-center gap-2">
-                    <MousePointer2 size={20} className="text-sky-500" />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-surface p-6 md:p-8 rounded-xl border border-border text-center">
+            <div className="flex justify-between items-center mb-8">
+                <h4 className="text-lg font-bold text-text-primary flex items-center gap-2">
+                    <MousePointer2 size={18} className="text-accent" />
                     Bubble Pop
                 </h4>
-                <span className="text-xs font-black text-sky-600 bg-sky/10 px-3 py-1 rounded-full uppercase">Instant Calm</span>
+                <span className="text-xs font-bold text-accent bg-accent/10 px-3 py-1 rounded-full uppercase tracking-wide">Instant Calm</span>
             </div>
             <div className="grid grid-cols-5 gap-3 max-w-[200px] mx-auto">
                 {bubbles.map((popped, i) => (
-                    <motion.button
+                    <button
                         key={`bubble-${i}`}
-                        whileTap={{ scale: 0.8 }}
                         onClick={() => popBubble(i)}
-                        className={`w-8 h-8 rounded-full shadow-inner border-2 transition-all ${popped
-                            ? 'bg-sage/10 border-transparent'
-                            : 'bg-white dark:bg-navy/40 border-sage/20'
-                            }`}
+                        className={`w-10 h-10 rounded-full transition-colors flex items-center justify-center ${popped ? 'bg-bg border border-border cursor-default' : 'bg-surface border-2 border-accent hover:bg-accent/10 cursor-pointer active:scale-90'}`}
+                        disabled={popped}
+                        aria-label={`Pop bubble ${i + 1}`}
                     />
                 ))}
             </div>
-            <p className="mt-6 text-sm text-slate-400 font-medium leading-relaxed">
-                Simple, satisfying popping to relieve tactile tension.
-            </p>
+            <p className="mt-8 text-sm text-text-secondary font-medium leading-relaxed">Simple, satisfying popping to relieve tactile tension.</p>
         </div>
 
-        <div className="bg-white dark:bg-slate p-8 rounded-[3rem] border border-sage/10">
-            <h4 className="text-xl font-black text-slate-800 dark:text-sage mb-6 flex items-center gap-2">
-                <Activity size={20} className="text-emerald-500" />
+        <div className="bg-surface p-6 md:p-8 rounded-xl border border-border">
+            <h4 className="text-lg font-bold text-text-primary mb-6 flex items-center gap-2">
+                <Activity size={18} className="text-emerald-500" />
                 5-4-3-2-1 Sensory
             </h4>
             <AnimatePresence mode="wait">
                 {groundingStep === 0 && (
-                    <motion.div key="s0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-center">
-                        <button
-                            onClick={() => setGroundingStep(1)}
-                            className="bg-emerald-500 text-white px-8 py-3 rounded-2xl font-black text-sm shadow-xl hover:scale-105 transition-all"
-                        >
+                    <motion.div key="s0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-center py-6">
+                        <button onClick={() => setGroundingStep(1)} className="bg-accent text-white px-6 py-3 rounded-xl font-medium hover:bg-accent/90 transition-colors w-full">
                             Start Grounding
                         </button>
                     </motion.div>
                 )}
                 {groundingStep > 0 && groundingStep <= 5 && (
-                    <motion.div key={`step-${groundingStep}`} initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -20, opacity: 0 }}>
-                        <div className="flex items-center gap-4 mb-4">
-                            <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 rounded-2xl flex items-center justify-center">
+                    <motion.div key={`step-${groundingStep}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <div className="flex items-center gap-4 mb-6">
+                            <div className="w-12 h-12 bg-bg border border-border text-accent rounded-xl flex items-center justify-center">
                                 {groundingStep === 1 && <Eye size={24} />}
                                 {groundingStep === 2 && <Hand size={24} />}
                                 {groundingStep === 3 && <Ear size={24} />}
@@ -144,11 +79,11 @@ const MindGamesView = ({ bubbles, popBubble, groundingStep, setGroundingStep, co
                                 {groundingStep === 5 && <Smile size={24} />}
                             </div>
                             <div>
-                                <h5 className="font-black text-slate-700 dark:text-sage">Step {groundingStep}</h5>
-                                <p className="text-xs text-slate-400">Sensory observation</p>
+                                <h5 className="font-bold text-text-primary">Step {groundingStep}</h5>
+                                <p className="text-sm text-text-secondary">Sensory observation</p>
                             </div>
                         </div>
-                        <p className="text-sm font-medium text-slate-600 dark:text-sage/60 mb-6 min-h-[40px]">
+                        <p className="text-base font-medium text-text-primary mb-8 min-h-[48px]">
                             {groundingStep === 1 && "Name 5 things you can see right now."}
                             {groundingStep === 2 && "Name 4 things you can touch around you."}
                             {groundingStep === 3 && "Name 3 things you can hear."}
@@ -157,9 +92,9 @@ const MindGamesView = ({ bubbles, popBubble, groundingStep, setGroundingStep, co
                         </p>
                         <button
                             onClick={groundingStep === 5 ? completeGrounding : () => setGroundingStep(s => s + 1)}
-                            className="w-full bg-slate-50 dark:bg-navy/30 py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-emerald-50 transition-colors"
+                            className="w-full bg-bg border border-border py-3 rounded-xl font-medium text-text-primary hover:bg-surface transition-colors flex items-center justify-center gap-2"
                         >
-                            {groundingStep === 5 ? "Finish" : "Next"} <ChevronRight size={16} />
+                            {groundingStep === 5 ? "Finish" : "Next"} <ChevronRight size={18} />
                         </button>
                     </motion.div>
                 )}
@@ -169,18 +104,12 @@ const MindGamesView = ({ bubbles, popBubble, groundingStep, setGroundingStep, co
 );
 
 const WorryBoxView = ({ worry, setWorry, isWorryDissolving, handleWorrySubmit }) => (
-    <div className="bg-white dark:bg-slate p-12 rounded-[3.5rem] border border-sage/10 text-center relative overflow-hidden">
-        <motion.div
-            animate={{
-                rotate: isWorryDissolving ? 360 : 0,
-                scale: isWorryDissolving ? 0.8 : 1
-            }}
-            className="w-20 h-20 bg-sky/10 rounded-3xl flex items-center justify-center text-sky-600 mx-auto mb-8 shadow-inner"
-        >
-            <Trash2 size={40} />
-        </motion.div>
-        <h3 className="text-3xl font-black text-slate-800 dark:text-sage mb-4">The Worry Box</h3>
-        <p className="text-slate-500 dark:text-sage/60 max-w-md mx-auto mb-10 font-medium">
+    <div className="bg-surface p-8 md:p-12 rounded-xl border border-border text-center relative overflow-hidden">
+        <div className={`w-16 h-16 bg-bg border border-border rounded-xl flex items-center justify-center text-text-secondary mx-auto mb-6 transition-transform duration-1000 ${isWorryDissolving ? 'rotate-180 scale-50 opacity-0' : ''}`}>
+            <Trash2 size={32} />
+        </div>
+        <h3 className="text-2xl font-bold text-text-primary mb-3">The Worry Box</h3>
+        <p className="text-text-secondary max-w-md mx-auto mb-8 text-sm md:text-base">
             Type out whatever is stressing you. Click release, and watch it dissolve into peace.
         </p>
         <form onSubmit={handleWorrySubmit} className="max-w-md mx-auto relative">
@@ -190,24 +119,17 @@ const WorryBoxView = ({ worry, setWorry, isWorryDissolving, handleWorrySubmit })
                 placeholder="What's bothering you?"
                 disabled={isWorryDissolving}
                 autoFocus
-                className="w-full p-6 bg-sage/5 dark:bg-navy/40 border-2 border-sage/10 rounded-3xl min-h-[150px] outline-none focus:border-sky/40 transition-all font-medium resize-none shadow-sm"
+                className={`w-full p-4 bg-bg border border-border rounded-xl min-h-[150px] outline-none focus:ring-2 focus:ring-accent/50 transition-all font-medium resize-none text-text-primary ${isWorryDissolving ? 'opacity-0 blur-sm' : 'opacity-100'}`}
             />
-            <AnimatePresence>
-                {isWorryDissolving && (
-                    <motion.div
-                        key="releasing"
-                        initial={{ opacity: 1 }}
-                        animate={{ opacity: 0, y: -100, scale: 0.5, filter: 'blur(10px)' }}
-                        className="absolute inset-0 flex items-center justify-center pointer-events-none"
-                    >
-                        <div className="text-sky-600 font-bold text-lg">Releasing...</div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            {isWorryDissolving && (
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="text-text-primary font-bold">Releasing...</div>
+                </div>
+            )}
             <button
                 type="submit"
                 disabled={!worry.trim() || isWorryDissolving}
-                className="mt-6 w-full bg-slate-800 dark:bg-sky text-white dark:text-slate-900 py-5 rounded-[2rem] font-black shadow-2xl disabled:opacity-50 hover:scale-105 transition-transform active:scale-95"
+                className="mt-6 w-full bg-accent text-white py-4 rounded-xl font-medium disabled:opacity-50 hover:bg-accent/90 transition-colors"
             >
                 Release to the Universe
             </button>
@@ -216,17 +138,15 @@ const WorryBoxView = ({ worry, setWorry, isWorryDissolving, handleWorrySubmit })
 );
 
 const ZenQuest = () => {
-    // --- State Management ---
     const [streak, setStreak] = useState(0);
     const [points, setPoints] = useState(0);
-    const [activeTab, setActiveTab] = useState('garden'); // 'garden', 'games', 'worrybox'
+    const [activeTab, setActiveTab] = useState('garden');
     const [bubbles, setBubbles] = useState(Array(15).fill(false));
     const [worry, setWorry] = useState('');
     const [isWorryDissolving, setIsWorryDissolving] = useState(false);
     const [groundingStep, setGroundingStep] = useState(0);
     const [unlockedSounds, setUnlockedSounds] = useState(false);
 
-    // --- Initialize Progress ---
     useEffect(() => {
         const savedStreak = localStorage.getItem('zen_streak') || 0;
         const savedPoints = localStorage.getItem('zen_points') || 0;
@@ -235,7 +155,6 @@ const ZenQuest = () => {
         if (parseInt(savedStreak) >= 3) setUnlockedSounds(true);
     }, []);
 
-    // --- Handlers ---
     const popBubble = (idx) => {
         if (bubbles[idx]) return;
         const newBubbles = [...bubbles];
@@ -264,7 +183,7 @@ const ZenQuest = () => {
         setTimeout(() => {
             setWorry('');
             setIsWorryDissolving(false);
-        }, 3000);
+        }, 2000);
     };
 
     const completeGrounding = () => {
@@ -277,53 +196,48 @@ const ZenQuest = () => {
     };
 
     return (
-        <section id="quest" className="py-24 px-4 bg-sage/5 dark:bg-navy/10 scroll-mt-20">
+        <section id="quest" className="px-4 bg-bg scroll-mt-24">
             <div className="max-w-6xl mx-auto">
-                <div className="flex flex-col md:flex-row justify-between items-center bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] border border-slate-200 dark:border-slate-700 shadow-xl mb-12 gap-8 relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-sky-500/5 blur-[100px] -mr-32 -mt-32" />
-
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-surface p-6 md:p-8 rounded-xl border border-border mb-10 gap-6">
                     <div className="flex items-center gap-6">
-                        <div className="w-16 h-16 bg-sky-100 dark:bg-sky-900/30 rounded-2xl flex items-center justify-center text-sky-600 dark:text-sky-400 shadow-sm border border-sky-200 dark:border-sky-800">
-                            <Zap size={32} />
+                        <div className="w-16 h-16 bg-bg border border-border rounded-xl flex items-center justify-center text-accent">
+                            <Zap size={28} />
                         </div>
                         <div>
-                            <div className="text-4xl font-black text-slate-900 dark:text-white leading-none mb-1">{points}</div>
-                            <div className="text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Seeds Planted</div>
+                            <div className="text-3xl font-bold text-text-primary leading-none mb-1">{points}</div>
+                            <div className="text-xs font-bold text-text-secondary uppercase tracking-widest">Seeds Planted</div>
                         </div>
 
-                        <div className="h-12 w-px bg-slate-200 dark:bg-slate-700 mx-2" />
+                        <div className="hidden md:block h-12 w-px bg-border mx-2" />
 
-                        <div className="space-y-2">
-                            <div className="flex gap-1.5">
+                        <div className="hidden md:block space-y-2">
+                            <div className="flex gap-2">
                                 {[1, 2, 3, 4, 5].map((d) => (
-                                    <div
-                                        key={d}
-                                        className={`w-2.5 h-6 rounded-full transition-all duration-500 ${d <= 3 ? 'bg-emerald-500 shadow-lg shadow-emerald-500/20' : 'bg-slate-200 dark:bg-slate-700'}`}
-                                    />
+                                    <div key={d} className={`w-3 h-8 rounded-full ${d <= 3 ? 'bg-emerald-500' : 'bg-bg border border-border'}`} />
                                 ))}
                             </div>
-                            <div className="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">3 Day Streak!</div>
+                            <div className="text-[10px] font-bold text-text-secondary uppercase tracking-wider">3 Day Streak!</div>
                         </div>
                     </div>
-                    <div className="flex gap-3">
-                        <div className={`p-4 rounded-2xl flex items-center gap-3 transition-colors ${unlockedSounds ? 'bg-sky-50 dark:bg-sky-900/20 text-sky-700 dark:text-sky-400 border border-sky-100 dark:border-sky-800' : 'bg-slate-50 dark:bg-slate-900 text-slate-400 border border-slate-100 dark:border-slate-800'}`}>
-                            {unlockedSounds ? <Volume2 size={24} /> : <Lock size={20} />}
-                            <span className="text-xs font-bold uppercase tracking-widest">
+                    <div className="flex gap-3 w-full md:w-auto">
+                        <div className={`flex-1 md:flex-none p-3 md:p-4 rounded-xl flex items-center justify-center gap-3 border ${unlockedSounds ? 'bg-accent/10 border-accent/20 text-accent' : 'bg-bg border-border text-text-secondary'}`}>
+                            {unlockedSounds ? <Volume2 size={20} /> : <Lock size={20} />}
+                            <span className="text-xs font-bold uppercase tracking-widest hidden sm:inline">
                                 {unlockedSounds ? 'Soundscapes Unlocked' : '3-Day Reward Locked'}
                             </span>
                         </div>
-                        <div className="p-4 bg-emerald-500 text-white rounded-2xl shadow-lg shadow-emerald-500/20">
-                            <Trophy size={24} />
+                        <div className="p-3 md:p-4 bg-emerald-50 text-emerald-600 border border-emerald-100 rounded-xl flex items-center justify-center">
+                            <Trophy size={20} />
                         </div>
                     </div>
                 </div>
 
-                <div className="text-center mb-12">
-                    <div className="inline-flex items-center gap-2 bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4">
-                        <Gamepad2 size={14} /> The Calm Quest
+                <div className="text-center mb-10">
+                    <div className="inline-flex items-center gap-2 bg-bg border border-border text-text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-4">
+                        <Gamepad2 size={14} className="text-accent" /> The Calm Quest
                     </div>
-                    <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4 px-2">Make Peace a <span className="text-sky-600 dark:text-sky-500">Habit</span></h2>
-                    <div className="flex flex-wrap justify-center gap-2 mt-8 px-2">
+                    <h2 className="text-3xl font-bold text-text-primary mb-8">Make Peace a Habit</h2>
+                    <div className="flex flex-wrap justify-center gap-3">
                         {[
                             { id: 'garden', label: 'Garden', icon: <Leaf size={16} /> },
                             { id: 'games', label: 'Games', icon: <Gamepad2 size={16} /> },
@@ -332,9 +246,9 @@ const ZenQuest = () => {
                             <button
                                 key={t.id}
                                 onClick={() => setActiveTab(t.id)}
-                                className={`px-4 md:px-8 py-3 rounded-2xl font-black text-xs md:text-sm flex items-center gap-2 transition-all ${activeTab === t.id
-                                    ? 'bg-slate-900 text-white dark:bg-sky-500 dark:text-slate-900 shadow-xl scale-105'
-                                    : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700'
+                                className={`px-5 py-2.5 rounded-xl font-medium text-sm flex items-center gap-2 transition-colors border ${activeTab === t.id
+                                    ? 'bg-accent text-white border-accent'
+                                    : 'bg-surface text-text-secondary border-border hover:bg-bg hover:text-text-primary'
                                     }`}
                             >
                                 {t.icon}
@@ -344,41 +258,14 @@ const ZenQuest = () => {
                     </div>
                 </div>
 
-                <motion.div
-                    key={activeTab}
-                    initial={{ opacity: 0, scale: 0.98 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className="min-h-[450px]"
-                >
+                <div className="min-h-[450px]">
                     {activeTab === 'garden' && <GardenView points={points} />}
-                    {activeTab === 'games' && (
-                        <MindGamesView
-                            bubbles={bubbles}
-                            popBubble={popBubble}
-                            groundingStep={groundingStep}
-                            setGroundingStep={setGroundingStep}
-                            completeGrounding={completeGrounding}
-                        />
-                    )}
-                    {activeTab === 'worrybox' && (
-                        <WorryBoxView
-                            worry={worry}
-                            setWorry={setWorry}
-                            isWorryDissolving={isWorryDissolving}
-                            handleWorrySubmit={handleWorrySubmit}
-                        />
-                    )}
-                </motion.div>
+                    {activeTab === 'games' && <MindGamesView bubbles={bubbles} popBubble={popBubble} groundingStep={groundingStep} setGroundingStep={setGroundingStep} completeGrounding={completeGrounding} />}
+                    {activeTab === 'worrybox' && <WorryBoxView worry={worry} setWorry={setWorry} isWorryDissolving={isWorryDissolving} handleWorrySubmit={handleWorrySubmit} />}
+                </div>
             </div>
         </section>
     );
 };
-
-const ChevronRight = ({ size }) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-        <path d="m9 18 6-6-6-6" />
-    </svg>
-);
 
 export default ZenQuest;
