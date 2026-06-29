@@ -109,6 +109,13 @@ const AuthModal = () => {
                                     className="w-full pl-10 pr-4 py-3 rounded-lg border border-border bg-bg focus:outline-none focus:border-accent text-text-primary transition-colors"
                                 />
                             </div>
+                            {isLogin && (
+                                <div className="text-right mt-2">
+                                    <a href="/forgot-password" className="text-sm font-medium text-accent hover:text-accent/80 transition-colors">
+                                        Forgot Password?
+                                    </a>
+                                </div>
+                            )}
                         </div>
                         <button
                             type="submit"

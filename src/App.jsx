@@ -12,6 +12,8 @@ import AIVideoTools from './components/AIVideoTools';
 import Footer from './components/Footer';
 import AuthModal from './components/AuthModal';
 import CustomerService from './components/CustomerService';
+import ForgotPassword from './components/ForgotPassword';
+import ResetPassword from './components/ResetPassword';
 import { motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
 
@@ -60,6 +62,29 @@ const AppContent = () => {
 };
 
 function App() {
+  const path = window.location.pathname;
+
+  if (path === '/forgot-password') {
+    return (
+      <UIThemeProvider>
+        <AuthProvider>
+          <ForgotPassword />
+        </AuthProvider>
+      </UIThemeProvider>
+    );
+  }
+
+  if (path.startsWith('/reset-password/')) {
+    const token = path.split('/')[2];
+    return (
+      <UIThemeProvider>
+        <AuthProvider>
+          <ResetPassword token={token} />
+        </AuthProvider>
+      </UIThemeProvider>
+    );
+  }
+
   return (
     <UIThemeProvider>
       <AuthProvider>
