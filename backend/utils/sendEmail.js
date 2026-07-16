@@ -3,10 +3,7 @@ const nodemailer = require('nodemailer');
 const sendEmail = async (options) => {
     // Create reusable transporter object using the default SMTP transport
     const transporter = nodemailer.createTransport({
-        service: 'gmail', // This is much more reliable on platforms like Render
-        host: process.env.EMAIL_HOST || 'smtp.gmail.com',
-        port: process.env.EMAIL_PORT || 465,
-        secure: true,
+        service: 'gmail',
         auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS
