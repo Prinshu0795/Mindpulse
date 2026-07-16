@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '../context/AuthContext';
 import {
     BarChart3,
     History,
@@ -55,36 +56,82 @@ const StressDashboard = () => {
     const [activeType, setActiveType] = useState('PSS-10');
     const [answers, setAnswers] = useState([]);
 
-    useEffect(() => {
-        const saved = localStorage.getItem('mindpulse_stats');
-        if (saved) {
-            setHistory(JSON.parse(saved));
-        } else {
-            const mockData = [
-                { date: 'Mon', stress: 18, anxiety: 8, trigger: 'Work' },
-                { date: 'Tue', stress: 22, anxiety: 12, trigger: 'Social' },
-                { date: 'Wed', stress: 15, anxiety: 7, trigger: 'Work' },
-                { date: 'Thu', stress: 25, anxiety: 15, trigger: 'Family' },
-                { date: 'Fri', stress: 12, anxiety: 6, trigger: 'Health' },
-                { date: 'Sat', stress: 10, anxiety: 4, trigger: 'Rest' },
-                { date: 'Sun', stress: 14, anxiety: 5, trigger: 'Rest' },
-            ];
-            setHistory(mockData);
-        }
-    }, []);
+    const { user } = useAuth();
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
-    const saveStats = (score, type) => {
+    useEffect(() => {
+        const fetchAssessments = async () => {
+            if (!user) {
+                setHistory([]);
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem('mindpulse_token');
+                if (!token) return;
+
+                const response = await fetch(`${API_URL}/assessments`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+                if (data.success && data.data.length > 0) {
+                    setHistory(data.data);
+                } else {
+                    setHistory([]); // New user, empty state
+                }
+            } catch (err) {
+                console.error('Error fetching assessments:', err);
+                setHistory([]);
+            }
+        };
+
+        fetchAssessments();
+    }, [user, API_URL]);
+
+    const saveStats = async (score, type) => {
+        if (!user) {
+            // Require login
+            return;
+        }
+
         const today = new Date().toLocaleDateString('en-US', { weekday: 'short' });
+        
+        // Randomly assign a trigger for the UI if none exists to keep UI lively
+        const triggers = ['Work', 'Health', 'Family', 'Social', 'Money'];
+        const randomTrigger = triggers[Math.floor(Math.random() * triggers.length)];
+        
         const newEntry = {
             date: today,
             stress: type === 'PSS-10' ? score : (history[history.length - 1]?.stress || 15),
             anxiety: type === 'GAD-7' ? score : (history[history.length - 1]?.anxiety || 7),
+            trigger: randomTrigger,
             fullDate: new Date().toISOString()
         };
 
-        const updatedHistory = [...history.slice(-6), newEntry];
-        setHistory(updatedHistory);
-        localStorage.setItem('mindpulse_stats', JSON.stringify(updatedHistory));
+        try {
+            const token = localStorage.getItem('mindpulse_token');
+            const response = await fetch(`${API_URL}/assessments`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(newEntry)
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                // Update local state immediately to avoid full page refresh
+                // Ensure we only keep latest 7
+                const updatedHistory = [...history, data.data].slice(-7);
+                setHistory(updatedHistory);
+            }
+        } catch (err) {
+            console.error('Error saving assessment:', err);
+        }
     };
 
     const handleAnswer = (val) => {
@@ -148,7 +195,13 @@ const StressDashboard = () => {
                         <p className="text-text-secondary">Track your inner balance and daily progress.</p>
                     </div>
                     <button
-                        onClick={() => setIsCheckInOpen(true)}
+                        onClick={() => {
+                            if (!user) {
+                                alert('Please login to take an assessment and save your progress.');
+                                return;
+                            }
+                            setIsCheckInOpen(true);
+                        }}
                         className="flex items-center gap-2 bg-accent text-white px-6 py-3 rounded-xl font-medium hover:bg-accent/90 transition-colors"
                     >
                         <Activity size={20} />
@@ -156,7 +209,19 @@ const StressDashboard = () => {
                     </button>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                {!user || history.length === 0 ? (
+                    <div className="bg-surface rounded-xl p-10 border border-border text-center flex flex-col items-center justify-center">
+                        <div className="w-16 h-16 bg-bg rounded-xl flex items-center justify-center text-accent mb-4 border border-border">
+                            <Activity size={32} />
+                        </div>
+                        <h3 className="text-xl font-bold text-text-primary mb-2">No assessment data available</h3>
+                        <p className="text-text-secondary max-w-md mx-auto mb-6">
+                            {user ? "Complete your first assessment to view your stress and anxiety analytics." : "Please login and complete your first assessment to view your stress and anxiety analytics."}
+                        </p>
+                    </div>
+                ) : (
+                    <>
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
                     <div className="lg:col-span-2 bg-surface rounded-xl p-6 border border-border">
                         <div className="flex justify-between items-center mb-6">
                             <h3 className="text-lg font-bold text-text-primary flex items-center gap-2">
@@ -261,6 +326,8 @@ const StressDashboard = () => {
                         </button>
                     </div>
                 </div>
+                </>
+                )}
             </div>
 
             <AnimatePresence>
