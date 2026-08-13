@@ -44,7 +44,8 @@ const gadQuestions = [
 const Dashboard = () => {
     const { t } = useTranslation();
     const { user } = useAuth();
-    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+    const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    const API_URL = `${BASE_URL.replace(/\/$/, '')}/api`;
 
     // State for Analytics Data
     const [analytics, setAnalytics] = useState({ checkins: [], mentalAssessments: [], legacyAssessments: [], topTriggers: [] });

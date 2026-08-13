@@ -10,7 +10,8 @@ const triggersList = ['Academics / Exams', 'Career / Job', 'Family', 'Relationsh
 const DailyCheckInModal = ({ onClose, onComplete }) => {
     const { t } = useTranslation();
     const { user } = useAuth();
-    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+    const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    const API_URL = `${BASE_URL.replace(/\/$/, '')}/api`;
     
     const [step, setStep] = useState(1);
     const [isSubmitting, setIsSubmitting] = useState(false);

@@ -19,7 +19,8 @@ const ChatSection = () => {
         { text: t('chat.initialMsg', { name: user ? ' ' + user.name : '' }), isAI: true }
     ]);
     const [analyticsContext, setAnalyticsContext] = useState(null);
-    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+    const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    const API_URL = `${BASE_URL.replace(/\/$/, '')}/api`;
     const [input, setInput] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [isListening, setIsListening] = useState(false);
