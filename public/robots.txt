@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+Disallow: /dashboard
+Disallow: /profile
+Disallow: /my-assessments
+Disallow: /appointments
+Disallow: /insights
+Disallow: /check-in
+
+Sitemap: https://mindpulseco.in/sitemap.xml

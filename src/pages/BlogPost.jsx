@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Clock, Calendar } from 'lucide-react';
 import { blogArticles } from '../data/blogData';
 import { motion } from 'framer-motion';
+import SEO from '../components/SEO';
 
 const BlogPost = () => {
     const { slug } = useParams();
@@ -29,6 +30,24 @@ const BlogPost = () => {
 
     return (
         <div className="min-h-screen bg-bg text-text-primary pt-24 pb-20 px-4">
+            <SEO 
+                title={`${article.title} | MindPulse Blog`}
+                description={article.excerpt}
+                canonical={`/blog/${article.slug}`}
+                type="article"
+                schema={{
+                    "@context": "https://schema.org",
+                    "@type": "Article",
+                    "headline": article.title,
+                    "description": article.excerpt,
+                    "datePublished": new Date(article.date).toISOString(),
+                    "author": {
+                        "@type": "Organization",
+                        "name": "MindPulse"
+                    },
+                    "url": `https://mindpulseco.in/blog/${article.slug}`
+                }}
+            />
             <div className="max-w-3xl mx-auto">
                 <Link to="/blog" className="inline-flex items-center gap-2 text-text-secondary hover:text-accent transition-colors font-medium mb-10">
                     <ArrowLeft size={18} /> Back to Journal

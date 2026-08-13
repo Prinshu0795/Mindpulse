@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Wind, Dumbbell, Activity, CheckCircle2, XCircle, Droplet, Moon, Brain, Coffee } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import SEO from '../components/SEO';
 
 const categories = ['All', 'Stress Management', 'Anxiety Support', 'Sleep', 'Self-Care', 'Focus'];
 
@@ -52,6 +53,11 @@ const Resources = () => {
 
     return (
         <div className="min-h-screen bg-bg text-text-primary pt-24 pb-20 px-4">
+            <SEO 
+                title="Mental Wellness Resources | Stress, Anxiety, Sleep & Self-Care"
+                description="Explore practical mental wellness resources covering stress management, anxiety awareness, sleep, self-care, mindfulness and healthy habits."
+                canonical="/resources"
+            />
             <div className="max-w-6xl mx-auto">
                 <div className="text-center mb-12">
                     <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">

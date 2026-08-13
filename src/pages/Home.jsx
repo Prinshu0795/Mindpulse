@@ -4,6 +4,7 @@ import { Sparkles } from 'lucide-react';
 import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
+import SEO from '../components/SEO';
 
 const Home = () => {
     const { user, setIsAuthModalOpen } = useAuth();
@@ -15,6 +16,17 @@ const Home = () => {
 
     return (
         <div className="min-h-screen bg-bg text-text-primary transition-colors duration-300">
+            <SEO 
+                title="MindPulse | Mental Wellness & Wellness Tracking Platform"
+                description="MindPulse is a mental wellness platform for tracking stress, anxiety, mood, sleep and overall well-being through screening tools, daily check-ins, wellness resources and personalized insights."
+                canonical="/"
+                schema={{
+                    "@context": "https://schema.org",
+                    "@type": "WebSite",
+                    "name": "MindPulse",
+                    "url": "https://mindpulseco.in/"
+                }}
+            />
             <header className="pt-32 pb-24 md:pt-40 md:pb-32 px-4 md:px-6 max-w-6xl mx-auto text-center">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}

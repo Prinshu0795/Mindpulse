@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Search, Clock, Calendar } from 'lucide-react';
 import { blogArticles } from '../data/blogData';
 import { useTranslation } from 'react-i18next';
+import SEO from '../components/SEO';
 
 const categories = ['All', 'Stress', 'Anxiety', 'Sleep', 'Student Wellness', 'Self-Care', 'Productivity'];
 
@@ -23,6 +24,11 @@ const Blog = () => {
 
     return (
         <div className="min-h-screen bg-bg text-text-primary pt-24 pb-20 px-4">
+            <SEO 
+                title="Mental Wellness Blog | Stress, Anxiety, Sleep & Wellness"
+                description="Read educational articles about stress management, anxiety, sleep, student wellness, self-care and everyday mental well-being."
+                canonical="/blog"
+            />
             <div className="max-w-6xl mx-auto">
                 <div className="text-center mb-12">
                     <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">

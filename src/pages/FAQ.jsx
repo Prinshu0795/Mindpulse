@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import SEO from '../components/SEO';
 
 const faqs = [
     {
@@ -92,6 +93,23 @@ const FAQ = () => {
 
     return (
         <div className="min-h-screen bg-bg text-text-primary pt-24 pb-20 px-4">
+            <SEO 
+                title="Mental Wellness FAQ | MindPulse"
+                description="Find answers to common questions about MindPulse, wellness assessments, daily check-ins, privacy, AI insights and mental wellness tracking."
+                canonical="/faq"
+                schema={{
+                    "@context": "https://schema.org",
+                    "@type": "FAQPage",
+                    "mainEntity": faqs.map(f => ({
+                        "@type": "Question",
+                        "name": f.question,
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": f.answer
+                        }
+                    }))
+                }}
+            />
             <div className="max-w-3xl mx-auto">
                 <div className="text-center mb-12">
                     <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">

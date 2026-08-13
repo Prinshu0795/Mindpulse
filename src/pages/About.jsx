@@ -3,11 +3,17 @@ import { motion } from 'framer-motion';
 import { Sparkles, BookOpen, Brain, Activity, Shield, Info, ArrowRight, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import SEO from '../components/SEO';
 
 const About = () => {
     const { t } = useTranslation();
     return (
         <div className="min-h-screen bg-bg text-text-primary">
+            <SEO 
+                title="About MindPulse | Mental Wellness Platform"
+                description="Learn about MindPulse, a mental wellness platform designed to help users track well-being, understand personal patterns and build healthier wellness habits."
+                canonical="/about"
+            />
             {/* Hero Section */}
             <section className="pt-32 pb-20 px-4 max-w-6xl mx-auto text-center">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>

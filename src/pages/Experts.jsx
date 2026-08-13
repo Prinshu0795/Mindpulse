@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Phone, MapPin, Award, IndianRupee, X, Search, Map, Building2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import SEO from '../components/SEO';
 
 const Experts = () => {
     const { t } = useTranslation();
@@ -35,6 +36,11 @@ const Experts = () => {
 
     return (
         <div className="min-h-screen bg-bg text-text-primary pt-24 pb-20">
+            <SEO 
+                title="Mental Wellness Experts | MindPulse"
+                description="Explore mental wellness support options and learn more about connecting with wellness professionals through MindPulse."
+                canonical="/experts"
+            />
             <div className="max-w-6xl mx-auto text-center mb-16 px-4">
                 <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">{t('experts.title1')} <span className="text-accent">{t('experts.title2')}</span></h1>
                 <p className="text-text-secondary max-w-2xl mx-auto mb-10 text-lg">

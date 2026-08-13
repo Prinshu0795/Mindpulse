@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Send, HelpCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import SEO from '../components/SEO';
 
 const Contact = () => {
     const { t } = useTranslation();
@@ -39,6 +40,11 @@ const Contact = () => {
 
     return (
         <div className="min-h-screen bg-bg text-text-primary pt-24 pb-20 px-4">
+            <SEO 
+                title="Contact MindPulse | Mental Wellness Support"
+                description="Contact MindPulse with questions, feedback or support requests about the mental wellness platform."
+                canonical="/contact"
+            />
             <div className="max-w-6xl mx-auto">
                 <div className="text-center mb-16">
                     <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">

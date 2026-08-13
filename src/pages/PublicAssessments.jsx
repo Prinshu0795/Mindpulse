@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import { Clock, HelpCircle, Activity, ChevronRight, LogIn } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import SEO from '../components/SEO';
 
 import DASS21 from '../components/assessments/DASS21';
 import PHQ9 from '../components/assessments/PHQ9';
@@ -70,6 +71,11 @@ const PublicAssessments = () => {
 
     return (
         <div className="min-h-screen bg-bg text-text-primary pt-24 pb-20 px-4">
+            <SEO 
+                title="Mental Wellness Assessments | PSS-10, GAD-7 & More | MindPulse"
+                description="Explore mental wellness screening tools including PSS-10, GAD-7, DASS-21, PHQ-9 and WHO-5 and learn what each assessment measures."
+                canonical="/assessments"
+            />
             <div className="max-w-6xl mx-auto">
                 <div className="text-center mb-16">
                     <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">

@@ -2,6 +2,7 @@ import React from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider as UIThemeProvider } from './context/ThemeContext';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 
 // Layout & Global Components
 import Navbar from './components/Navbar';
@@ -88,13 +89,15 @@ const AppContent = () => {
 
 function App() {
   return (
-    <Router>
-      <UIThemeProvider>
-        <AuthProvider>
-          <AppContent />
-        </AuthProvider>
-      </UIThemeProvider>
-    </Router>
+    <HelmetProvider>
+      <Router>
+        <UIThemeProvider>
+          <AuthProvider>
+            <AppContent />
+          </AuthProvider>
+        </UIThemeProvider>
+      </Router>
+    </HelmetProvider>
   );
 }
 
