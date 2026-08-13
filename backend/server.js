@@ -16,6 +16,8 @@ const connectDB = require('./config/db');
 const auth = require('./routes/authRoutes');
 const user = require('./routes/userRoutes');
 const assessments = require('./routes/assessmentRoutes');
+const analytics = require('./routes/analyticsRoutes');
+const contact = require('./routes/contactRoutes');
 
 const app = express();
 
@@ -51,6 +53,8 @@ app.get('/', (req, res) => res.send('MindPulse API is running...'));
 app.use('/api/auth', auth);
 app.use('/api/user', user);
 app.use('/api/assessments', assessments);
+app.use('/api/analytics', analytics);
+app.use('/api/contact', contact);
 
 const PORT = process.env.PORT || 5000;
 

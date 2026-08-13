@@ -1,59 +1,84 @@
 import React from 'react';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider as UIThemeProvider } from './context/ThemeContext';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+
+// Layout & Global Components
 import Navbar from './components/Navbar';
-import ChatSection from './components/ChatSection';
-import VideoGenSection from './components/VideoGenSection';
-import StressDashboard from './components/StressDashboard';
-import ZenQuest from './components/ZenQuest';
-import WellnessHub from './components/WellnessHub';
-import ExpertsSection from './components/ExpertsSection';
-import AIVideoTools from './components/AIVideoTools';
 import Footer from './components/Footer';
 import AuthModal from './components/AuthModal';
 import CustomerService from './components/CustomerService';
+
+// Pages
+import Home from './pages/Home';
+import About from './pages/About';
+import PublicAssessments from './pages/PublicAssessments';
+import Resources from './pages/Resources';
+import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
+import Experts from './pages/Experts';
+import Contact from './pages/Contact';
+import FAQ from './pages/FAQ';
+import Dashboard from './pages/Dashboard';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
+import MedicalDisclaimer from './pages/MedicalDisclaimer';
+
 import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
-import { motion } from 'framer-motion';
-import { Sparkles } from 'lucide-react';
 
-const Hero = () => (
-  <header className="pt-32 pb-24 md:pt-40 md:pb-32 px-4 md:px-6 max-w-6xl mx-auto text-center">
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-    >
-      <h1 className="font-bold tracking-tight mb-6 text-text-primary">
-        Breathe in <br /><span className="text-accent">Peace.</span>
-      </h1>
-      <p className="text-text-secondary max-w-2xl mx-auto mb-10">
-        Connecting your mind to meaningful virtual experiences and professional support.
-      </p>
-      <button
-        className="inline-flex items-center gap-2 bg-accent text-white px-8 py-4 rounded-xl font-medium transition-colors hover:bg-accent/90"
-      >
-        <Sparkles size={18} />
-        Your Journey Starts Here
-      </button>
-    </motion.div>
-  </header>
-);
+const ProtectedRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+  
+  if (loading) {
+    return <div className="min-h-screen bg-bg flex items-center justify-center text-text-primary">Loading...</div>;
+  }
+
+  if (!user) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+};
 
 const AppContent = () => {
   return (
-    <div className="min-h-screen bg-bg text-text-primary transition-colors duration-300">
+    <div className="min-h-screen flex flex-col bg-bg text-text-primary transition-colors duration-300">
       <Navbar />
-      <Hero />
-      <main className="space-y-24 pb-24">
-        <div id="connect"><ChatSection /></div>
-        <div id="presence"><VideoGenSection /></div>
-        <div id="dashboard"><StressDashboard /></div>
-        <div id="quest"><ZenQuest /></div>
-        <div id="wellness"><WellnessHub /></div>
-        <AIVideoTools />
-        <div id="experts"><ExpertsSection /></div>
-      </main>
+      <div className="flex-grow">
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/assessments" element={<PublicAssessments />} />
+          <Route path="/resources" element={<Resources />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/experts" element={<Experts />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
+          <Route path="/medical-disclaimer" element={<MedicalDisclaimer />} />
+          
+          {/* Auth System Routes */}
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
+
+          {/* Protected Routes */}
+          <Route 
+            path="/dashboard" 
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } 
+          />
+          
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </div>
       <Footer />
       <CustomerService />
       <AuthModal />
@@ -62,35 +87,14 @@ const AppContent = () => {
 };
 
 function App() {
-  const path = window.location.pathname;
-
-  if (path === '/forgot-password') {
-    return (
-      <UIThemeProvider>
-        <AuthProvider>
-          <ForgotPassword />
-        </AuthProvider>
-      </UIThemeProvider>
-    );
-  }
-
-  if (path.startsWith('/reset-password/')) {
-    const token = path.split('/')[2];
-    return (
-      <UIThemeProvider>
-        <AuthProvider>
-          <ResetPassword token={token} />
-        </AuthProvider>
-      </UIThemeProvider>
-    );
-  }
-
   return (
-    <UIThemeProvider>
-      <AuthProvider>
-        <AppContent />
-      </AuthProvider>
-    </UIThemeProvider>
+    <Router>
+      <UIThemeProvider>
+        <AuthProvider>
+          <AppContent />
+        </AuthProvider>
+      </UIThemeProvider>
+    </Router>
   );
 }
 

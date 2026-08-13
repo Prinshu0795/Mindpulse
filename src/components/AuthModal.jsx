@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { X, Mail, User, Lock, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 const AuthModal = () => {
+    const { t } = useTranslation();
     const { isAuthModalOpen, setIsAuthModalOpen, login, register, error } = useAuth();
     const [isLogin, setIsLogin] = useState(true);
     const [name, setName] = useState('');
@@ -49,10 +51,10 @@ const AuthModal = () => {
 
                     <div className="text-center mb-8">
                         <h3 className="text-2xl font-bold text-text-primary mb-2">
-                            {isLogin ? 'Welcome Back' : 'Create Account'}
+                            {isLogin ? t('auth.welcomeBack') : t('auth.createAccount')}
                         </h3>
                         <p className="text-text-secondary text-sm">
-                            {isLogin ? 'Join MindPulse to personalize your experience.' : 'Start your wellness journey today.'}
+                            {isLogin ? t('auth.loginSubtitle') : t('auth.registerSubtitle')}
                         </p>
                     </div>
 
@@ -68,7 +70,7 @@ const AuthModal = () => {
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: 'auto' }}
                             >
-                                <label className="block text-sm font-medium mb-1.5 text-text-secondary">Your Name</label>
+                                <label className="block text-sm font-medium mb-1.5 text-text-secondary">{t('auth.yourName')}</label>
                                 <div className="relative">
                                     <User size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" />
                                     <input
@@ -83,7 +85,7 @@ const AuthModal = () => {
                             </motion.div>
                         )}
                         <div>
-                            <label className="block text-sm font-medium mb-1.5 text-text-secondary">Email Address</label>
+                            <label className="block text-sm font-medium mb-1.5 text-text-secondary">{t('auth.emailAddress')}</label>
                             <div className="relative">
                                 <Mail size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" />
                                 <input
@@ -97,7 +99,7 @@ const AuthModal = () => {
                             </div>
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1.5 text-text-secondary">Password</label>
+                            <label className="block text-sm font-medium mb-1.5 text-text-secondary">{t('auth.password')}</label>
                             <div className="relative">
                                 <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" />
                                 <input
@@ -112,7 +114,7 @@ const AuthModal = () => {
                             {isLogin && (
                                 <div className="text-right mt-2">
                                     <a href="/forgot-password" className="text-sm font-medium text-accent hover:text-accent/80 transition-colors">
-                                        Forgot Password?
+                                        {t('auth.forgotPassword')}
                                     </a>
                                 </div>
                             )}
@@ -122,7 +124,7 @@ const AuthModal = () => {
                             disabled={loading}
                             className="w-full bg-accent text-white py-3.5 rounded-lg font-bold hover:bg-accent/90 transition-colors mt-6 flex items-center justify-center gap-2"
                         >
-                            {loading ? <Loader2 className="animate-spin" size={20} /> : (isLogin ? 'Sign In' : 'Create Account')}
+                            {loading ? <Loader2 className="animate-spin" size={20} /> : (isLogin ? t('auth.signIn') : t('auth.createAccount'))}
                         </button>
                     </form>
 
@@ -131,7 +133,7 @@ const AuthModal = () => {
                             onClick={() => setIsLogin(!isLogin)}
                             className="text-sm font-medium text-text-secondary hover:text-accent transition-colors"
                         >
-                            {isLogin ? "Don't have an account? Sign Up" : "Already have an account? Log In"}
+                            {isLogin ? t('auth.noAccount') : t('auth.hasAccount')}
                         </button>
                     </div>
                 </motion.div>

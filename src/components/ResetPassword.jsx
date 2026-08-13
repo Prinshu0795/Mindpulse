@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { Lock, Loader2, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useParams, useNavigate } from 'react-router-dom';
 
-const ResetPassword = ({ token }) => {
+const ResetPassword = () => {
+    const { token } = useParams();
+    const navigate = useNavigate();
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -36,7 +39,7 @@ const ResetPassword = ({ token }) => {
                 setSuccess(true);
                 // Optionally redirect to login after a few seconds, or user can click the button
                 setTimeout(() => {
-                    window.location.href = '/';
+                    navigate('/');
                 }, 3000);
             } else {
                 setError(data.message || 'Invalid or expired token.');

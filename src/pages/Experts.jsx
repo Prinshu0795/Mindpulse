@@ -1,13 +1,15 @@
 import React, { useState, useMemo } from 'react';
 import { Phone, MapPin, Award, IndianRupee, X, Search, Map, Building2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
-const ExpertsSection = () => {
+const Experts = () => {
+    const { t } = useTranslation();
     const [selectedExpert, setSelectedExpert] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedCity, setSelectedCity] = useState("All India");
 
-    const cities = ["All India", "Lucknow", "Delhi", "Mumbai", "Bangalore", "Pune", "Hyderabad", "Kolkata", "Chennai"];
+    const cities = [t('experts.allIndia'), "Lucknow", "Delhi", "Mumbai", "Bangalore", "Pune", "Hyderabad", "Kolkata", "Chennai"];
 
     const allExperts = [
         { id: 1, name: "Dr. Isha Sherma", role: "Senior Psychologist", location: "Lucknow", qualification: "Gold Medalist in Psychology", phone: "7054265144", charges: "800", bio: "Specializing in mental well-being and emotional resilience with years of clinical experience.", clinic: "Isha's Healing Center, Hazratganj", featured: true },
@@ -25,17 +27,18 @@ const ExpertsSection = () => {
     const filteredExperts = useMemo(() => {
         return allExperts.filter(expert => {
             const matchesSearch = expert.name.toLowerCase().includes(searchQuery.toLowerCase()) || expert.role.toLowerCase().includes(searchQuery.toLowerCase());
-            const matchesCity = selectedCity === "All India" || expert.location === selectedCity;
+            const isAllIndia = selectedCity === t('experts.allIndia') || selectedCity === 'All India';
+            const matchesCity = isAllIndia || expert.location === selectedCity;
             return matchesSearch && matchesCity;
         });
     }, [searchQuery, selectedCity]);
 
     return (
-        <section id="experts" className="py-24 px-4 bg-bg scroll-mt-24">
-            <div className="max-w-6xl mx-auto text-center mb-16">
-                <h2 className="text-3xl font-bold text-text-primary mb-4">Find Verified Experts</h2>
-                <p className="text-text-secondary max-w-2xl mx-auto mb-10 font-medium">
-                    Call directly to book your session with India's top mental health professionals.
+        <div className="min-h-screen bg-bg text-text-primary pt-24 pb-20">
+            <div className="max-w-6xl mx-auto text-center mb-16 px-4">
+                <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">{t('experts.title1')} <span className="text-accent">{t('experts.title2')}</span></h1>
+                <p className="text-text-secondary max-w-2xl mx-auto mb-10 text-lg">
+                    {t('experts.subtitle')}
                 </p>
 
                 <div className="max-w-4xl mx-auto flex flex-col md:flex-row gap-4 bg-surface p-4 rounded-xl border border-border">
@@ -43,7 +46,7 @@ const ExpertsSection = () => {
                         <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary" />
                         <input
                             type="text"
-                            placeholder="Search by name or specialty..."
+                            placeholder={t('experts.search')}
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className="w-full pl-12 pr-4 py-3 rounded-lg bg-bg border border-border focus:outline-none focus:border-accent text-text-primary font-medium placeholder:text-text-secondary transition-colors"
@@ -85,7 +88,7 @@ const ExpertsSection = () => {
                             <div className="text-center mb-6 flex-grow">
                                 <div className="flex items-center justify-center gap-2 mb-1">
                                     <h3 className="text-lg font-bold text-text-primary leading-tight">{expert.name}</h3>
-                                    {expert.featured && <span className="text-[10px] bg-accent/10 text-accent px-2 py-0.5 rounded-full font-bold uppercase tracking-wider border border-accent/20">Featured</span>}
+                                    {expert.featured && <span className="text-[10px] bg-accent/10 text-accent px-2 py-0.5 rounded-full font-bold uppercase tracking-wider border border-accent/20">{t('experts.featured')}</span>}
                                 </div>
                                 <p className="text-accent text-sm font-medium mb-4">{expert.role}</p>
 
@@ -100,7 +103,7 @@ const ExpertsSection = () => {
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <IndianRupee size={16} className="text-emerald-500" />
-                                        <span className="font-bold text-text-primary">₹{expert.charges} Session</span>
+                                        <span className="font-bold text-text-primary">₹{expert.charges} {t('experts.session')}</span>
                                     </div>
                                 </div>
                             </div>
@@ -111,7 +114,7 @@ const ExpertsSection = () => {
                                     className="w-full flex items-center justify-center gap-2 bg-bg border border-border text-text-primary py-3 rounded-lg font-bold text-sm hover:bg-surface hover:border-accent/50 transition-colors"
                                 >
                                     <Phone size={16} />
-                                    Book via Call
+                                    {t('experts.bookCall')}
                                 </button>
                             </div>
                         </motion.div>
@@ -121,7 +124,7 @@ const ExpertsSection = () => {
 
             {filteredExperts.length === 0 && (
                 <div className="text-center py-20">
-                    <p className="text-lg text-text-secondary font-medium">No experts found in {selectedCity} matching "{searchQuery}".</p>
+                    <p className="text-lg text-text-secondary font-medium">{t('experts.noExperts', { city: selectedCity, query: searchQuery })}</p>
                 </div>
             )}
 
@@ -163,8 +166,8 @@ const ExpertsSection = () => {
                                             <Building2 size={20} />
                                         </div>
                                         <div>
-                                            <span className="text-[10px] uppercase font-bold text-text-secondary tracking-widest block mb-1">Clinic Details</span>
-                                            <p className="text-sm font-medium text-text-primary">{selectedExpert.clinic || "Private Clinic"}</p>
+                                            <span className="text-[10px] uppercase font-bold text-text-secondary tracking-widest block mb-1">{t('experts.clinicDetails')}</span>
+                                            <p className="text-sm font-medium text-text-primary">{selectedExpert.clinic || t('experts.privateClinic')}</p>
                                         </div>
                                     </div>
                                     <div className="flex items-start gap-4 border-t border-border pt-4">
@@ -172,7 +175,7 @@ const ExpertsSection = () => {
                                             <Phone size={20} />
                                         </div>
                                         <div>
-                                            <span className="text-[10px] uppercase font-bold text-text-secondary tracking-widest block mb-1">Contact Number</span>
+                                            <span className="text-[10px] uppercase font-bold text-text-secondary tracking-widest block mb-1">{t('experts.contactNum')}</span>
                                             <p className="text-lg font-bold text-text-primary">{selectedExpert.phone}</p>
                                         </div>
                                     </div>
@@ -180,7 +183,7 @@ const ExpertsSection = () => {
 
                                 <div className="text-center">
                                     <p className="text-xs text-text-secondary font-medium leading-relaxed mb-6">
-                                        Please mention <span className="text-accent font-bold">MindPulse</span> while calling to avail special priority session booking.
+                                        {t('experts.mention')} <span className="text-accent font-bold">{t('experts.mentionMindPulse')}</span> {t('experts.mentionSuffix')}
                                     </p>
 
                                     <a
@@ -188,7 +191,7 @@ const ExpertsSection = () => {
                                         className="w-full bg-accent text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-accent/90 transition-colors"
                                     >
                                         <Phone size={20} />
-                                        Call to Book Now
+                                        {t('experts.callToBook')}
                                     </a>
                                 </div>
                             </div>
@@ -196,8 +199,8 @@ const ExpertsSection = () => {
                     </div>
                 )}
             </AnimatePresence>
-        </section>
+        </div>
     );
 };
 
-export default ExpertsSection;
+export default Experts;

@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { Headset, X, Phone, Mail, MessageSquare, Clock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 const CustomerService = () => {
+    const { t } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
 
     const contactDetails = {
         phone: "6388626778",
         email: "prinshukumarguptap@gmail.com",
-        hours: "24/7 Priority Support"
+        hours: t('customerService.hours')
     };
 
     return (
@@ -33,7 +35,7 @@ const CustomerService = () => {
                                     <X size={18} />
                                 </button>
                             </div>
-                            <h3 className="text-lg font-bold mb-1">Customer Service</h3>
+                            <h3 className="text-lg font-bold mb-1">{t('customerService.title')}</h3>
                             <p className="text-xs opacity-90 font-medium flex items-center gap-1.5">
                                 <Clock size={12} /> {contactDetails.hours}
                             </p>
@@ -41,7 +43,7 @@ const CustomerService = () => {
 
                         <div className="p-6 space-y-4">
                             <p className="text-sm text-text-secondary mb-6 font-medium">
-                                Need help with your mental health journey or booking? Connect with our team.
+                                {t('customerService.desc')}
                             </p>
 
                             <a
@@ -52,7 +54,7 @@ const CustomerService = () => {
                                     <Phone size={18} />
                                 </div>
                                 <div>
-                                    <p className="text-[10px] uppercase font-bold text-text-secondary">Call Us</p>
+                                    <p className="text-[10px] uppercase font-bold text-text-secondary">{t('customerService.callUs')}</p>
                                     <p className="text-sm font-bold text-text-primary">{contactDetails.phone}</p>
                                 </div>
                             </a>
@@ -65,7 +67,7 @@ const CustomerService = () => {
                                     <Mail size={18} />
                                 </div>
                                 <div className="min-w-0 flex-1">
-                                    <p className="text-[10px] uppercase font-bold text-text-secondary">Email Us</p>
+                                    <p className="text-[10px] uppercase font-bold text-text-secondary">{t('customerService.emailUs')}</p>
                                     <p className="text-sm font-bold text-text-primary truncate">{contactDetails.email}</p>
                                 </div>
                             </a>
@@ -73,7 +75,7 @@ const CustomerService = () => {
                             <div className="pt-2">
                                 <div className="flex items-center gap-2 text-xs font-medium text-text-secondary justify-center">
                                     <MessageSquare size={14} />
-                                    Average response time: 5 mins
+                                    {t('customerService.responseTime')}
                                 </div>
                             </div>
                         </div>

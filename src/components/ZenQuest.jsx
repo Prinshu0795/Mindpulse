@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Gamepad2, Leaf, Zap, Trash2, Wind, Lock, Volume2, Trophy, MousePointer2, Sparkles, Eye, Hand, Ear, Smile, Activity, ChevronRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const GardenView = ({ points }) => {
+    const { t } = useTranslation();
     const stage = Math.min(Math.floor(points / 50), 4);
     return (
         <div className="flex flex-col items-center justify-center p-6 md:p-8 bg-surface rounded-xl border border-border min-h-[400px]">
@@ -19,10 +21,10 @@ const GardenView = ({ points }) => {
             </div>
             <div className="text-center mt-6">
                 <h4 className="text-xl font-bold text-text-primary flex items-center justify-center gap-2">
-                    Level {stage + 1} Garden
+                    {t('zenquest.level')} {stage + 1} {t('zenquest.garden')}
                     <Sparkles size={18} className="text-accent" />
                 </h4>
-                <p className="text-text-secondary text-sm mt-2 font-medium">Your Zen Garden grows as you complete activities.</p>
+                <p className="text-text-secondary text-sm mt-2 font-medium">{t('zenquest.gardenDesc')}</p>
                 <div className="mt-6 w-64 h-2 bg-bg rounded-full overflow-hidden mx-auto border border-border">
                     <motion.div initial={{ width: 0 }} animate={{ width: `${(points % 50) * 2}%` }} className="h-full bg-accent" />
                 </div>
@@ -31,15 +33,17 @@ const GardenView = ({ points }) => {
     );
 };
 
-const MindGamesView = ({ bubbles, popBubble, groundingStep, setGroundingStep, completeGrounding }) => (
+const MindGamesView = ({ bubbles, popBubble, groundingStep, setGroundingStep, completeGrounding }) => {
+    const { t } = useTranslation();
+    return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-surface p-6 md:p-8 rounded-xl border border-border text-center">
             <div className="flex justify-between items-center mb-8">
                 <h4 className="text-lg font-bold text-text-primary flex items-center gap-2">
                     <MousePointer2 size={18} className="text-accent" />
-                    Bubble Pop
+                    {t('zenquest.bubblePop')}
                 </h4>
-                <span className="text-xs font-bold text-accent bg-accent/10 px-3 py-1 rounded-full uppercase tracking-wide">Instant Calm</span>
+                <span className="text-xs font-bold text-accent bg-accent/10 px-3 py-1 rounded-full uppercase tracking-wide">{t('zenquest.instantCalm')}</span>
             </div>
             <div className="grid grid-cols-5 gap-3 max-w-[200px] mx-auto">
                 {bubbles.map((popped, i) => (
@@ -52,19 +56,19 @@ const MindGamesView = ({ bubbles, popBubble, groundingStep, setGroundingStep, co
                     />
                 ))}
             </div>
-            <p className="mt-8 text-sm text-text-secondary font-medium leading-relaxed">Simple, satisfying popping to relieve tactile tension.</p>
+            <p className="mt-8 text-sm text-text-secondary font-medium leading-relaxed">{t('zenquest.bubbleDesc')}</p>
         </div>
 
         <div className="bg-surface p-6 md:p-8 rounded-xl border border-border">
             <h4 className="text-lg font-bold text-text-primary mb-6 flex items-center gap-2">
                 <Activity size={18} className="text-emerald-500" />
-                5-4-3-2-1 Sensory
+                {t('zenquest.sensory')}
             </h4>
             <AnimatePresence mode="wait">
                 {groundingStep === 0 && (
                     <motion.div key="s0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-center py-6">
                         <button onClick={() => setGroundingStep(1)} className="bg-accent text-white px-6 py-3 rounded-xl font-medium hover:bg-accent/90 transition-colors w-full">
-                            Start Grounding
+                            {t('zenquest.startGrounding')}
                         </button>
                     </motion.div>
                 )}
@@ -79,51 +83,53 @@ const MindGamesView = ({ bubbles, popBubble, groundingStep, setGroundingStep, co
                                 {groundingStep === 5 && <Smile size={24} />}
                             </div>
                             <div>
-                                <h5 className="font-bold text-text-primary">Step {groundingStep}</h5>
-                                <p className="text-sm text-text-secondary">Sensory observation</p>
+                                <h5 className="font-bold text-text-primary">{t('zenquest.step')} {groundingStep}</h5>
+                                <p className="text-sm text-text-secondary">{t('zenquest.sensoryObs')}</p>
                             </div>
                         </div>
                         <p className="text-base font-medium text-text-primary mb-8 min-h-[48px]">
-                            {groundingStep === 1 && "Name 5 things you can see right now."}
-                            {groundingStep === 2 && "Name 4 things you can touch around you."}
-                            {groundingStep === 3 && "Name 3 things you can hear."}
-                            {groundingStep === 4 && "Name 2 things you can smell."}
-                            {groundingStep === 5 && "Name 1 thing you can taste."}
+                            {groundingStep === 1 && t('zenquest.see')}
+                            {groundingStep === 2 && t('zenquest.touch')}
+                            {groundingStep === 3 && t('zenquest.hear')}
+                            {groundingStep === 4 && t('zenquest.smell')}
+                            {groundingStep === 5 && t('zenquest.taste')}
                         </p>
                         <button
                             onClick={groundingStep === 5 ? completeGrounding : () => setGroundingStep(s => s + 1)}
                             className="w-full bg-bg border border-border py-3 rounded-xl font-medium text-text-primary hover:bg-surface transition-colors flex items-center justify-center gap-2"
                         >
-                            {groundingStep === 5 ? "Finish" : "Next"} <ChevronRight size={18} />
+                            {groundingStep === 5 ? t('zenquest.finish') : t('common.next')} <ChevronRight size={18} />
                         </button>
                     </motion.div>
                 )}
             </AnimatePresence>
         </div>
     </div>
-);
+)};
 
-const WorryBoxView = ({ worry, setWorry, isWorryDissolving, handleWorrySubmit }) => (
+const WorryBoxView = ({ worry, setWorry, isWorryDissolving, handleWorrySubmit }) => {
+    const { t } = useTranslation();
+    return (
     <div className="bg-surface p-8 md:p-12 rounded-xl border border-border text-center relative overflow-hidden">
         <div className={`w-16 h-16 bg-bg border border-border rounded-xl flex items-center justify-center text-text-secondary mx-auto mb-6 transition-transform duration-1000 ${isWorryDissolving ? 'rotate-180 scale-50 opacity-0' : ''}`}>
             <Trash2 size={32} />
         </div>
-        <h3 className="text-2xl font-bold text-text-primary mb-3">The Worry Box</h3>
+        <h3 className="text-2xl font-bold text-text-primary mb-3">{t('zenquest.worryBox')}</h3>
         <p className="text-text-secondary max-w-md mx-auto mb-8 text-sm md:text-base">
-            Type out whatever is stressing you. Click release, and watch it dissolve into peace.
+            {t('zenquest.worryDesc')}
         </p>
         <form onSubmit={handleWorrySubmit} className="max-w-md mx-auto relative">
             <textarea
                 value={worry}
                 onChange={(e) => setWorry(e.target.value)}
-                placeholder="What's bothering you?"
+                placeholder={t('zenquest.bothering')}
                 disabled={isWorryDissolving}
                 autoFocus
                 className={`w-full p-4 bg-bg border border-border rounded-xl min-h-[150px] outline-none focus:ring-2 focus:ring-accent/50 transition-all font-medium resize-none text-text-primary ${isWorryDissolving ? 'opacity-0 blur-sm' : 'opacity-100'}`}
             />
             {isWorryDissolving && (
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="text-text-primary font-bold">Releasing...</div>
+                    <div className="text-text-primary font-bold">{t('zenquest.releasing')}</div>
                 </div>
             )}
             <button
@@ -131,13 +137,14 @@ const WorryBoxView = ({ worry, setWorry, isWorryDissolving, handleWorrySubmit })
                 disabled={!worry.trim() || isWorryDissolving}
                 className="mt-6 w-full bg-accent text-white py-4 rounded-xl font-medium disabled:opacity-50 hover:bg-accent/90 transition-colors"
             >
-                Release to the Universe
+                {t('zenquest.releaseUniverse')}
             </button>
         </form>
     </div>
-);
+)};
 
 const ZenQuest = () => {
+    const { t } = useTranslation();
     const [streak, setStreak] = useState(0);
     const [points, setPoints] = useState(0);
     const [activeTab, setActiveTab] = useState('garden');
@@ -205,7 +212,7 @@ const ZenQuest = () => {
                         </div>
                         <div>
                             <div className="text-3xl font-bold text-text-primary leading-none mb-1">{points}</div>
-                            <div className="text-xs font-bold text-text-secondary uppercase tracking-widest">Seeds Planted</div>
+                            <div className="text-xs font-bold text-text-secondary uppercase tracking-widest">{t('zenquest.seeds')}</div>
                         </div>
 
                         <div className="hidden md:block h-12 w-px bg-border mx-2" />
@@ -216,14 +223,14 @@ const ZenQuest = () => {
                                     <div key={d} className={`w-3 h-8 rounded-full ${d <= 3 ? 'bg-emerald-500' : 'bg-bg border border-border'}`} />
                                 ))}
                             </div>
-                            <div className="text-[10px] font-bold text-text-secondary uppercase tracking-wider">3 Day Streak!</div>
+                            <div className="text-[10px] font-bold text-text-secondary uppercase tracking-wider">{t('zenquest.streak')}</div>
                         </div>
                     </div>
                     <div className="flex gap-3 w-full md:w-auto">
                         <div className={`flex-1 md:flex-none p-3 md:p-4 rounded-xl flex items-center justify-center gap-3 border ${unlockedSounds ? 'bg-accent/10 border-accent/20 text-accent' : 'bg-bg border-border text-text-secondary'}`}>
                             {unlockedSounds ? <Volume2 size={20} /> : <Lock size={20} />}
                             <span className="text-xs font-bold uppercase tracking-widest hidden sm:inline">
-                                {unlockedSounds ? 'Soundscapes Unlocked' : '3-Day Reward Locked'}
+                                {unlockedSounds ? t('zenquest.soundsUnlocked') : t('zenquest.soundsLocked')}
                             </span>
                         </div>
                         <div className="p-3 md:p-4 bg-emerald-50 text-emerald-600 border border-emerald-100 rounded-xl flex items-center justify-center">
@@ -234,14 +241,14 @@ const ZenQuest = () => {
 
                 <div className="text-center mb-10">
                     <div className="inline-flex items-center gap-2 bg-bg border border-border text-text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-4">
-                        <Gamepad2 size={14} className="text-accent" /> The Calm Quest
+                        <Gamepad2 size={14} className="text-accent" /> {t('zenquest.calmQuest')}
                     </div>
-                    <h2 className="text-3xl font-bold text-text-primary mb-8">Make Peace a Habit</h2>
+                    <h2 className="text-3xl font-bold text-text-primary mb-8">{t('zenquest.habit')}</h2>
                     <div className="flex flex-wrap justify-center gap-3">
                         {[
-                            { id: 'garden', label: 'Garden', icon: <Leaf size={16} /> },
-                            { id: 'games', label: 'Games', icon: <Gamepad2 size={16} /> },
-                            { id: 'worrybox', label: 'Worry Box', icon: <Trash2 size={16} /> }
+                            { id: 'garden', label: t('zenquest.garden'), icon: <Leaf size={16} /> },
+                            { id: 'games', label: t('zenquest.games'), icon: <Gamepad2 size={16} /> },
+                            { id: 'worrybox', label: t('zenquest.worryBox'), icon: <Trash2 size={16} /> }
                         ].map((t) => (
                             <button
                                 key={t.id}
