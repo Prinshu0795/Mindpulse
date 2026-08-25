@@ -28,6 +28,11 @@ import MedicalDisclaimer from './pages/MedicalDisclaimer';
 import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
 
+// Admin
+import { AdminAuthProvider, useAdminAuth } from './admin/context/AdminAuthContext';
+import AdminLogin from './admin/AdminLogin';
+import AdminApp from './admin/AdminApp';
+
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
   
@@ -37,6 +42,31 @@ const ProtectedRoute = ({ children }) => {
 
   if (!user) {
     return <Navigate to="/" replace />;
+  }
+
+  return children;
+};
+
+const AdminProtectedRoute = ({ children }) => {
+  const { admin, loading } = useAdminAuth();
+
+  if (loading) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'var(--color-bg)',
+        color: 'var(--color-text-primary)'
+      }}>
+        Loading...
+      </div>
+    );
+  }
+
+  if (!admin) {
+    return <Navigate to="/admin/login" replace />;
   }
 
   return children;
@@ -76,7 +106,7 @@ const AppContent = () => {
             } 
           />
           
-          {/* Fallback */}
+          {/* Fallback — exclude /admin paths so they don't get caught here */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>
@@ -93,7 +123,24 @@ function App() {
       <Router>
         <UIThemeProvider>
           <AuthProvider>
-            <AppContent />
+            <Routes>
+              {/* Admin Routes — separate layout, no main Navbar/Footer */}
+              <Route path="/admin/login" element={
+                <AdminAuthProvider>
+                  <AdminLogin />
+                </AdminAuthProvider>
+              } />
+              <Route path="/admin/*" element={
+                <AdminAuthProvider>
+                  <AdminProtectedRoute>
+                    <AdminApp />
+                  </AdminProtectedRoute>
+                </AdminAuthProvider>
+              } />
+
+              {/* All other routes go through the main AppContent layout */}
+              <Route path="/*" element={<AppContent />} />
+            </Routes>
           </AuthProvider>
         </UIThemeProvider>
       </Router>

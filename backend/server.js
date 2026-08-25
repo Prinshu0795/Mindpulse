@@ -18,6 +18,7 @@ const user = require('./routes/userRoutes');
 const assessments = require('./routes/assessmentRoutes');
 const analytics = require('./routes/analyticsRoutes');
 const contact = require('./routes/contactRoutes');
+const admin = require('./routes/adminRoutes');
 
 const app = express();
 
@@ -57,6 +58,7 @@ app.use('/api/user', user);
 app.use('/api/assessments', assessments);
 app.use('/api/analytics', analytics);
 app.use('/api/contact', contact);
+app.use('/api/admin', admin);
 
 const PORT = process.env.PORT || 5000;
 
