@@ -5,6 +5,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import SEO from '../components/SEO';
+import homeImage from '../assets/MindpulseHomePage.jpg';
 
 const Home = () => {
     const { user, setIsAuthModalOpen } = useAuth();
@@ -15,8 +16,19 @@ const Home = () => {
     }
 
     return (
-        <div className="min-h-screen bg-bg text-text-primary transition-colors duration-300">
-            <SEO 
+        <div className="min-h-screen bg-bg text-text-primary transition-colors duration-300 relative">
+            {/* Background Image with Overlay */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+                <div 
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                    style={{ backgroundImage: `url(${homeImage})`, backgroundAttachment: 'fixed' }}
+                ></div>
+                {/* Semi-transparent overlay to ensure text readability without hiding the image */}
+                <div className="absolute inset-0 bg-bg/50 dark:bg-bg/70"></div>
+            </div>
+
+            <div className="relative z-10">
+                <SEO 
                 title="MindPulse | Mental Wellness & Wellness Tracking Platform"
                 description="MindPulse is a mental wellness platform for tracking stress, anxiety, mood, sleep and overall well-being through screening tools, daily check-ins, wellness resources and personalized insights."
                 canonical="/"
@@ -27,13 +39,13 @@ const Home = () => {
                     "url": "https://mindpulseco.in/"
                 }}
             />
-            <header className="pt-32 pb-24 md:pt-40 md:pb-32 px-4 md:px-6 max-w-6xl mx-auto text-center">
+            <header className="pt-32 pb-24 md:pt-40 md:pb-32 px-4 md:px-6 max-w-6xl mx-auto text-center relative drop-shadow-md">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
                 >
-                    <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 text-text-primary">
+                    <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 text-text-primary drop-shadow-lg">
                         {t('home.title1')} <br /><span className="text-accent">{t('home.title2')}</span>
                     </h1>
                     <p className="text-text-secondary max-w-2xl mx-auto mb-10 text-lg md:text-xl">
@@ -50,7 +62,9 @@ const Home = () => {
             </header>
 
             <main className="space-y-24 pb-24">
+                {/* Main content can go here */}
             </main>
+            </div>
         </div>
     );
 };

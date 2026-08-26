@@ -3,6 +3,7 @@ import { Phone, MapPin, Award, IndianRupee, X, Search, Map, Building2 } from 'lu
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import SEO from '../components/SEO';
+import expertBgImage from '../assets/Expert.jpg';
 
 const Experts = () => {
     const { t } = useTranslation();
@@ -35,14 +36,25 @@ const Experts = () => {
     }, [searchQuery, selectedCity]);
 
     return (
-        <div className="min-h-screen bg-bg text-text-primary pt-24 pb-20">
-            <SEO 
-                title="Mental Wellness Experts | MindPulse"
-                description="Explore mental wellness support options and learn more about connecting with wellness professionals through MindPulse."
-                canonical="/experts"
-            />
-            <div className="max-w-6xl mx-auto text-center mb-16 px-4">
-                <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">{t('experts.title1')} <span className="text-accent">{t('experts.title2')}</span></h1>
+        <div className="min-h-screen bg-bg text-text-primary pt-24 pb-20 relative">
+            {/* Background Image with Overlay */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+                <div 
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                    style={{ backgroundImage: `url(${expertBgImage})`, backgroundAttachment: 'fixed' }}
+                ></div>
+                {/* Semi-transparent overlay to ensure text readability */}
+                <div className="absolute inset-0 bg-bg/50 dark:bg-bg/70"></div>
+            </div>
+
+            <div className="relative z-10">
+                <SEO 
+                    title="Mental Wellness Experts | MindPulse"
+                    description="Explore mental wellness support options and learn more about connecting with wellness professionals through MindPulse."
+                    canonical="/experts"
+                />
+            <div className="max-w-6xl mx-auto text-center mb-16 px-4 relative drop-shadow-md">
+                <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 drop-shadow-lg">{t('experts.title1')} <span className="text-accent">{t('experts.title2')}</span></h1>
                 <p className="text-text-secondary max-w-2xl mx-auto mb-10 text-lg">
                     {t('experts.subtitle')}
                 </p>
@@ -205,6 +217,7 @@ const Experts = () => {
                     </div>
                 )}
             </AnimatePresence>
+            </div>
         </div>
     );
 };

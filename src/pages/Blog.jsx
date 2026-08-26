@@ -5,6 +5,7 @@ import { Search, Clock, Calendar } from 'lucide-react';
 import { blogArticles } from '../data/blogData';
 import { useTranslation } from 'react-i18next';
 import SEO from '../components/SEO';
+import blogBgImage from '../assets/Blog.jpg';
 
 const categories = ['All', 'Stress', 'Anxiety', 'Sleep', 'Student Wellness', 'Self-Care', 'Productivity'];
 
@@ -23,15 +24,26 @@ const Blog = () => {
     const featuredArticle = blogArticles[0];
 
     return (
-        <div className="min-h-screen bg-bg text-text-primary pt-24 pb-20 px-4">
-            <SEO 
-                title="Mental Wellness Blog | Stress, Anxiety, Sleep & Wellness"
-                description="Read educational articles about stress management, anxiety, sleep, student wellness, self-care and everyday mental well-being."
-                canonical="/blog"
-            />
+        <div className="min-h-screen bg-bg text-text-primary pt-24 pb-20 px-4 relative">
+            {/* Background Image with Overlay */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+                <div 
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                    style={{ backgroundImage: `url(${blogBgImage})`, backgroundAttachment: 'fixed' }}
+                ></div>
+                {/* Semi-transparent overlay to ensure text readability */}
+                <div className="absolute inset-0 bg-bg/50 dark:bg-bg/70"></div>
+            </div>
+
+            <div className="relative z-10">
+                <SEO 
+                    title="Mental Wellness Blog | Stress, Anxiety, Sleep & Wellness"
+                    description="Read educational articles about stress management, anxiety, sleep, student wellness, self-care and everyday mental well-being."
+                    canonical="/blog"
+                />
             <div className="max-w-6xl mx-auto">
-                <div className="text-center mb-12">
-                    <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
+                <div className="text-center mb-12 relative drop-shadow-md">
+                    <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 drop-shadow-lg">
                         MindPulse <span className="text-accent">{t('blog.title')}</span>
                     </h1>
                     <p className="text-text-secondary max-w-2xl mx-auto text-lg mb-10">
@@ -128,6 +140,7 @@ const Blog = () => {
                         {t('blog.noArticles')}
                     </div>
                 )}
+            </div>
             </div>
         </div>
     );

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Wind, Dumbbell, Activity, CheckCircle2, XCircle, Droplet, Moon, Brain, Coffee } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import SEO from '../components/SEO';
+import resourceBgImage from '../assets/Resources.jpg';
 
 const categories = ['All', 'Stress Management', 'Anxiety Support', 'Sleep', 'Self-Care', 'Focus'];
 
@@ -52,15 +53,26 @@ const Resources = () => {
     const filteredExercises = activeTab === 'All' ? exercises : exercises.filter(ex => ex.category === activeTab);
 
     return (
-        <div className="min-h-screen bg-bg text-text-primary pt-24 pb-20 px-4">
-            <SEO 
-                title="Mental Wellness Resources | Stress, Anxiety, Sleep & Self-Care"
-                description="Explore practical mental wellness resources covering stress management, anxiety awareness, sleep, self-care, mindfulness and healthy habits."
-                canonical="/resources"
-            />
+        <div className="min-h-screen bg-bg text-text-primary pt-24 pb-20 px-4 relative">
+            {/* Background Image with Overlay */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+                <div 
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                    style={{ backgroundImage: `url(${resourceBgImage})`, backgroundAttachment: 'fixed' }}
+                ></div>
+                {/* Semi-transparent overlay to ensure text readability */}
+                <div className="absolute inset-0 bg-bg/50 dark:bg-bg/70"></div>
+            </div>
+
+            <div className="relative z-10">
+                <SEO 
+                    title="Mental Wellness Resources | Stress, Anxiety, Sleep & Self-Care"
+                    description="Explore practical mental wellness resources covering stress management, anxiety awareness, sleep, self-care, mindfulness and healthy habits."
+                    canonical="/resources"
+                />
             <div className="max-w-6xl mx-auto">
-                <div className="text-center mb-12">
-                    <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
+                <div className="text-center mb-12 relative drop-shadow-md">
+                    <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 drop-shadow-lg">
                         Wellness <span className="text-accent">{t('resources.title')}</span>
                     </h1>
                     <p className="text-text-secondary max-w-2xl mx-auto text-lg mb-10">
@@ -158,6 +170,7 @@ const Resources = () => {
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     );

@@ -3,6 +3,7 @@ import { Mail, Phone, MapPin, Send, HelpCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import SEO from '../components/SEO';
+import contactBgImage from '../assets/contact.jpg';
 
 const Contact = () => {
     const { t } = useTranslation();
@@ -39,15 +40,26 @@ const Contact = () => {
     };
 
     return (
-        <div className="min-h-screen bg-bg text-text-primary pt-24 pb-20 px-4">
-            <SEO 
-                title="Contact MindPulse | Mental Wellness Support"
-                description="Contact MindPulse with questions, feedback or support requests about the mental wellness platform."
-                canonical="/contact"
-            />
+        <div className="min-h-screen bg-bg text-text-primary pt-24 pb-20 px-4 relative">
+            {/* Background Image with Overlay */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+                <div 
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                    style={{ backgroundImage: `url(${contactBgImage})`, backgroundAttachment: 'fixed' }}
+                ></div>
+                {/* Semi-transparent overlay to ensure text readability */}
+                <div className="absolute inset-0 bg-bg/50 dark:bg-bg/70"></div>
+            </div>
+
+            <div className="relative z-10">
+                <SEO 
+                    title="Contact MindPulse | Mental Wellness Support"
+                    description="Contact MindPulse with questions, feedback or support requests about the mental wellness platform."
+                    canonical="/contact"
+                />
             <div className="max-w-6xl mx-auto">
-                <div className="text-center mb-16">
-                    <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
+                <div className="text-center mb-16 relative drop-shadow-md">
+                    <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 drop-shadow-lg">
                         {t('contact.title1')} <span className="text-accent">{t('contact.title2')}</span>
                     </h1>
                     <p className="text-text-secondary max-w-2xl mx-auto text-lg">
@@ -180,6 +192,7 @@ const Contact = () => {
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     );

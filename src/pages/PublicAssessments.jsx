@@ -11,6 +11,7 @@ import WHO5 from '../components/assessments/WHO5';
 // Note: PSS-10 and GAD-7 are legacy inline modals inside Dashboard, but we should handle them or redirect to dashboard to take them.
 // For now, we will redirect to /dashboard to take assessments to keep the logic centralized.
 import { useNavigate } from 'react-router-dom';
+import assessmentBgImage from '../assets/Assment.jpg';
 
 const assessments = [
     {
@@ -70,15 +71,26 @@ const PublicAssessments = () => {
     };
 
     return (
-        <div className="min-h-screen bg-bg text-text-primary pt-24 pb-20 px-4">
-            <SEO 
-                title="Mental Wellness Assessments | PSS-10, GAD-7 & More | MindPulse"
-                description="Explore mental wellness screening tools including PSS-10, GAD-7, DASS-21, PHQ-9 and WHO-5 and learn what each assessment measures."
-                canonical="/assessments"
-            />
+        <div className="min-h-screen bg-bg text-text-primary pt-24 pb-20 px-4 relative">
+            {/* Background Image with Overlay */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+                <div 
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                    style={{ backgroundImage: `url(${assessmentBgImage})`, backgroundAttachment: 'fixed' }}
+                ></div>
+                {/* Semi-transparent overlay to ensure text readability */}
+                <div className="absolute inset-0 bg-bg/50 dark:bg-bg/70"></div>
+            </div>
+
+            <div className="relative z-10">
+                <SEO 
+                    title="Mental Wellness Assessments | PSS-10, GAD-7 & More | MindPulse"
+                    description="Explore mental wellness screening tools including PSS-10, GAD-7, DASS-21, PHQ-9 and WHO-5 and learn what each assessment measures."
+                    canonical="/assessments"
+                />
             <div className="max-w-6xl mx-auto">
-                <div className="text-center mb-16">
-                    <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
+                <div className="text-center mb-16 relative drop-shadow-md">
+                    <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 drop-shadow-lg">
                         {t('assessments.title1')} <span className="text-accent">{t('assessments.title2')}</span>
                     </h1>
                     <p className="text-text-secondary max-w-2xl mx-auto text-lg">
@@ -144,6 +156,7 @@ const PublicAssessments = () => {
                         </button>
                     </div>
                 )}
+            </div>
             </div>
         </div>
     );

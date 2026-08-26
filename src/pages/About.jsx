@@ -4,20 +4,32 @@ import { Sparkles, BookOpen, Brain, Activity, Shield, Info, ArrowRight, ShieldCh
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import SEO from '../components/SEO';
+import aboutBgImage from '../assets/About.jpg';
 
 const About = () => {
     const { t } = useTranslation();
     return (
-        <div className="min-h-screen bg-bg text-text-primary">
-            <SEO 
-                title="About MindPulse | Mental Wellness Platform"
-                description="Learn about MindPulse, a mental wellness platform designed to help users track well-being, understand personal patterns and build healthier wellness habits."
-                canonical="/about"
-            />
+        <div className="min-h-screen bg-bg text-text-primary relative">
+            {/* Background Image with Overlay */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+                <div 
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                    style={{ backgroundImage: `url(${aboutBgImage})`, backgroundAttachment: 'fixed' }}
+                ></div>
+                {/* Semi-transparent overlay to ensure text readability */}
+                <div className="absolute inset-0 bg-bg/50 dark:bg-bg/70"></div>
+            </div>
+
+            <div className="relative z-10">
+                <SEO 
+                    title="About MindPulse | Mental Wellness Platform"
+                    description="Learn about MindPulse, a mental wellness platform designed to help users track well-being, understand personal patterns and build healthier wellness habits."
+                    canonical="/about"
+                />
             {/* Hero Section */}
-            <section className="pt-32 pb-20 px-4 max-w-6xl mx-auto text-center">
+            <section className="pt-32 pb-20 px-4 max-w-6xl mx-auto text-center relative drop-shadow-md">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-                    <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
+                    <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 drop-shadow-lg">
                         {t('about.title1')} <br className="hidden md:block" />
                         <span className="text-accent">{t('about.title2')}</span>
                     </h1>
@@ -143,6 +155,7 @@ const About = () => {
                     </div>
                 </div>
             </section>
+            </div>
         </div>
     );
 };
