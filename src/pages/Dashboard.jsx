@@ -15,6 +15,7 @@ import DailyCheckInModal from '../components/DailyCheckInModal';
 import ChatSection from '../components/ChatSection';
 import ZenQuest from '../components/ZenQuest';
 import { useTranslation } from 'react-i18next';
+import dashboardBgImage from '../assets/MindpulseHomePage.jpg';
 
 // PSS-10 Questions
 const pssQuestions = [
@@ -211,8 +212,18 @@ const Dashboard = () => {
     const COLORS = ['#4F46E5', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6'];
 
     return (
-        <div className="min-h-screen pt-24 pb-20 px-4 bg-bg">
-            <div className="max-w-6xl mx-auto">
+        <div className="min-h-screen pt-24 pb-20 px-4 bg-bg relative">
+            {/* Background Image with Overlay */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+                <div 
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                    style={{ backgroundImage: `url(${dashboardBgImage})`, backgroundAttachment: 'fixed' }}
+                ></div>
+                {/* Semi-transparent overlay to ensure text readability */}
+                <div className="absolute inset-0 bg-bg/60 dark:bg-bg/80"></div>
+            </div>
+
+            <div className="max-w-6xl mx-auto relative z-10">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
                     <div>
                         <h2 className="text-3xl font-bold text-text-primary mb-2">{t('dashboard.title')}</h2>
@@ -455,6 +466,7 @@ const Dashboard = () => {
                     />
                 )}
 
+                {activeAssessmentModal === 'DASS-21' && <DASS21 onClose={() => setActiveAssessmentModal(null)} onComplete={saveMentalAssessment} />}
                 {activeAssessmentModal === 'PHQ-9' && <PHQ9 onClose={() => setActiveAssessmentModal(null)} onComplete={saveMentalAssessment} />}
                 {activeAssessmentModal === 'WHO-5' && <WHO5 onClose={() => setActiveAssessmentModal(null)} onComplete={saveMentalAssessment} />}
                 
