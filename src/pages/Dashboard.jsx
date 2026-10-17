@@ -230,32 +230,25 @@ const Dashboard = () => {
     const COLORS = ['#4F46E5', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6'];
 
     return (
-        <div className="min-h-screen pt-24 pb-20 px-4 bg-bg relative">
-            {/* Background Image with Overlay */}
-            <div className="absolute inset-0 z-0 pointer-events-none">
-                <div 
-                    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                    style={{ backgroundImage: `url(${dashboardBgImage})`, backgroundAttachment: 'fixed' }}
-                ></div>
-                {/* Semi-transparent overlay to ensure text readability */}
-                <div className="absolute inset-0 bg-bg/60 dark:bg-bg/80"></div>
-            </div>
+        <div className="min-h-screen pt-28 pb-20 px-4 sm:px-6 bg-bg relative transition-colors duration-300">
+            {/* Ambient calming glow */}
+            <div className="absolute top-12 left-1/2 -translate-x-1/2 w-full max-w-5xl h-72 bg-accent/10 blur-3xl rounded-full pointer-events-none -z-10" />
 
             <div className="max-w-6xl mx-auto relative z-10">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
                     <div>
-                        <h2 className="text-3xl font-bold text-text-primary mb-2">{t('dashboard.title')}</h2>
-                        <p className="text-text-secondary">{t('dashboard.subtitle')}</p>
+                        <h2 className="text-3xl font-extrabold text-text-primary mb-1.5">{t('dashboard.title')}</h2>
+                        <p className="text-text-secondary text-sm sm:text-base">{t('dashboard.subtitle')}</p>
                     </div>
-                    <div className="flex gap-4">
+                    <div className="flex gap-3">
                         <button
                             onClick={() => {
                                 if (!user) { alert('Please login first.'); return; }
                                 navigate('/dashboard/analysis');
                             }}
-                            className="flex items-center gap-2 bg-surface text-accent border border-border px-6 py-3 rounded-xl font-medium hover:bg-bg transition-colors"
+                            className="flex items-center gap-2 bg-surface text-accent border border-border px-5 py-3 rounded-2xl font-bold hover:bg-bg transition-all shadow-sm text-sm"
                         >
-                            <BarChart3 size={20} />
+                            <BarChart3 size={18} />
                             Full Analysis
                         </button>
                         <button
@@ -263,38 +256,38 @@ const Dashboard = () => {
                                 if (!user) { alert('Please login first.'); return; }
                                 setIsDailyCheckInOpen(true);
                             }}
-                            className="flex items-center gap-2 bg-accent text-white px-6 py-3 rounded-xl font-medium hover:bg-accent/90 transition-colors"
+                            className="flex items-center gap-2 bg-accent text-white px-5 py-3 rounded-2xl font-bold hover:bg-accent/90 transition-all shadow-md shadow-accent/20 text-sm active:scale-[0.98]"
                         >
-                            <Activity size={20} />
+                            <Activity size={18} />
                             {t('dashboard.dailyCheckin')}
                         </button>
                     </div>
                 </div>
 
                 {!user || (analytics.checkins.length === 0 && analytics.legacyAssessments.length === 0 && analytics.mentalAssessments.length === 0) ? (
-                    <div className="bg-surface rounded-xl p-10 border border-border text-center flex flex-col items-center justify-center">
-                        <div className="w-16 h-16 bg-bg rounded-xl flex items-center justify-center text-accent mb-4 border border-border">
+                    <div className="bg-surface rounded-3xl p-10 sm:p-14 border border-border text-center flex flex-col items-center justify-center shadow-sm">
+                        <div className="w-16 h-16 bg-bg rounded-2xl flex items-center justify-center text-accent mb-4 border border-border shadow-sm">
                             <Activity size={32} />
                         </div>
                         <h3 className="text-xl font-bold text-text-primary mb-2">{t('dashboard.noDataTitle')}</h3>
-                        <p className="text-text-secondary max-w-md mx-auto mb-6">
+                        <p className="text-text-secondary max-w-md mx-auto mb-6 text-sm leading-relaxed">
                             {t('dashboard.noDataDesc')}
                         </p>
                     </div>
                 ) : (
                     <>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 mb-6">
                             {['PSS-10', 'GAD-7', 'DASS-21', 'PHQ-9', 'WHO-5'].map(test => (
                                 <button
                                     key={test}
                                     onClick={() => setActiveAssessmentModal(test)}
-                                    className="p-4 bg-surface border border-border hover:border-accent rounded-xl text-left transition-colors flex justify-between items-center group"
+                                    className="p-4 bg-surface border border-border hover:border-accent/60 rounded-2xl text-left transition-all flex justify-between items-center group shadow-sm hover:shadow"
                                 >
                                     <div>
-                                        <h4 className="font-bold text-text-primary">{test}</h4>
-                                        <p className="text-xs text-text-secondary">{t('dashboard.screening')}</p>
+                                        <h4 className="font-bold text-text-primary text-sm group-hover:text-accent transition-colors">{test}</h4>
+                                        <p className="text-[11px] text-text-secondary">{t('dashboard.screening')}</p>
                                     </div>
-                                    <ChevronRight className="text-text-secondary group-hover:text-accent" size={18} />
+                                    <ChevronRight className="text-text-secondary group-hover:text-accent group-hover:translate-x-0.5 transition-all" size={16} />
                                 </button>
                             ))}
                         </div>
@@ -503,25 +496,25 @@ const Dashboard = () => {
                 {/* Legacy Inline Modal for PSS-10 and GAD-7 */}
                 {(activeAssessmentModal === 'PSS-10' || activeAssessmentModal === 'GAD-7') && (
                     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={closeLegacyModal} className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
-                        <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="relative w-full max-w-lg bg-surface rounded-xl shadow-xl overflow-hidden overflow-y-auto max-h-[90vh] border border-border">
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={closeLegacyModal} className="absolute inset-0 bg-black/45 backdrop-blur-sm" />
+                        <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="relative w-full max-w-lg bg-surface rounded-3xl shadow-2xl overflow-hidden overflow-y-auto max-h-[90vh] border border-border">
                             {legacyStep === 0 && (
                                 <div className="p-6 md:p-8">
-                                    <div className="flex justify-between items-center mb-8">
-                                        <span className="px-3 py-1 bg-bg text-text-primary border border-border rounded-full text-xs font-bold uppercase">{activeAssessmentModal}</span>
-                                        <span className="text-sm font-medium text-text-secondary">{currentQuestionIdx + 1} {t('assessments.of')} {activeAssessmentModal === 'PSS-10' ? pssQuestions.length : gadQuestions.length}</span>
+                                    <div className="flex justify-between items-center mb-6">
+                                        <span className="px-3.5 py-1 bg-accent/10 text-accent border border-accent/20 rounded-full text-xs font-bold uppercase tracking-wider">{activeAssessmentModal}</span>
+                                        <span className="text-xs font-bold text-text-secondary">{currentQuestionIdx + 1} {t('assessments.of')} {activeAssessmentModal === 'PSS-10' ? pssQuestions.length : gadQuestions.length}</span>
                                     </div>
-                                    <h3 className="text-xl font-bold text-text-primary mb-8 leading-snug">
+                                    <h3 className="text-lg sm:text-xl font-bold text-text-primary mb-6 leading-snug">
                                         {activeAssessmentModal === 'PSS-10' ? pssQuestions[currentQuestionIdx] : gadQuestions[currentQuestionIdx]}
                                     </h3>
-                                    <div className="space-y-3">
+                                    <div className="space-y-2.5">
                                         {activeAssessmentModal === 'PSS-10' ? (
                                             ['Never', 'Almost Never', 'Sometimes', 'Fairly Often', 'Very Often'].map((label, i) => (
-                                                <button key={label} onClick={() => handleLegacyAnswer(i)} className="w-full p-4 rounded-xl bg-bg border border-border hover:border-accent text-left text-sm font-medium transition-colors text-text-primary">{label}</button>
+                                                <button key={label} onClick={() => handleLegacyAnswer(i)} className="w-full p-4 rounded-2xl bg-bg border border-border hover:border-accent text-left text-sm font-semibold transition-all text-text-primary hover:bg-surface">{label}</button>
                                             ))
                                         ) : (
                                             ['Not at all', 'Several days', 'Over half the days', 'Nearly every day'].map((label, i) => (
-                                                <button key={label} onClick={() => handleLegacyAnswer(i)} className="w-full p-4 rounded-xl bg-bg border border-border hover:border-accent text-left text-sm font-medium transition-colors text-text-primary">{label}</button>
+                                                <button key={label} onClick={() => handleLegacyAnswer(i)} className="w-full p-4 rounded-2xl bg-bg border border-border hover:border-accent text-left text-sm font-semibold transition-all text-text-primary hover:bg-surface">{label}</button>
                                             ))
                                         )}
                                     </div>
@@ -529,20 +522,20 @@ const Dashboard = () => {
                             )}
                             {legacyStep === 2 && (
                                 <div className="p-6 md:p-8 text-center">
-                                    <div className="w-20 h-20 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6"><CheckCircle2 size={40} /></div>
+                                    <div className="w-20 h-20 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-5 shadow-sm"><CheckCircle2 size={40} /></div>
                                     <h3 className="text-2xl font-bold text-text-primary mb-2">{t('dashboard.legacyComplete')}</h3>
-                                    <p className="text-text-secondary mb-4">{t('dashboard.legacyUpdated')}</p>
+                                    <p className="text-text-secondary text-sm mb-5">{t('dashboard.legacyUpdated')}</p>
                                     
                                     {legacyResult && (
-                                        <div className="bg-bg rounded-xl p-4 border border-border mb-8">
-                                            <div className="text-sm text-text-secondary mb-1">{t('assessments.yourScore')}</div>
-                                            <div className="text-3xl font-bold text-accent mb-1">{legacyResult.score}</div>
-                                            <div className="text-sm font-medium text-text-primary">{legacyResult.severity}</div>
+                                        <div className="bg-bg rounded-2xl p-4 border border-border mb-6">
+                                            <div className="text-xs text-text-secondary font-medium mb-1">{t('assessments.yourScore')}</div>
+                                            <div className="text-3xl font-extrabold text-accent mb-1">{legacyResult.score}</div>
+                                            <div className="text-xs font-semibold text-text-primary">{legacyResult.severity}</div>
                                         </div>
                                     )}
 
-                                    <p className="text-xs text-text-secondary mb-8 max-w-xs mx-auto">{t('dashboard.legacyDisclaimer')}</p>
-                                    <button onClick={closeLegacyModal} className="w-full py-4 bg-accent text-white rounded-xl font-medium transition-colors hover:bg-accent/90">{t('dashboard.viewResults')}</button>
+                                    <p className="text-xs text-text-secondary mb-6 max-w-xs mx-auto leading-relaxed">{t('dashboard.legacyDisclaimer')}</p>
+                                    <button onClick={closeLegacyModal} className="w-full py-4 bg-accent text-white rounded-2xl font-bold transition-all hover:bg-accent/90 shadow-md shadow-accent/20 active:scale-[0.98]">{t('dashboard.viewResults')}</button>
                                 </div>
                             )}
                         </motion.div>

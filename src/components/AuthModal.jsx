@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { X, Mail, User, Lock, Loader2 } from 'lucide-react';
+import { X, Mail, User, Lock, Loader2, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 const AuthModal = () => {
     const { t } = useTranslation();
@@ -37,29 +38,34 @@ const AuthModal = () => {
                     className="absolute inset-0 bg-black/50 backdrop-blur-sm"
                 />
                 <motion.div
-                    initial={{ scale: 0.95, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0.95, opacity: 0 }}
-                    className="relative bg-surface rounded-xl p-8 max-w-md w-full shadow-xl border border-border overflow-hidden"
+                    initial={{ scale: 0.95, opacity: 0, y: 15 }}
+                    animate={{ scale: 1, opacity: 1, y: 0 }}
+                    exit={{ scale: 0.95, opacity: 0, y: 15 }}
+                    transition={{ duration: 0.25 }}
+                    className="relative bg-surface rounded-3xl p-7 sm:p-9 max-w-md w-full shadow-2xl border border-border overflow-hidden"
                 >
                     <button
                         onClick={() => setIsAuthModalOpen(false)}
-                        className="absolute top-4 right-4 p-2 text-text-secondary hover:text-text-primary hover:bg-bg rounded-lg transition-colors"
+                        className="absolute top-5 right-5 p-2 text-text-secondary hover:text-text-primary hover:bg-bg rounded-full transition-colors"
+                        aria-label="Close"
                     >
-                        <X size={20} />
+                        <X size={18} />
                     </button>
 
-                    <div className="text-center mb-8">
-                        <h3 className="text-2xl font-bold text-text-primary mb-2">
+                    <div className="text-center mb-7">
+                        <div className="w-12 h-12 bg-accent text-white rounded-2xl flex items-center justify-center mx-auto mb-3.5 shadow-md shadow-accent/20 font-black text-xl">
+                            M
+                        </div>
+                        <h3 className="text-2xl font-extrabold text-text-primary mb-1">
                             {isLogin ? t('auth.welcomeBack') : t('auth.createAccount')}
                         </h3>
-                        <p className="text-text-secondary text-sm">
+                        <p className="text-text-secondary text-xs sm:text-sm">
                             {isLogin ? t('auth.loginSubtitle') : t('auth.registerSubtitle')}
                         </p>
                     </div>
 
                     {error && (
-                        <div className="mb-6 p-4 rounded-xl bg-red-50 text-red-600 text-sm font-medium border border-red-100">
+                        <div className="mb-5 p-3.5 rounded-2xl bg-red-500/10 text-red-500 text-xs sm:text-sm font-semibold border border-red-500/25">
                             {error}
                         </div>
                     )}
@@ -70,66 +76,73 @@ const AuthModal = () => {
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: 'auto' }}
                             >
-                                <label className="block text-sm font-medium mb-1.5 text-text-secondary">{t('auth.yourName')}</label>
+                                <label className="block text-xs font-bold uppercase tracking-wider mb-1.5 text-text-secondary">{t('auth.yourName')}</label>
                                 <div className="relative">
-                                    <User size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" />
+                                    <User size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-secondary" />
                                     <input
                                         required={!isLogin}
                                         type="text"
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
-                                        className="w-full pl-10 pr-4 py-3 rounded-lg border border-border bg-bg focus:outline-none focus:border-accent text-text-primary transition-colors"
+                                        className="w-full pl-10 pr-4 py-3 rounded-2xl border border-border bg-bg focus:outline-none focus:ring-2 focus:ring-accent/40 text-text-primary text-sm transition-all"
+                                        placeholder="Full Name"
                                     />
                                 </div>
                             </motion.div>
                         )}
                         <div>
-                            <label className="block text-sm font-medium mb-1.5 text-text-secondary">{t('auth.emailAddress')}</label>
+                            <label className="block text-xs font-bold uppercase tracking-wider mb-1.5 text-text-secondary">{t('auth.emailAddress')}</label>
                             <div className="relative">
-                                <Mail size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" />
+                                <Mail size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-secondary" />
                                 <input
                                     required
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-border bg-bg focus:outline-none focus:border-accent text-text-primary transition-colors"
+                                    className="w-full pl-10 pr-4 py-3 rounded-2xl border border-border bg-bg focus:outline-none focus:ring-2 focus:ring-accent/40 text-text-primary text-sm transition-all"
+                                    placeholder="you@example.com"
                                 />
                             </div>
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1.5 text-text-secondary">{t('auth.password')}</label>
+                            <label className="block text-xs font-bold uppercase tracking-wider mb-1.5 text-text-secondary">{t('auth.password')}</label>
                             <div className="relative">
-                                <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" />
+                                <Lock size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-secondary" />
                                 <input
                                     required
                                     type="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="••••••••"
-                                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-border bg-bg focus:outline-none focus:border-accent text-text-primary transition-colors"
+                                    className="w-full pl-10 pr-4 py-3 rounded-2xl border border-border bg-bg focus:outline-none focus:ring-2 focus:ring-accent/40 text-text-primary text-sm transition-all"
                                 />
                             </div>
                             {isLogin && (
                                 <div className="text-right mt-2">
-                                    <a href="/forgot-password" className="text-sm font-medium text-accent hover:text-accent/80 transition-colors">
+                                    <Link 
+                                        to="/forgot-password" 
+                                        onClick={() => setIsAuthModalOpen(false)}
+                                        className="text-xs font-semibold text-accent hover:underline transition-colors"
+                                    >
                                         {t('auth.forgotPassword')}
-                                    </a>
+                                    </Link>
                                 </div>
                             )}
                         </div>
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-accent text-white py-3.5 rounded-lg font-bold hover:bg-accent/90 transition-colors mt-6 flex items-center justify-center gap-2"
+                            className="w-full bg-accent text-white py-3.5 rounded-2xl font-bold hover:bg-accent/90 transition-all mt-6 flex items-center justify-center gap-2 shadow-md shadow-accent/20 active:scale-[0.98] text-sm"
                         >
-                            {loading ? <Loader2 className="animate-spin" size={20} /> : (isLogin ? t('auth.signIn') : t('auth.createAccount'))}
+                            {loading ? <Loader2 className="animate-spin" size={18} /> : (isLogin ? t('auth.signIn') : t('auth.createAccount'))}
                         </button>
                     </form>
 
-                    <div className="mt-6 text-center">
+                    <div className="mt-6 text-center pt-4 border-t border-border">
                         <button
+                            type="button"
                             onClick={() => setIsLogin(!isLogin)}
-                            className="text-sm font-medium text-text-secondary hover:text-accent transition-colors"
+                            className="text-xs sm:text-sm font-semibold text-text-secondary hover:text-accent transition-colors"
                         >
                             {isLogin ? t('auth.noAccount') : t('auth.hasAccount')}
                         </button>

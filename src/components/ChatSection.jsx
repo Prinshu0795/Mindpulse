@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Send, Globe, Loader2, Mic, MicOff, Volume2, VolumeX } from 'lucide-react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { Send, Globe, Loader2, Mic, MicOff, Volume2, VolumeX, Sparkles, MessageSquare } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Groq from "groq-sdk";
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +11,7 @@ const groq = new Groq({ apiKey: API_KEY, dangerouslyAllowBrowser: true });
 const ChatSection = () => {
     const { t, i18n } = useTranslation();
     const { user } = useAuth();
+    const messagesEndRef = useRef(null);
     
     // Derived language name for prompt
     const languageName = i18n.language === 'hi' ? 'Hindi' : 'English';
@@ -26,6 +27,27 @@ const ChatSection = () => {
     const [isListening, setIsListening] = useState(false);
     const [isVoiceMode, setIsVoiceMode] = useState(true);
     const [recognition, setRecognition] = useState(null);
+
+    // Wysa-style quick reflection prompts
+    const quickPrompts = i18n.language === 'hi' ? [
+        "मुझे थोड़ी चिंता हो रही है",
+        "शांत होने में मदद करें",
+        "नींद नहीं आ रही है",
+        "आज बहुत तनाव था"
+    ] : [
+        "I'm feeling a bit anxious",
+        "Help me calm down",
+        "Trouble sleeping tonight",
+        "I had a stressful day"
+    ];
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages, isLoading]);
 
     // Initial message language effect
     useEffect(() => {
@@ -122,19 +144,19 @@ const ChatSection = () => {
                 messages: [
                     {
                         role: "system",
-                        content: `You are a compassionate mental health support assistant named MindPulse AI. The current user's name is ${user ? user.name : 'Unknown'}. The current selected language for communication is ${languageName}. Keep your responses concise, soothing, and empathetic. If you know the user's name, use it naturally in conversation to make them feel heard. Always respond in ${languageName}. Do not make medical diagnoses. Use the following user context to subtly inform your responses if helpful: ${contextStr}`,
+                        content: `You are a compassionate mental health support assistant named MindPulse AI. The current user's name is ${user ? user.name : 'Friend'}. The current selected language for communication is ${languageName}. Keep your responses concise, soothing, empathetic, and grounded like a warm mental wellness companion inspired by Wysa. If you know the user's name, use it naturally in conversation to make them feel heard. Always respond in ${languageName}. Do not make clinical diagnoses. Use the following user context to subtly inform your responses if helpful: ${contextStr}`,
                     },
                     { role: "user", content: textToSend },
                 ],
                 model: "openai/gpt-oss-120b",
             });
 
-            const responseText = completion.choices[0]?.message?.content || "I couldn't generate a response.";
+            const responseText = completion.choices[0]?.message?.content || "I am here with you. Take a gentle breath.";
             setMessages(prev => [...prev, { text: responseText, isAI: true }]);
             speakResponse(responseText);
         } catch (error) {
             console.error("Groq Error:", error);
-            setMessages(prev => [...prev, { text: `Error: ${error.message || 'Unknown'}. Please try again shortly.`, isAI: true }]);
+            setMessages(prev => [...prev, { text: `I had trouble connecting: ${error.message || 'Please check your connection'}. I'm still here for you.`, isAI: true }]);
         } finally {
             setIsLoading(false);
         }
@@ -156,63 +178,106 @@ const ChatSection = () => {
     };
 
     return (
-        <section className="px-4">
+        <section className="px-2 sm:px-4">
             <div className="max-w-3xl mx-auto">
-                <div className="bg-surface rounded-xl border border-border overflow-hidden flex flex-col">
-                    <div className="p-4 md:p-6 border-b border-border flex flex-wrap justify-between items-center gap-4">
+                <div className="bg-surface rounded-3xl border border-border overflow-hidden flex flex-col shadow-sm transition-colors duration-300">
+                    
+                    {/* Header */}
+                    <div className="p-4 sm:p-5 border-b border-border flex flex-wrap justify-between items-center gap-4 bg-surface/80 backdrop-blur-sm">
                         <div className="flex items-center gap-3">
-                            <h2 className="text-xl font-bold text-text-primary">{t('chat.title')}</h2>
-                            <div className="flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-900/20 px-2.5 py-1 rounded-md border border-emerald-100 dark:border-emerald-800/30">
-                                <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                                <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 tracking-wide uppercase">{t('chat.liveAi')}</span>
+                            <div className="w-10 h-10 rounded-2xl bg-accent text-white flex items-center justify-center font-bold text-base shadow-sm">
+                                M
+                            </div>
+                            <div>
+                                <div className="flex items-center gap-2">
+                                    <h2 className="text-base sm:text-lg font-bold text-text-primary">{t('chat.title')}</h2>
+                                    <div className="flex items-center gap-1.5 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                                        <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+                                        <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 tracking-wide uppercase">{t('chat.liveAi')}</span>
+                                    </div>
+                                </div>
+                                <p className="text-xs text-text-secondary">Empathetic listening • 24/7 private companion</p>
                             </div>
                         </div>
-                        <div className="flex items-center gap-3">
+
+                        <div className="flex items-center gap-2">
                             <button
                                 onClick={() => setIsVoiceMode(!isVoiceMode)}
-                                className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors text-sm font-medium border min-h-[44px] ${isVoiceMode
-                                    ? 'bg-accent/10 border-accent/20 text-accent'
-                                    : 'bg-bg border-border text-text-secondary hover:text-text-primary'
-                                    }`}
+                                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl transition-all text-xs font-semibold border ${
+                                    isVoiceMode
+                                        ? 'bg-accent/10 border-accent/30 text-accent'
+                                        : 'bg-bg border-border text-text-secondary hover:text-text-primary'
+                                }`}
                                 title={isVoiceMode ? t('chat.turnOffVoice') : t('chat.turnOnVoice')}
                             >
-                                {isVoiceMode ? <Volume2 size={16} /> : <VolumeX size={16} />}
+                                {isVoiceMode ? <Volume2 size={15} /> : <VolumeX size={15} />}
                                 <span className="hidden sm:inline">{isVoiceMode ? t('chat.voiceOn') : t('chat.textOnly')}</span>
                             </button>
                         </div>
                     </div>
 
-                    <div className="h-[400px] overflow-y-auto p-4 md:p-6 space-y-4">
+                    {/* Chat Messages Feed */}
+                    <div className="h-[420px] overflow-y-auto p-4 sm:p-6 space-y-4 bg-bg/40">
                         {messages.map((msg, i) => (
-                            <div key={i} className={`flex ${msg.isAI ? 'justify-start' : 'justify-end'}`}>
-                                <div className={`relative group max-w-[85%] md:max-w-[75%] p-4 rounded-xl ${msg.isAI
-                                    ? 'bg-bg border border-border text-text-primary rounded-tl-sm'
-                                    : 'bg-accent text-white rounded-tr-sm'
-                                    }`}>
-                                    <p className="text-sm md:text-base leading-relaxed">{msg.text}</p>
+                            <div key={i} className={`flex items-start gap-2.5 ${msg.isAI ? 'justify-start' : 'justify-end'}`}>
+                                {msg.isAI && (
+                                    <div className="w-8 h-8 rounded-xl bg-accent text-white flex items-center justify-center font-bold text-xs shrink-0 mt-1 shadow-sm">
+                                        M
+                                    </div>
+                                )}
+                                <div className={`relative group max-w-[85%] sm:max-w-[75%] p-4 rounded-2xl ${
+                                    msg.isAI
+                                        ? 'bg-surface border border-border text-text-primary rounded-tl-sm shadow-sm'
+                                        : 'bg-accent text-white rounded-tr-sm shadow-md shadow-accent/15'
+                                }`}>
+                                    <p className="text-sm sm:text-base leading-relaxed whitespace-pre-wrap">{msg.text}</p>
                                     {msg.isAI && (
                                         <button
                                             onClick={() => speakResponse(msg.text)}
-                                            className="absolute -right-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 p-2 text-text-secondary hover:text-accent transition-all"
+                                            className="absolute -right-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 p-1.5 text-text-secondary hover:text-accent transition-all"
                                             aria-label={t('chat.speakResponse')}
                                         >
-                                            <Volume2 size={16} />
+                                            <Volume2 size={15} />
                                         </button>
                                     )}
                                 </div>
                             </div>
                         ))}
+
                         {isLoading && (
-                            <div className="flex justify-start">
-                                <div className="bg-bg border border-border p-4 rounded-xl rounded-tl-sm flex items-center gap-3">
-                                    <Loader2 className="animate-spin text-accent" size={16} />
-                                    <span className="text-sm font-medium text-text-secondary">{t('chat.thinking')}</span>
+                            <div className="flex items-center gap-2.5 justify-start">
+                                <div className="w-8 h-8 rounded-xl bg-accent text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">
+                                    M
+                                </div>
+                                <div className="bg-surface border border-border p-3.5 rounded-2xl rounded-tl-sm flex items-center gap-2.5 shadow-sm">
+                                    <Loader2 className="animate-spin text-accent" size={15} />
+                                    <span className="text-xs sm:text-sm font-medium text-text-secondary">{t('chat.thinking')}</span>
                                 </div>
                             </div>
                         )}
+                        <div ref={messagesEndRef} />
                     </div>
 
-                    <div className="p-4 bg-surface border-t border-border flex items-center gap-2 md:gap-3">
+                    {/* Quick suggestion chips (Wysa style) */}
+                    <div className="px-4 py-2 border-t border-border bg-surface flex items-center gap-2 overflow-x-auto no-scrollbar">
+                        <span className="text-[11px] font-bold text-text-secondary uppercase tracking-wider shrink-0 flex items-center gap-1">
+                            <Sparkles size={12} className="text-accent" />
+                            Reflect:
+                        </span>
+                        {quickPrompts.map((prompt, idx) => (
+                            <button
+                                key={idx}
+                                onClick={() => handleSend(prompt)}
+                                disabled={isLoading}
+                                className="px-3 py-1 rounded-full text-xs font-medium bg-bg border border-border text-text-secondary hover:text-accent hover:border-accent/40 whitespace-nowrap transition-colors shrink-0 disabled:opacity-50"
+                            >
+                                {prompt}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Composer */}
+                    <div className="p-3 sm:p-4 bg-surface border-t border-border flex items-center gap-2 sm:gap-3">
                         <input
                             type="text"
                             value={input}
@@ -220,28 +285,30 @@ const ChatSection = () => {
                             onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                             placeholder={isListening ? t('chat.listening') : t('chat.typeOrSpeak')}
                             disabled={isLoading}
-                            className="flex-1 min-w-0 bg-bg border border-border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-accent/50 disabled:opacity-50 text-text-primary text-sm md:text-base min-h-[44px]"
+                            className="flex-1 min-w-0 bg-bg border border-border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-accent/40 disabled:opacity-50 text-text-primary text-sm sm:text-base min-h-[44px]"
                         />
                         <button
                             onClick={toggleListening}
                             disabled={isLoading}
-                            className={`p-3 flex items-center justify-center rounded-lg transition-colors border min-w-[44px] min-h-[44px] ${isListening
-                                ? 'bg-red-50 border-red-200 text-red-600 animate-pulse'
-                                : 'bg-bg border-border text-text-secondary hover:text-text-primary hover:bg-surface'
-                                }`}
+                            className={`p-3 flex items-center justify-center rounded-xl transition-colors border min-w-[44px] min-h-[44px] ${
+                                isListening
+                                    ? 'bg-red-500/10 border-red-500/30 text-red-500 animate-pulse'
+                                    : 'bg-bg border-border text-text-secondary hover:text-text-primary hover:bg-surface'
+                            }`}
                             title={t('chat.voiceInput')}
                         >
-                            {isListening ? <MicOff size={20} /> : <Mic size={20} />}
+                            {isListening ? <MicOff size={19} /> : <Mic size={19} />}
                         </button>
                         <button
                             id="send-trigger"
                             onClick={() => handleSend()}
-                            disabled={isLoading}
-                            className="bg-accent hover:bg-accent/90 text-white p-3 flex items-center justify-center rounded-lg transition-colors disabled:opacity-50 min-w-[44px] min-h-[44px]"
+                            disabled={isLoading || !input.trim()}
+                            className="bg-accent hover:bg-accent/90 text-white p-3 flex items-center justify-center rounded-xl transition-all disabled:opacity-40 min-w-[44px] min-h-[44px] shadow-sm active:scale-95"
                         >
-                            <Send size={20} />
+                            <Send size={19} />
                         </button>
                     </div>
+
                 </div>
             </div>
         </section>
