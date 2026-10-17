@@ -7,14 +7,13 @@ import {
     HelpCircle, MessageSquare, BarChart3, ArrowRight, ShieldCheck
 } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
     const { user, logout, setIsAuthModalOpen } = useAuth();
     const location = useLocation();
-    const navigate = useNavigate();
     const { t, i18n } = useTranslation();
 
     // Active dropdown state: 'explore' | 'resources' | 'platform' | 'profile' | 'lang' | null
@@ -23,6 +22,41 @@ const Navbar = () => {
     const [mobileExpanded, setMobileExpanded] = useState({ explore: true, resources: false, platform: false });
 
     const navRef = useRef(null);
+    const hoverTimeoutRef = useRef(null);
+
+    const handleMouseEnter = (name) => {
+        if (hoverTimeoutRef.current) {
+            clearTimeout(hoverTimeoutRef.current);
+            hoverTimeoutRef.current = null;
+        }
+        setActiveDropdown(name);
+    };
+
+    const handleMouseLeave = () => {
+        if (hoverTimeoutRef.current) {
+            clearTimeout(hoverTimeoutRef.current);
+        }
+        hoverTimeoutRef.current = setTimeout(() => {
+            setActiveDropdown(null);
+        }, 180);
+    };
+
+    const handleDirectItemEnter = () => {
+        if (hoverTimeoutRef.current) {
+            clearTimeout(hoverTimeoutRef.current);
+            hoverTimeoutRef.current = null;
+        }
+        setActiveDropdown(null);
+    };
+
+    // Cleanup hover timer on unmount
+    useEffect(() => {
+        return () => {
+            if (hoverTimeoutRef.current) {
+                clearTimeout(hoverTimeoutRef.current);
+            }
+        };
+    }, []);
 
     // Close dropdowns when clicking outside or pressing Escape
     useEffect(() => {
@@ -170,6 +204,7 @@ const Navbar = () => {
                 <div className="flex items-center gap-8">
                     <Link 
                         to={user ? "/dashboard" : "/"} 
+                        onMouseEnter={handleDirectItemEnter}
                         className="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-accent rounded-xl"
                         aria-label="MindPulse Home"
                     >
@@ -191,10 +226,14 @@ const Navbar = () => {
                     <div className="hidden lg:flex items-center gap-1">
                         
                         {/* Explore Dropdown */}
-                        <div className="relative">
+                        <div 
+                            className="relative group"
+                            onMouseEnter={() => handleMouseEnter('explore')}
+                            onMouseLeave={handleMouseLeave}
+                        >
                             <button
                                 onClick={() => toggleDropdown('explore')}
-                                className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors flex items-center gap-1.5 ${
+                                className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors flex items-center gap-1.5 group-hover:bg-accent/10 group-hover:text-accent ${
                                     activeDropdown === 'explore' 
                                         ? 'bg-accent/10 text-accent' 
                                         : 'text-text-secondary hover:text-text-primary hover:bg-surface-subtle'
@@ -203,64 +242,61 @@ const Navbar = () => {
                                 aria-haspopup="true"
                             >
                                 <span>Explore</span>
-                                <ChevronDown size={15} className={`transition-transform duration-200 ${activeDropdown === 'explore' ? 'rotate-180' : ''}`} />
+                                <ChevronDown size={15} className={`transition-transform duration-200 group-hover:rotate-180 ${activeDropdown === 'explore' ? 'rotate-180' : ''}`} />
                             </button>
 
-                            <AnimatePresence>
-                                {activeDropdown === 'explore' && (
-                                    <motion.div
-                                        initial={{ opacity: 0, y: 10, scale: 0.98 }}
-                                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                                        exit={{ opacity: 0, y: 8, scale: 0.98 }}
-                                        transition={{ duration: 0.18, ease: "easeOut" }}
-                                        className="absolute left-0 mt-3 w-96 bg-surface rounded-2xl border border-border shadow-wysa p-3 z-50"
-                                    >
-                                        <div className="text-[11px] font-bold text-text-secondary px-3 py-1.5 uppercase tracking-wider">
-                                            Interactive Wellness
-                                        </div>
-                                        <div className="space-y-1">
-                                            {exploreItems.map((item) => (
-                                                <Link
-                                                    key={item.title}
-                                                    to={item.href}
-                                                    onClick={(e) => {
-                                                        if (item.action) {
-                                                            e.preventDefault();
-                                                            item.action();
-                                                        }
-                                                        setActiveDropdown(null);
-                                                    }}
-                                                    className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-surface-subtle transition-colors group"
-                                                >
-                                                    <div className="p-2.5 rounded-xl bg-accent-light text-accent shrink-0 mt-0.5 group-hover:scale-110 transition-transform">
-                                                        <item.icon size={18} />
-                                                    </div>
-                                                    <div className="flex-1 min-w-0">
-                                                        <div className="flex items-center gap-2">
-                                                            <span className="font-bold text-sm text-text-primary group-hover:text-accent transition-colors">
-                                                                {item.title}
-                                                            </span>
-                                                            {item.badge && (
-                                                                <span className="text-[10px] font-bold bg-accent/10 text-accent px-2 py-0.5 rounded-full">
-                                                                    {item.badge}
-                                                                </span>
-                                                            )}
-                                                        </div>
-                                                        <p className="text-xs text-text-secondary line-clamp-1 mt-0.5 font-normal">
-                                                            {item.desc}
-                                                        </p>
-                                                    </div>
-                                                </Link>
-                                            ))}
-                                        </div>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
+                            <div
+                                className={`absolute left-0 mt-3 w-96 bg-surface rounded-2xl border border-border shadow-wysa p-3 z-50 transition-all duration-200 ease-out before:absolute before:-top-3 before:left-0 before:right-0 before:h-3 before:content-[''] ${
+                                    activeDropdown === 'explore' 
+                                        ? 'opacity-100 visible translate-y-0 pointer-events-auto' 
+                                        : 'opacity-0 invisible pointer-events-none translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:pointer-events-auto'
+                                }`}
+                            >
+                                <div className="text-[11px] font-bold text-text-secondary px-3 py-1.5 uppercase tracking-wider">
+                                    Interactive Wellness
+                                </div>
+                                <div className="space-y-1">
+                                    {exploreItems.map((item) => (
+                                        <Link
+                                            key={item.title}
+                                            to={item.href}
+                                            onClick={(e) => {
+                                                if (item.action) {
+                                                    e.preventDefault();
+                                                    item.action();
+                                                }
+                                                setActiveDropdown(null);
+                                            }}
+                                            className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-surface-subtle transition-colors group/item"
+                                        >
+                                            <div className="p-2.5 rounded-xl bg-accent-light text-accent shrink-0 mt-0.5 group-hover/item:scale-110 transition-transform">
+                                                <item.icon size={18} />
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="font-bold text-sm text-text-primary group-hover/item:text-accent transition-colors">
+                                                        {item.title}
+                                                    </span>
+                                                    {item.badge && (
+                                                        <span className="text-[10px] font-bold bg-accent/10 text-accent px-2 py-0.5 rounded-full">
+                                                            {item.badge}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                <p className="text-xs text-text-secondary line-clamp-1 mt-0.5 font-normal">
+                                                    {item.desc}
+                                                </p>
+                                            </div>
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
 
                         {/* Assessments Direct Link */}
                         <NavLink
                             to="/assessments"
+                            onMouseEnter={handleDirectItemEnter}
                             className={({ isActive }) =>
                                 `px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${
                                     isActive ? 'text-accent bg-accent/10' : 'text-text-secondary hover:text-text-primary hover:bg-surface-subtle'
@@ -271,10 +307,14 @@ const Navbar = () => {
                         </NavLink>
 
                         {/* Resources Dropdown */}
-                        <div className="relative">
+                        <div 
+                            className="relative group"
+                            onMouseEnter={() => handleMouseEnter('resources')}
+                            onMouseLeave={handleMouseLeave}
+                        >
                             <button
                                 onClick={() => toggleDropdown('resources')}
-                                className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors flex items-center gap-1.5 ${
+                                className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors flex items-center gap-1.5 group-hover:bg-accent/10 group-hover:text-accent ${
                                     activeDropdown === 'resources' 
                                         ? 'bg-accent/10 text-accent' 
                                         : 'text-text-secondary hover:text-text-primary hover:bg-surface-subtle'
@@ -283,60 +323,60 @@ const Navbar = () => {
                                 aria-haspopup="true"
                             >
                                 <span>{t('navbar.resources')}</span>
-                                <ChevronDown size={15} className={`transition-transform duration-200 ${activeDropdown === 'resources' ? 'rotate-180' : ''}`} />
+                                <ChevronDown size={15} className={`transition-transform duration-200 group-hover:rotate-180 ${activeDropdown === 'resources' ? 'rotate-180' : ''}`} />
                             </button>
 
-                            <AnimatePresence>
-                                {activeDropdown === 'resources' && (
-                                    <motion.div
-                                        initial={{ opacity: 0, y: 10, scale: 0.98 }}
-                                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                                        exit={{ opacity: 0, y: 8, scale: 0.98 }}
-                                        transition={{ duration: 0.18, ease: "easeOut" }}
-                                        className="absolute left-0 mt-3 w-96 bg-surface rounded-2xl border border-border shadow-wysa p-3 z-50"
-                                    >
-                                        <div className="text-[11px] font-bold text-text-secondary px-3 py-1.5 uppercase tracking-wider">
-                                            Self-Care & Care Providers
-                                        </div>
-                                        <div className="space-y-1">
-                                            {resourceItems.map((item) => (
-                                                <Link
-                                                    key={item.title}
-                                                    to={item.href}
-                                                    onClick={() => setActiveDropdown(null)}
-                                                    className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-surface-subtle transition-colors group"
-                                                >
-                                                    <div className="p-2.5 rounded-xl bg-accent-light text-accent shrink-0 mt-0.5 group-hover:scale-110 transition-transform">
-                                                        <item.icon size={18} />
-                                                    </div>
-                                                    <div className="flex-1 min-w-0">
-                                                        <div className="flex items-center gap-2">
-                                                            <span className="font-bold text-sm text-text-primary group-hover:text-accent transition-colors">
-                                                                {item.title}
-                                                            </span>
-                                                            {item.badge && (
-                                                                <span className="text-[10px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 px-2 py-0.5 rounded-full">
-                                                                    {item.badge}
-                                                                </span>
-                                                            )}
-                                                        </div>
-                                                        <p className="text-xs text-text-secondary line-clamp-1 mt-0.5 font-normal">
-                                                            {item.desc}
-                                                        </p>
-                                                    </div>
-                                                </Link>
-                                            ))}
-                                        </div>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
+                            <div
+                                className={`absolute left-0 mt-3 w-96 bg-surface rounded-2xl border border-border shadow-wysa p-3 z-50 transition-all duration-200 ease-out before:absolute before:-top-3 before:left-0 before:right-0 before:h-3 before:content-[''] ${
+                                    activeDropdown === 'resources' 
+                                        ? 'opacity-100 visible translate-y-0 pointer-events-auto' 
+                                        : 'opacity-0 invisible pointer-events-none translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:pointer-events-auto'
+                                }`}
+                            >
+                                <div className="text-[11px] font-bold text-text-secondary px-3 py-1.5 uppercase tracking-wider">
+                                    Self-Care & Care Providers
+                                </div>
+                                <div className="space-y-1">
+                                    {resourceItems.map((item) => (
+                                        <Link
+                                            key={item.title}
+                                            to={item.href}
+                                            onClick={() => setActiveDropdown(null)}
+                                            className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-surface-subtle transition-colors group/item"
+                                        >
+                                            <div className="p-2.5 rounded-xl bg-accent-light text-accent shrink-0 mt-0.5 group-hover/item:scale-110 transition-transform">
+                                                <item.icon size={18} />
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="font-bold text-sm text-text-primary group-hover/item:text-accent transition-colors">
+                                                        {item.title}
+                                                    </span>
+                                                    {item.badge && (
+                                                        <span className="text-[10px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 px-2 py-0.5 rounded-full">
+                                                            {item.badge}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                <p className="text-xs text-text-secondary line-clamp-1 mt-0.5 font-normal">
+                                                    {item.desc}
+                                                </p>
+                                            </div>
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
 
                         {/* Platform / About Dropdown */}
-                        <div className="relative">
+                        <div 
+                            className="relative group"
+                            onMouseEnter={() => handleMouseEnter('platform')}
+                            onMouseLeave={handleMouseLeave}
+                        >
                             <button
                                 onClick={() => toggleDropdown('platform')}
-                                className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors flex items-center gap-1.5 ${
+                                className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors flex items-center gap-1.5 group-hover:bg-accent/10 group-hover:text-accent ${
                                     activeDropdown === 'platform' 
                                         ? 'bg-accent/10 text-accent' 
                                         : 'text-text-secondary hover:text-text-primary hover:bg-surface-subtle'
@@ -345,52 +385,49 @@ const Navbar = () => {
                                 aria-haspopup="true"
                             >
                                 <span>Platform</span>
-                                <ChevronDown size={15} className={`transition-transform duration-200 ${activeDropdown === 'platform' ? 'rotate-180' : ''}`} />
+                                <ChevronDown size={15} className={`transition-transform duration-200 group-hover:rotate-180 ${activeDropdown === 'platform' ? 'rotate-180' : ''}`} />
                             </button>
 
-                            <AnimatePresence>
-                                {activeDropdown === 'platform' && (
-                                    <motion.div
-                                        initial={{ opacity: 0, y: 10, scale: 0.98 }}
-                                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                                        exit={{ opacity: 0, y: 8, scale: 0.98 }}
-                                        transition={{ duration: 0.18, ease: "easeOut" }}
-                                        className="absolute left-0 mt-3 w-88 bg-surface rounded-2xl border border-border shadow-wysa p-3 z-50"
-                                    >
-                                        <div className="text-[11px] font-bold text-text-secondary px-3 py-1.5 uppercase tracking-wider">
-                                            About MindPulse
-                                        </div>
-                                        <div className="space-y-1">
-                                            {platformItems.map((item) => (
-                                                <Link
-                                                    key={item.title}
-                                                    to={item.href}
-                                                    onClick={() => setActiveDropdown(null)}
-                                                    className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-surface-subtle transition-colors group"
-                                                >
-                                                    <div className="p-2.5 rounded-xl bg-accent-light text-accent shrink-0 mt-0.5 group-hover:scale-110 transition-transform">
-                                                        <item.icon size={18} />
-                                                    </div>
-                                                    <div className="flex-1 min-w-0">
-                                                        <span className="font-bold text-sm text-text-primary group-hover:text-accent transition-colors block">
-                                                            {item.title}
-                                                        </span>
-                                                        <p className="text-xs text-text-secondary line-clamp-1 mt-0.5 font-normal">
-                                                            {item.desc}
-                                                        </p>
-                                                    </div>
-                                                </Link>
-                                            ))}
-                                        </div>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
+                            <div
+                                className={`absolute left-0 mt-3 w-88 bg-surface rounded-2xl border border-border shadow-wysa p-3 z-50 transition-all duration-200 ease-out before:absolute before:-top-3 before:left-0 before:right-0 before:h-3 before:content-[''] ${
+                                    activeDropdown === 'platform' 
+                                        ? 'opacity-100 visible translate-y-0 pointer-events-auto' 
+                                        : 'opacity-0 invisible pointer-events-none translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:pointer-events-auto'
+                                }`}
+                            >
+                                <div className="text-[11px] font-bold text-text-secondary px-3 py-1.5 uppercase tracking-wider">
+                                    About MindPulse
+                                </div>
+                                <div className="space-y-1">
+                                    {platformItems.map((item) => (
+                                        <Link
+                                            key={item.title}
+                                            to={item.href}
+                                            onClick={() => setActiveDropdown(null)}
+                                            className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-surface-subtle transition-colors group/item"
+                                        >
+                                            <div className="p-2.5 rounded-xl bg-accent-light text-accent shrink-0 mt-0.5 group-hover/item:scale-110 transition-transform">
+                                                <item.icon size={18} />
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <span className="font-bold text-sm text-text-primary group-hover/item:text-accent transition-colors block">
+                                                    {item.title}
+                                                </span>
+                                                <p className="text-xs text-text-secondary line-clamp-1 mt-0.5 font-normal">
+                                                    {item.desc}
+                                                </p>
+                                            </div>
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
 
                         {/* Logged in direct dashboard link */}
                         {user && (
                             <NavLink
                                 to="/dashboard"
+                                onMouseEnter={handleDirectItemEnter}
                                 className={({ isActive }) =>
                                     `px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${
                                         isActive ? 'text-accent bg-accent/10' : 'text-text-secondary hover:text-text-primary hover:bg-surface-subtle'
@@ -407,10 +444,14 @@ const Navbar = () => {
                 <div className="flex items-center gap-2.5">
                     
                     {/* Language Switcher */}
-                    <div className="relative">
+                    <div 
+                        className="relative group"
+                        onMouseEnter={() => handleMouseEnter('lang')}
+                        onMouseLeave={handleMouseLeave}
+                    >
                         <button
                             onClick={() => toggleDropdown('lang')}
-                            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-text-secondary hover:text-text-primary hover:bg-surface-subtle font-semibold text-xs border border-border/80 transition-colors"
+                            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-text-secondary hover:text-text-primary hover:bg-surface-subtle group-hover:bg-surface-subtle group-hover:text-text-primary font-semibold text-xs border border-border/80 transition-colors"
                             aria-label="Language selection"
                             aria-expanded={activeDropdown === 'lang'}
                         >
@@ -418,35 +459,32 @@ const Navbar = () => {
                             <span>{i18n.language === 'hi' ? 'हिन्दी' : 'EN'}</span>
                         </button>
 
-                        <AnimatePresence>
-                            {activeDropdown === 'lang' && (
-                                <motion.div
-                                    initial={{ opacity: 0, y: 8, scale: 0.95 }}
-                                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                                    exit={{ opacity: 0, y: 6, scale: 0.95 }}
-                                    className="absolute right-0 mt-2 w-36 bg-surface rounded-xl border border-border shadow-wysa p-1.5 z-50"
-                                >
-                                    <button
-                                        onClick={() => toggleLanguage('en')}
-                                        className={`w-full text-left px-3 py-2 rounded-lg text-xs font-semibold flex items-center justify-between transition-colors ${
-                                            i18n.language === 'en' ? 'bg-accent/10 text-accent' : 'text-text-primary hover:bg-surface-subtle'
-                                        }`}
-                                    >
-                                        <span>English</span>
-                                        {i18n.language === 'en' && <span className="w-1.5 h-1.5 rounded-full bg-accent"></span>}
-                                    </button>
-                                    <button
-                                        onClick={() => toggleLanguage('hi')}
-                                        className={`w-full text-left px-3 py-2 rounded-lg text-xs font-semibold flex items-center justify-between transition-colors ${
-                                            i18n.language === 'hi' ? 'bg-accent/10 text-accent' : 'text-text-primary hover:bg-surface-subtle'
-                                        }`}
-                                    >
-                                        <span>हिन्दी</span>
-                                        {i18n.language === 'hi' && <span className="w-1.5 h-1.5 rounded-full bg-accent"></span>}
-                                    </button>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
+                        <div
+                            className={`absolute right-0 mt-2 w-36 bg-surface rounded-xl border border-border shadow-wysa p-1.5 z-50 transition-all duration-200 ease-out before:absolute before:-top-2 before:left-0 before:right-0 before:h-2 before:content-[''] ${
+                                activeDropdown === 'lang' 
+                                    ? 'opacity-100 visible translate-y-0 pointer-events-auto' 
+                                    : 'opacity-0 invisible pointer-events-none translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:pointer-events-auto'
+                            }`}
+                        >
+                            <button
+                                onClick={() => toggleLanguage('en')}
+                                className={`w-full text-left px-3 py-2 rounded-lg text-xs font-semibold flex items-center justify-between transition-colors ${
+                                    i18n.language === 'en' ? 'bg-accent/10 text-accent' : 'text-text-primary hover:bg-surface-subtle'
+                                }`}
+                            >
+                                <span>English</span>
+                                {i18n.language === 'en' && <span className="w-1.5 h-1.5 rounded-full bg-accent"></span>}
+                            </button>
+                            <button
+                                onClick={() => toggleLanguage('hi')}
+                                className={`w-full text-left px-3 py-2 rounded-lg text-xs font-semibold flex items-center justify-between transition-colors ${
+                                    i18n.language === 'hi' ? 'bg-accent/10 text-accent' : 'text-text-primary hover:bg-surface-subtle'
+                                }`}
+                            >
+                                <span>हिन्दी</span>
+                                {i18n.language === 'hi' && <span className="w-1.5 h-1.5 rounded-full bg-accent"></span>}
+                            </button>
+                        </div>
                     </div>
 
                     {/* Dark/Light Theme Toggle */}
@@ -455,10 +493,14 @@ const Navbar = () => {
                     {/* User Authentication Actions */}
                     <div className="hidden sm:block">
                         {user ? (
-                            <div className="relative">
+                            <div 
+                                className="relative group"
+                                onMouseEnter={() => handleMouseEnter('profile')}
+                                onMouseLeave={handleMouseLeave}
+                            >
                                 <button
                                     onClick={() => toggleDropdown('profile')}
-                                    className="flex items-center gap-2.5 p-1.5 pr-3.5 bg-surface-subtle hover:bg-surface border border-border rounded-full transition-all group focus:outline-none focus:ring-2 focus:ring-accent"
+                                    className="flex items-center gap-2.5 p-1.5 pr-3.5 bg-surface-subtle hover:bg-surface group-hover:bg-surface border border-border rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-accent"
                                     aria-expanded={activeDropdown === 'profile'}
                                     aria-haspopup="true"
                                 >
@@ -468,57 +510,54 @@ const Navbar = () => {
                                     <span className="text-sm font-semibold text-text-primary max-w-[100px] truncate">
                                         {user.name?.split(' ')[0]}
                                     </span>
-                                    <ChevronDown size={14} className={`text-text-secondary transition-transform ${activeDropdown === 'profile' ? 'rotate-180' : ''}`} />
+                                    <ChevronDown size={14} className={`text-text-secondary transition-transform group-hover:rotate-180 ${activeDropdown === 'profile' ? 'rotate-180' : ''}`} />
                                 </button>
 
-                                <AnimatePresence>
-                                    {activeDropdown === 'profile' && (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                                            exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                                            className="absolute right-0 mt-3 w-64 bg-surface rounded-2xl border border-border shadow-wysa p-3 z-50"
-                                        >
-                                            <div className="px-3 py-2.5 border-b border-border mb-2">
-                                                <p className="text-xs text-text-secondary uppercase tracking-wider font-bold">Logged In As</p>
-                                                <p className="text-sm font-bold text-text-primary truncate mt-0.5">{user.name}</p>
-                                                <p className="text-xs text-text-secondary truncate">{user.email}</p>
-                                            </div>
+                                <div
+                                    className={`absolute right-0 mt-3 w-64 bg-surface rounded-2xl border border-border shadow-wysa p-3 z-50 transition-all duration-200 ease-out before:absolute before:-top-3 before:left-0 before:right-0 before:h-3 before:content-[''] ${
+                                        activeDropdown === 'profile' 
+                                            ? 'opacity-100 visible translate-y-0 pointer-events-auto' 
+                                            : 'opacity-0 invisible pointer-events-none translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:pointer-events-auto'
+                                    }`}
+                                >
+                                    <div className="px-3 py-2.5 border-b border-border mb-2">
+                                        <p className="text-xs text-text-secondary uppercase tracking-wider font-bold">Logged In As</p>
+                                        <p className="text-sm font-bold text-text-primary truncate mt-0.5">{user.name}</p>
+                                        <p className="text-xs text-text-secondary truncate">{user.email}</p>
+                                    </div>
 
-                                            <div className="space-y-1">
-                                                <Link
-                                                    to="/dashboard"
-                                                    onClick={() => setActiveDropdown(null)}
-                                                    className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium text-text-primary hover:bg-surface-subtle hover:text-accent transition-colors"
-                                                >
-                                                    <BarChart3 size={16} className="text-accent" />
-                                                    <span>{t('navbar.dashboard')}</span>
-                                                </Link>
-                                                <Link
-                                                    to="/dashboard/analysis"
-                                                    onClick={() => setActiveDropdown(null)}
-                                                    className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium text-text-primary hover:bg-surface-subtle hover:text-accent transition-colors"
-                                                >
-                                                    <Activity size={16} className="text-emerald-500" />
-                                                    <span>Full Data Analysis</span>
-                                                </Link>
-                                                <button
-                                                    onClick={() => {
-                                                        logout();
-                                                        setActiveDropdown(null);
-                                                    }}
-                                                    className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors mt-2 border-t border-border pt-2"
-                                                >
-                                                    <LogOut size={16} />
-                                                    <span>{t('navbar.signOut')}</span>
-                                                </button>
-                                            </div>
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
+                                    <div className="space-y-1">
+                                        <Link
+                                            to="/dashboard"
+                                            onClick={() => setActiveDropdown(null)}
+                                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium text-text-primary hover:bg-surface-subtle hover:text-accent transition-colors"
+                                        >
+                                            <BarChart3 size={16} className="text-accent" />
+                                            <span>{t('navbar.dashboard')}</span>
+                                        </Link>
+                                        <Link
+                                            to="/dashboard/analysis"
+                                            onClick={() => setActiveDropdown(null)}
+                                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium text-text-primary hover:bg-surface-subtle hover:text-accent transition-colors"
+                                        >
+                                            <Activity size={16} className="text-emerald-500" />
+                                            <span>Full Data Analysis</span>
+                                        </Link>
+                                        <button
+                                            onClick={() => {
+                                                logout();
+                                                setActiveDropdown(null);
+                                            }}
+                                            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors mt-2 border-t border-border pt-2"
+                                        >
+                                            <LogOut size={16} />
+                                            <span>{t('navbar.signOut')}</span>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         ) : (
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-2" onMouseEnter={handleDirectItemEnter}>
                                 <button
                                     onClick={() => setIsAuthModalOpen(true)}
                                     className="px-4 py-2.5 text-sm font-semibold text-text-primary hover:text-accent transition-colors rounded-xl"
