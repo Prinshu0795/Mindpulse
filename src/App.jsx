@@ -21,6 +21,7 @@ import Experts from './pages/Experts';
 import Contact from './pages/Contact';
 import FAQ from './pages/FAQ';
 import Dashboard from './pages/Dashboard';
+import FullAnalysisReport from './pages/FullAnalysisReport';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import MedicalDisclaimer from './pages/MedicalDisclaimer';
@@ -102,6 +103,14 @@ const AppContent = () => {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/dashboard/analysis" 
+            element={
+              <ProtectedRoute>
+                <FullAnalysisReport />
               </ProtectedRoute>
             } 
           />

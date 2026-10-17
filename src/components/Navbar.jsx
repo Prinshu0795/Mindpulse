@@ -30,6 +30,7 @@ const Navbar = () => {
 
     const authLinks = [
         { name: t('navbar.dashboard'), href: '/dashboard' },
+        { name: t('navbar.assessments'), href: '/assessments' },
         { name: t('navbar.resources'), href: '/resources' },
         { name: t('navbar.journal'), href: '/blog' },
         { name: t('navbar.experts'), href: '/experts' },

@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "backend": "cd backend && npm run dev",
-    "fullstack": "concurrently \"npm run dev\" \"npm run backend\"",
+    "python": "cd python_analytics && python -m uvicorn main:app --port 8000 --reload",
+    "fullstack": "concurrently \"npm run dev\" \"npm run backend\" \"npm run python\"",
     "build": "node scripts/generate-seo.js && vite build",
     "lint": "eslint .",
     "preview": "vite preview"

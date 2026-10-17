@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
     BarChart3, History, Activity, Info, CheckCircle2, AlertTriangle, ChevronRight, Moon, Zap, BrainCircuit, ClipboardList
 } from 'lucide-react';
@@ -45,6 +46,8 @@ const gadQuestions = [
 const Dashboard = () => {
     const { t } = useTranslation();
     const { user } = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
     const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
     const API_URL = `${BASE_URL.replace(/\/$/, '')}/api`;
 
@@ -69,7 +72,7 @@ const Dashboard = () => {
         }
         try {
             const token = localStorage.getItem('mindpulse_token');
-            const response = await fetch(`${API_URL}/analytics/overview`, {
+            const response = await fetch(`${API_URL}/analytics/detailed`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await response.json();
@@ -84,6 +87,13 @@ const Dashboard = () => {
     useEffect(() => {
         fetchAnalytics();
     }, [user, API_URL]);
+
+    useEffect(() => {
+        if (location.state?.openAssessment) {
+            setActiveAssessmentModal(location.state.openAssessment);
+            window.history.replaceState({}, document.title);
+        }
+    }, [location.state]);
 
     // Legacy save logic (PSS-10, GAD-7)
     const saveLegacyStats = async (score, type) => {
@@ -182,6 +192,10 @@ const Dashboard = () => {
 
     const getInsights = () => {
         let insights = [];
+        if (analytics.pythonData?.insights) {
+            insights.push(...analytics.pythonData.insights);
+        }
+        
         const { checkins } = analytics;
         if (checkins && checkins.length >= 2) {
             const latest = checkins[checkins.length - 1];
@@ -196,6 +210,10 @@ const Dashboard = () => {
                 insights.push("Your reported well-being has improved compared with your previous period.");
             }
         }
+        
+        // Remove duplicates if any
+        insights = [...new Set(insights)];
+        
         if (insights.length === 0) insights.push("Complete more check-ins to unlock personalized trend insights.");
         return insights;
     };
@@ -229,16 +247,28 @@ const Dashboard = () => {
                         <h2 className="text-3xl font-bold text-text-primary mb-2">{t('dashboard.title')}</h2>
                         <p className="text-text-secondary">{t('dashboard.subtitle')}</p>
                     </div>
-                    <button
-                        onClick={() => {
-                            if (!user) { alert('Please login first.'); return; }
-                            setIsDailyCheckInOpen(true);
-                        }}
-                        className="flex items-center gap-2 bg-accent text-white px-6 py-3 rounded-xl font-medium hover:bg-accent/90 transition-colors"
-                    >
-                        <Activity size={20} />
-                        {t('dashboard.dailyCheckin')}
-                    </button>
+                    <div className="flex gap-4">
+                        <button
+                            onClick={() => {
+                                if (!user) { alert('Please login first.'); return; }
+                                navigate('/dashboard/analysis');
+                            }}
+                            className="flex items-center gap-2 bg-surface text-accent border border-border px-6 py-3 rounded-xl font-medium hover:bg-bg transition-colors"
+                        >
+                            <BarChart3 size={20} />
+                            Full Analysis
+                        </button>
+                        <button
+                            onClick={() => {
+                                if (!user) { alert('Please login first.'); return; }
+                                setIsDailyCheckInOpen(true);
+                            }}
+                            className="flex items-center gap-2 bg-accent text-white px-6 py-3 rounded-xl font-medium hover:bg-accent/90 transition-colors"
+                        >
+                            <Activity size={20} />
+                            {t('dashboard.dailyCheckin')}
+                        </button>
+                    </div>
                 </div>
 
                 {!user || (analytics.checkins.length === 0 && analytics.legacyAssessments.length === 0 && analytics.mentalAssessments.length === 0) ? (
@@ -359,10 +389,10 @@ const Dashboard = () => {
                                     <BarChart3 size={20} className="text-text-secondary" />
                                     {t('dashboard.triggersTitle')}
                                 </h3>
-                                {analytics.topTriggers.length > 0 ? (
+                                {((analytics.pythonData?.stress_triggers && analytics.pythonData.stress_triggers.length > 0) ? analytics.pythonData.stress_triggers : (analytics.topTriggers && analytics.topTriggers.length > 0 ? analytics.topTriggers : [])).length > 0 ? (
                                     <div className="space-y-4">
-                                        {analytics.topTriggers.slice(0, 5).map((t, i) => {
-                                            const max = analytics.topTriggers[0].count;
+                                        {((analytics.pythonData?.stress_triggers && analytics.pythonData.stress_triggers.length > 0) ? analytics.pythonData.stress_triggers : analytics.topTriggers).slice(0, 5).map((t, i, arr) => {
+                                            const max = arr[0].count;
                                             return (
                                                 <div key={t.name} className="flex items-center gap-4">
                                                     <span className="w-24 text-sm font-medium text-text-secondary truncate" title={t.name}>{t.name}</span>

@@ -24,7 +24,7 @@ exports.signup = async (req, res) => {
             password
         });
 
-        // Send welcome email
+        // Send welcome email asynchronously without blocking registration response
         try {
             const message = `
                 <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
@@ -36,13 +36,15 @@ exports.signup = async (req, res) => {
                     <p style="margin-top: 30px; font-size: 14px; color: #666;">Need help? Contact us at support@mindpulse.com</p>
                 </div>
             `;
-            await sendEmail({
+            sendEmail({
                 email: user.email,
                 subject: 'Welcome to MindPulse 🎉',
                 html: message
+            }).catch(emailErr => {
+                console.error('Welcome email could not be sent (async):', emailErr.message);
             });
         } catch (emailErr) {
-            console.error('Welcome email could not be sent', emailErr);
+            console.error('Welcome email setup error:', emailErr);
         }
 
         sendTokenResponse(user, 201, res);

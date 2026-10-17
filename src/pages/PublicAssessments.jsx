@@ -65,8 +65,7 @@ const PublicAssessments = () => {
         if (!user) {
             setIsAuthModalOpen(true);
         } else {
-            // For now, redirect to dashboard. The user can open it from the dashboard grid.
-            navigate('/dashboard');
+            navigate('/dashboard', { state: { openAssessment: id } });
         }
     };
 
