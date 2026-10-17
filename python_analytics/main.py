@@ -13,6 +13,15 @@ class AnalyticsRequest(BaseModel):
     mentalAssessments: List[Dict[str, Any]]
     checkins: List[Dict[str, Any]]
 
+@app.get("/")
+def root():
+    return {
+        "service": "MindPulse Analytics Engine",
+        "status": "online",
+        "health": "/health",
+        "docs": "/docs"
+    }
+
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
