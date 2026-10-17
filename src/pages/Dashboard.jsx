@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import {
     BarChart3, History, Activity, Info, CheckCircle2, AlertTriangle, ChevronRight, Moon, Zap, BrainCircuit, ClipboardList
 } from 'lucide-react';
@@ -240,15 +240,29 @@ const Dashboard = () => {
                         <h2 className="text-3xl font-extrabold text-text-primary mb-1.5">{t('dashboard.title')}</h2>
                         <p className="text-text-secondary text-sm sm:text-base">{t('dashboard.subtitle')}</p>
                     </div>
-                    <div className="flex gap-3">
+                    <div className="flex flex-wrap gap-2.5">
+                        <Link
+                            to="/chat"
+                            className="flex items-center gap-2 bg-surface text-text-primary border border-border px-4 py-2.5 rounded-2xl font-bold hover:border-accent hover:bg-bg transition-all shadow-sm text-xs sm:text-sm"
+                        >
+                            <BrainCircuit size={16} className="text-accent" />
+                            AI Chat
+                        </Link>
+                        <Link
+                            to="/zenquest"
+                            className="flex items-center gap-2 bg-surface text-text-primary border border-border px-4 py-2.5 rounded-2xl font-bold hover:border-accent hover:bg-bg transition-all shadow-sm text-xs sm:text-sm"
+                        >
+                            <Zap size={16} className="text-amber-500" />
+                            ZenQuest
+                        </Link>
                         <button
                             onClick={() => {
                                 if (!user) { alert('Please login first.'); return; }
                                 navigate('/dashboard/analysis');
                             }}
-                            className="flex items-center gap-2 bg-surface text-accent border border-border px-5 py-3 rounded-2xl font-bold hover:bg-bg transition-all shadow-sm text-sm"
+                            className="flex items-center gap-2 bg-surface text-accent border border-border px-4 py-2.5 rounded-2xl font-bold hover:bg-bg transition-all shadow-sm text-xs sm:text-sm"
                         >
-                            <BarChart3 size={18} />
+                            <BarChart3 size={16} />
                             Full Analysis
                         </button>
                         <button
@@ -256,9 +270,9 @@ const Dashboard = () => {
                                 if (!user) { alert('Please login first.'); return; }
                                 setIsDailyCheckInOpen(true);
                             }}
-                            className="flex items-center gap-2 bg-accent text-white px-5 py-3 rounded-2xl font-bold hover:bg-accent/90 transition-all shadow-md shadow-accent/20 text-sm active:scale-[0.98]"
+                            className="flex items-center gap-2 bg-accent text-white px-5 py-2.5 rounded-2xl font-bold hover:bg-accent/90 transition-all shadow-md shadow-accent/20 text-xs sm:text-sm active:scale-[0.98]"
                         >
-                            <Activity size={18} />
+                            <Activity size={16} />
                             {t('dashboard.dailyCheckin')}
                         </button>
                     </div>
@@ -471,10 +485,49 @@ const Dashboard = () => {
                     </>
                 )}
 
-                {/* AI Wellness Insight & Exercises Integration */}
-                <div className="mt-12 space-y-12 mb-12">
-                    <ChatSection />
-                    <ZenQuest />
+                {/* Dedicated Wellness Workspaces Quick Cards */}
+                <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                    <Link
+                        to="/chat"
+                        className="bg-surface border border-border rounded-3xl p-6 sm:p-8 flex flex-col justify-between hover:border-accent/40 transition-all shadow-sm hover:shadow-md group block"
+                    >
+                        <div>
+                            <div className="w-12 h-12 rounded-2xl bg-teal-500/10 text-teal-600 dark:text-teal-400 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform">
+                                <BrainCircuit size={24} />
+                            </div>
+                            <h3 className="text-xl font-bold text-text-primary mb-2 group-hover:text-accent transition-colors">
+                                AI Wellness Chat
+                            </h3>
+                            <p className="text-text-secondary text-sm leading-relaxed mb-6">
+                                Open the distraction-free chat space to talk freely with MindPulse AI in English or हिन्दी with real-time empathetic reflection.
+                            </p>
+                        </div>
+                        <div className="pt-4 border-t border-border flex items-center justify-between text-xs font-bold text-accent">
+                            <span>Open Dedicated Chat Space</span>
+                            <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                        </div>
+                    </Link>
+
+                    <Link
+                        to="/zenquest"
+                        className="bg-surface border border-border rounded-3xl p-6 sm:p-8 flex flex-col justify-between hover:border-accent/40 transition-all shadow-sm hover:shadow-md group block"
+                    >
+                        <div>
+                            <div className="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform">
+                                <Zap size={24} />
+                            </div>
+                            <h3 className="text-xl font-bold text-text-primary mb-2 group-hover:text-accent transition-colors">
+                                ZenQuest Activities
+                            </h3>
+                            <p className="text-text-secondary text-sm leading-relaxed mb-6">
+                                Calm tactile tension with bubble popping, multi-sensory grounding, and the dissolving Worry Box to reset your nervous system.
+                            </p>
+                        </div>
+                        <div className="pt-4 border-t border-border flex items-center justify-between text-xs font-bold text-accent">
+                            <span>Open Zen Grounding Games</span>
+                            <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                        </div>
+                    </Link>
                 </div>
             </div>
 

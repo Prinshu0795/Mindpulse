@@ -90,24 +90,21 @@ const Navbar = () => {
             title: 'AI Wellness Chat',
             desc: 'Real-time conversational empathy with voice mode',
             icon: BrainCircuit,
-            href: user ? '/dashboard' : '/',
-            action: user ? null : () => setIsAuthModalOpen(true),
+            href: '/chat',
             badge: 'Live AI'
         },
         {
             title: 'Daily Check-in',
             desc: 'Track mood, stress triggers, sleep & energy levels',
             icon: Activity,
-            href: user ? '/dashboard' : '/',
-            action: user ? null : () => setIsAuthModalOpen(true),
+            href: '/checkin',
             badge: 'Daily'
         },
         {
             title: 'ZenQuest Activities',
             desc: 'Sensory grounding, Worry Box & soothing games',
             icon: Sparkles,
-            href: user ? '/dashboard' : '/',
-            action: user ? null : () => setIsAuthModalOpen(true)
+            href: '/zenquest'
         },
         {
             title: 'Standardized Screenings',

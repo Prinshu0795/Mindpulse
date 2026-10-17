@@ -317,14 +317,16 @@ const Home = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    
                     {/* Bento 1: Empathetic AI Companion */}
-                    <div className="bg-surface border border-border rounded-3xl p-7 hover:border-accent/40 transition-all duration-300 flex flex-col justify-between group shadow-sm hover:shadow-md">
+                    <Link 
+                        to="/chat" 
+                        className="bg-surface border border-border rounded-3xl p-7 hover:border-accent/40 transition-all duration-300 flex flex-col justify-between group shadow-sm hover:shadow-md cursor-pointer block"
+                    >
                         <div>
                             <div className="w-12 h-12 rounded-2xl bg-teal-500/10 text-teal-600 dark:text-teal-400 flex items-center justify-center mb-6 group-hover:scale-105 transition-transform">
                                 <MessageSquare size={24} />
                             </div>
-                            <h3 className="text-xl font-bold text-text-primary mb-2.5">
+                            <h3 className="text-xl font-bold text-text-primary mb-2.5 group-hover:text-accent transition-colors">
                                 Empathetic AI Companion
                             </h3>
                             <p className="text-text-secondary text-sm leading-relaxed mb-6">
@@ -332,18 +334,21 @@ const Home = () => {
                             </p>
                         </div>
                         <div className="pt-4 border-t border-border flex items-center justify-between text-xs font-semibold text-accent">
-                            <span>Text & Voice Powered by Groq</span>
+                            <span>Open Dedicated Chat Space</span>
                             <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                         </div>
-                    </div>
+                    </Link>
 
                     {/* Bento 2: 30-Second Daily Check-in */}
-                    <div className="bg-surface border border-border rounded-3xl p-7 hover:border-accent/40 transition-all duration-300 flex flex-col justify-between group shadow-sm hover:shadow-md">
+                    <Link 
+                        to="/checkin" 
+                        className="bg-surface border border-border rounded-3xl p-7 hover:border-accent/40 transition-all duration-300 flex flex-col justify-between group shadow-sm hover:shadow-md cursor-pointer block"
+                    >
                         <div>
                             <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-6 group-hover:scale-105 transition-transform">
                                 <Smile size={24} />
                             </div>
-                            <h3 className="text-xl font-bold text-text-primary mb-2.5">
+                            <h3 className="text-xl font-bold text-text-primary mb-2.5 group-hover:text-accent transition-colors">
                                 30-Second Daily Check-in
                             </h3>
                             <p className="text-text-secondary text-sm leading-relaxed mb-6">
@@ -351,40 +356,43 @@ const Home = () => {
                             </p>
                         </div>
                         <div className="pt-4 border-t border-border flex items-center justify-between text-xs font-semibold text-accent">
-                            <span>Habit Streaks & Triggers</span>
+                            <span>Start Today's Check-in</span>
                             <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                         </div>
-                    </div>
+                    </Link>
 
                     {/* Bento 3: Standardized Screenings */}
-                    <div className="bg-surface border border-border rounded-3xl p-7 hover:border-accent/40 transition-all duration-300 flex flex-col justify-between group shadow-sm hover:shadow-md">
+                    <Link 
+                        to="/assessments" 
+                        className="bg-surface border border-border rounded-3xl p-7 hover:border-accent/40 transition-all duration-300 flex flex-col justify-between group shadow-sm hover:shadow-md cursor-pointer block"
+                    >
                         <div>
                             <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-6 group-hover:scale-105 transition-transform">
                                 <Activity size={24} />
                             </div>
-                            <h3 className="text-xl font-bold text-text-primary mb-2.5">
+                            <h3 className="text-xl font-bold text-text-primary mb-2.5 group-hover:text-accent transition-colors">
                                 5 Validated Screenings
                             </h3>
                             <p className="text-text-secondary text-sm leading-relaxed mb-6">
                                 Baseline and track your mental wellbeing using PSS-10, GAD-7, DASS-21, PHQ-9, and WHO-5 psychological instruments with private scoring.
                             </p>
                         </div>
-                        <Link 
-                            to="/assessments"
-                            className="pt-4 border-t border-border flex items-center justify-between text-xs font-semibold text-accent hover:underline"
-                        >
+                        <div className="pt-4 border-t border-border flex items-center justify-between text-xs font-semibold text-accent">
                             <span>Explore Clinical Scales</span>
                             <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                    </div>
+                        </div>
+                    </Link>
 
                     {/* Bento 4: ZenQuest & Grounding Games */}
-                    <div className="bg-surface border border-border rounded-3xl p-7 hover:border-accent/40 transition-all duration-300 flex flex-col justify-between group shadow-sm hover:shadow-md">
+                    <Link 
+                        to="/zenquest" 
+                        className="bg-surface border border-border rounded-3xl p-7 hover:border-accent/40 transition-all duration-300 flex flex-col justify-between group shadow-sm hover:shadow-md cursor-pointer block"
+                    >
                         <div>
                             <div className="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-6 group-hover:scale-105 transition-transform">
                                 <Wind size={24} />
                             </div>
-                            <h3 className="text-xl font-bold text-text-primary mb-2.5">
+                            <h3 className="text-xl font-bold text-text-primary mb-2.5 group-hover:text-accent transition-colors">
                                 ZenQuest Sensory Grounding
                             </h3>
                             <p className="text-text-secondary text-sm leading-relaxed mb-6">
@@ -392,18 +400,21 @@ const Home = () => {
                             </p>
                         </div>
                         <div className="pt-4 border-t border-border flex items-center justify-between text-xs font-semibold text-accent">
-                            <span>Interactive Calming Tools</span>
+                            <span>Open Zen Grounding Games</span>
                             <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                         </div>
-                    </div>
+                    </Link>
 
                     {/* Bento 5: Longitudinal Analytics Engine */}
-                    <div className="bg-surface border border-border rounded-3xl p-7 hover:border-accent/40 transition-all duration-300 flex flex-col justify-between group shadow-sm hover:shadow-md">
+                    <Link 
+                        to="/dashboard" 
+                        className="bg-surface border border-border rounded-3xl p-7 hover:border-accent/40 transition-all duration-300 flex flex-col justify-between group shadow-sm hover:shadow-md cursor-pointer block"
+                    >
                         <div>
                             <div className="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-6 group-hover:scale-105 transition-transform">
                                 <TrendingUp size={24} />
                             </div>
-                            <h3 className="text-xl font-bold text-text-primary mb-2.5">
+                            <h3 className="text-xl font-bold text-text-primary mb-2.5 group-hover:text-accent transition-colors">
                                 Longitudinal Insights Engine
                             </h3>
                             <p className="text-text-secondary text-sm leading-relaxed mb-6">
@@ -411,33 +422,32 @@ const Home = () => {
                             </p>
                         </div>
                         <div className="pt-4 border-t border-border flex items-center justify-between text-xs font-semibold text-accent">
-                            <span>Data-Driven Self Understanding</span>
+                            <span>View Analytics & Trends</span>
                             <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                         </div>
-                    </div>
+                    </Link>
 
                     {/* Bento 6: Verified Professional Support */}
-                    <div className="bg-surface border border-border rounded-3xl p-7 hover:border-accent/40 transition-all duration-300 flex flex-col justify-between group shadow-sm hover:shadow-md">
+                    <Link 
+                        to="/experts" 
+                        className="bg-surface border border-border rounded-3xl p-7 hover:border-accent/40 transition-all duration-300 flex flex-col justify-between group shadow-sm hover:shadow-md cursor-pointer block"
+                    >
                         <div>
                             <div className="w-12 h-12 rounded-2xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center mb-6 group-hover:scale-105 transition-transform">
                                 <Heart size={24} />
                             </div>
-                            <h3 className="text-xl font-bold text-text-primary mb-2.5">
+                            <h3 className="text-xl font-bold text-text-primary mb-2.5 group-hover:text-accent transition-colors">
                                 Top Mental Health Experts
                             </h3>
                             <p className="text-text-secondary text-sm leading-relaxed mb-6">
                                 When you need deeper personal care, connect directly with verified psychologists, counselors, and psychiatrists across India with direct booking channels.
                             </p>
                         </div>
-                        <Link 
-                            to="/experts" 
-                            className="pt-4 border-t border-border flex items-center justify-between text-xs font-semibold text-accent hover:underline"
-                        >
+                        <div className="pt-4 border-t border-border flex items-center justify-between text-xs font-semibold text-accent">
                             <span>Browse Professional Directory</span>
                             <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                    </div>
-
+                        </div>
+                    </Link>
                 </div>
             </section>
 

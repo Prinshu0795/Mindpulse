@@ -26,6 +26,11 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import MedicalDisclaimer from './pages/MedicalDisclaimer';
 
+// Dedicated Feature Pages
+import ChatPage from './pages/ChatPage';
+import DailyCheckInPage from './pages/DailyCheckInPage';
+import ZenQuestPage from './pages/ZenQuestPage';
+
 import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
 
@@ -96,6 +101,13 @@ const AppContent = () => {
           {/* Auth System Routes */}
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
+
+          {/* Dedicated Feature Routes */}
+          <Route path="/chat" element={<ChatPage />} />
+          <Route path="/ai-chat" element={<Navigate to="/chat" replace />} />
+          <Route path="/checkin" element={<DailyCheckInPage />} />
+          <Route path="/daily-checkin" element={<Navigate to="/checkin" replace />} />
+          <Route path="/zenquest" element={<ZenQuestPage />} />
 
           {/* Protected Routes */}
           <Route 
