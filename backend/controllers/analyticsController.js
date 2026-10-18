@@ -87,7 +87,9 @@ exports.getDetailedAnalytics = async (req, res) => {
         const pythonServiceUrl = process.env.PYTHON_SERVICE_URL || 'http://localhost:8000';
         
         try {
-            const pythonResponse = await axios.post(`${pythonServiceUrl}/internal/analyze`, payload);
+            const pythonResponse = await axios.post(`${pythonServiceUrl}/internal/analyze`, payload, {
+                timeout: 60000
+            });
             
             res.status(200).json({
                 success: true,
@@ -139,7 +141,8 @@ exports.downloadAnalyticsReport = async (req, res) => {
         
         try {
             const pythonResponse = await axios.post(`${pythonServiceUrl}/internal/generate-report`, payload, {
-                responseType: 'stream'
+                responseType: 'stream',
+                timeout: 60000
             });
             
             res.setHeader('Content-Type', 'application/pdf');

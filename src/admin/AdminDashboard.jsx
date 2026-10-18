@@ -122,21 +122,23 @@ const AdminDashboard = ({ setTitle }) => {
                         User Registrations (Last 30 Days)
                     </h3>
                     {registrationData.length > 0 ? (
-                        <ResponsiveContainer width="100%" height={220}>
-                            <BarChart data={registrationData}>
-                                <XAxis dataKey="date" tick={{ fontSize: 11 }} />
-                                <YAxis allowDecimals={false} tick={{ fontSize: 11 }} />
-                                <Tooltip
-                                    contentStyle={{
-                                        background: 'var(--color-surface)',
-                                        border: '1px solid var(--color-border)',
-                                        borderRadius: '8px',
-                                        fontSize: '0.8rem'
-                                    }}
-                                />
-                                <Bar dataKey="users" fill="#4F46E5" radius={[4, 4, 0, 0]} />
-                            </BarChart>
-                        </ResponsiveContainer>
+                        <div style={{ width: '100%', minWidth: 0, height: 220 }}>
+                            <ResponsiveContainer width="100%" height={220} minWidth={0} minHeight={220}>
+                                <BarChart data={registrationData}>
+                                    <XAxis dataKey="date" tick={{ fontSize: 11 }} />
+                                    <YAxis allowDecimals={false} tick={{ fontSize: 11 }} />
+                                    <Tooltip
+                                        contentStyle={{
+                                            background: 'var(--color-surface)',
+                                            border: '1px solid var(--color-border)',
+                                            borderRadius: '8px',
+                                            fontSize: '0.8rem'
+                                        }}
+                                    />
+                                    <Bar dataKey="users" fill="#4F46E5" radius={[4, 4, 0, 0]} />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        </div>
                     ) : (
                         <div className="admin-empty-state" style={{ padding: '2rem' }}>
                             <p>No registration data for the last 30 days</p>
@@ -151,24 +153,26 @@ const AdminDashboard = ({ setTitle }) => {
                         Assessment Types Distribution
                     </h3>
                     {assessmentTypeData.length > 0 ? (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                            <ResponsiveContainer width="50%" height={200}>
-                                <PieChart>
-                                    <Pie
-                                        data={assessmentTypeData}
-                                        dataKey="value"
-                                        cx="50%"
-                                        cy="50%"
-                                        outerRadius={70}
-                                        innerRadius={35}
-                                    >
-                                        {assessmentTypeData.map((_, i) => (
-                                            <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
-                                        ))}
-                                    </Pie>
-                                    <Tooltip />
-                                </PieChart>
-                            </ResponsiveContainer>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', width: '100%', minWidth: 0 }}>
+                            <div style={{ flex: 1, minWidth: 0, height: 200 }}>
+                                <ResponsiveContainer width="100%" height={200} minWidth={0} minHeight={200}>
+                                    <PieChart>
+                                        <Pie
+                                            data={assessmentTypeData}
+                                            dataKey="value"
+                                            cx="50%"
+                                            cy="50%"
+                                            outerRadius={70}
+                                            innerRadius={35}
+                                        >
+                                            {assessmentTypeData.map((_, i) => (
+                                                <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
+                                            ))}
+                                        </Pie>
+                                        <Tooltip />
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            </div>
                             <div style={{ flex: 1 }}>
                                 {assessmentTypeData.map((d, i) => (
                                     <div key={d.name} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>

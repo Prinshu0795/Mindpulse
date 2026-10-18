@@ -74,7 +74,10 @@ const FullAnalysisReport = () => {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             
-            if (!response.ok) throw new Error('Download failed');
+            if (!response.ok) {
+                const errData = await response.json().catch(() => null);
+                throw new Error(errData?.message || 'Download failed. Ensure the Python Analytics service is running.');
+            }
             
             const blob = await response.blob();
             const url = window.URL.createObjectURL(blob);
@@ -88,7 +91,7 @@ const FullAnalysisReport = () => {
             document.body.removeChild(a);
         } catch (err) {
             console.error(err);
-            alert('Failed to download PDF report. Ensure the Python Analytics Service is running.');
+            alert(err.message || 'Failed to download PDF report. Ensure the Python Analytics Service is running.');
         } finally {
             setIsDownloading(false);
         }

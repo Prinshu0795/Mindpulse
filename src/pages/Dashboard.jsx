@@ -307,7 +307,7 @@ const Dashboard = () => {
                         </div>
 
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-                            <div className="lg:col-span-2 bg-surface rounded-xl p-6 border border-border">
+                            <div className="lg:col-span-2 bg-surface rounded-xl p-6 border border-border min-w-0">
                                 <div className="flex justify-between items-center mb-6">
                                     <h3 className="text-lg font-bold text-text-primary flex items-center gap-2">
                                         <History size={20} className="text-text-secondary" />
@@ -315,8 +315,8 @@ const Dashboard = () => {
                                     </h3>
                                 </div>
                                 {trendData.length > 0 ? (
-                                    <div className="h-72 w-full">
-                                        <ResponsiveContainer width="100%" height="100%">
+                                    <div className="h-72 w-full min-w-0" style={{ minHeight: '288px', minWidth: 0 }}>
+                                        <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={280}>
                                             <LineChart data={trendData}>
                                                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
                                                 <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fill: '#6B7280', fontSize: 12 }} />
