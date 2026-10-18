@@ -17,35 +17,35 @@
 }
 
 :root {
-  /* Wysa-Inspired Calming Light Mode */
-  --color-bg: #F7FAF8;             /* Gentle pale warm mint tint */
+  /* Calming Light Orange / Warm Amber Wellness Palette */
+  --color-bg: #FDF9F5;             /* Gentle, warm light peach/cream background */
   --color-surface: #FFFFFF;        /* Crisp clean white surface */
-  --color-surface-subtle: #EDF6F2; /* Soft mint tinted section/card */
-  --color-text-primary: #1C3331;   /* Deep forest teal text */
-  --color-text-secondary: #586E6A; /* Soft muted sage slate text */
-  --color-accent: #176B63;         /* Deep Forest Teal (Wysa primary) */
-  --color-accent-hover: #104F4A;   /* Deep teal hover */
-  --color-accent-light: #E7F5F0;   /* Fresh soft mint glow */
-  --color-warm: #F6DFCA;           /* Warm terracotta sand */
-  --color-lavender: #EFEBF8;       /* Soothing lavender */
-  --color-border: #E0ECE7;         /* Clean soft sage border */
-  --color-border-subtle: #EEF5F2;  /* Subtle divider border */
+  --color-surface-subtle: #FAF0E6; /* Soft warm peach/apricot tinted section & card */
+  --color-text-primary: #261A14;   /* Deep warm espresso charcoal text (high contrast & calm) */
+  --color-text-secondary: #705B51; /* Muted warm taupe / terracotta slate text */
+  --color-accent: #E86328;         /* Luminous warm light orange / vibrant terracotta */
+  --color-accent-hover: #D1521A;   /* Rich warm orange hover */
+  --color-accent-light: #FDF1E8;   /* Soft warm orange/peach glow */
+  --color-warm: #FDE7D5;           /* Warm apricot sand */
+  --color-lavender: #F6EDF8;       /* Soothing muted accent */
+  --color-border: #EEDCCE;         /* Clean soft warm peach/sand border */
+  --color-border-subtle: #F7ECE2;  /* Subtle warm divider border */
 }
 
 .dark, .theme-dark {
-  /* Wysa-Inspired Tranquil Nighttime Dark Mode */
-  --color-bg: #0C1A18;             /* Deep calming forest night */
-  --color-surface: #142825;        /* Elevated pine surface */
-  --color-surface-subtle: #1B3632; /* Deep mint tinted card */
-  --color-text-primary: #EEF7F4;   /* Soft warm mint white */
-  --color-text-secondary: #90AAA5; /* Gentle muted sage gray */
-  --color-accent: #2ECBA8;         /* Luminous tranquil seafoam */
-  --color-accent-hover: #26B293;   /* Seafoam hover */
-  --color-accent-light: #163C36;   /* Deep glow container */
-  --color-warm: #3D2E24;           /* Night warm accent */
-  --color-lavender: #29243B;       /* Night lavender */
-  --color-border: #23433E;         /* Gentle deep border */
-  --color-border-subtle: #19332F;  /* Subtle dark border */
+  /* Tranquil Warm Sunset Nighttime Dark Mode */
+  --color-bg: #130E0B;             /* Deep calming warm charcoal night */
+  --color-surface: #1D1511;        /* Elevated warm espresso surface */
+  --color-surface-subtle: #291E18; /* Deep warm orange tinted card */
+  --color-text-primary: #FAF1EB;   /* Soft warm cream white */
+  --color-text-secondary: #B89E92; /* Gentle warm muted text */
+  --color-accent: #F97316;         /* Radiant warm orange */
+  --color-accent-hover: #EA580C;   /* Deep orange hover */
+  --color-accent-light: #381E10;   /* Deep glow container */
+  --color-warm: #422817;           /* Night warm accent */
+  --color-lavender: #2B2135;       /* Night lavender */
+  --color-border: #3B2A20;         /* Gentle warm border */
+  --color-border-subtle: #281B14;  /* Subtle dark border */
 }
 
 html {
@@ -90,13 +90,13 @@ p {
   line-height: 1.65;
 }
 
-/* Wysa-style organic shadows & glass effects */
+/* Wysa-style organic shadows & glass effects with warm orange glow */
 .shadow-wysa {
-  box-shadow: 0 10px 30px -10px rgba(23, 107, 99, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 10px 30px -10px rgba(232, 99, 40, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
 }
 
 .shadow-wysa-hover {
-  box-shadow: 0 20px 40px -15px rgba(23, 107, 99, 0.14), 0 8px 16px -4px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 20px 40px -15px rgba(232, 99, 40, 0.14), 0 8px 16px -4px rgba(0, 0, 0, 0.04);
 }
 
 .dark .shadow-wysa {
@@ -104,7 +104,7 @@ p {
 }
 
 .dark .shadow-wysa-hover {
-  box-shadow: 0 20px 40px -15px rgba(46, 203, 168, 0.15), 0 8px 16px -4px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 20px 40px -15px rgba(249, 115, 22, 0.15), 0 8px 16px -4px rgba(0, 0, 0, 0.4);
 }
 
 /* Custom Scrollbar */

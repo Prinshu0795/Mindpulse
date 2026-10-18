@@ -42,7 +42,9 @@
     "terms": "Terms of Service",
     "disclaimer": "Medical Disclaimer",
     "copyright": "© 2026 MindPulse. Built with care by humans.",
-    "disclaimerText": "MindPulse provides wellness tracking and is not a substitute for professional medical advice, diagnosis, or treatment."
+    "disclaimerText": "MindPulse provides wellness tracking and is not a substitute for professional medical advice, diagnosis, or treatment.",
+    "themeLight": "Light",
+    "themeDark": "Dark"
   },
   "customerService": {
     "title": "Customer Service",

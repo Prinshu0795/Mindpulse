@@ -2,6 +2,7 @@ import React from 'react';
 import { ShieldCheck, Heart, Sparkles, PhoneCall } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import ThemeToggle from './ThemeToggle';
 
 const Footer = () => {
     const { t } = useTranslation();
@@ -33,7 +34,7 @@ const Footer = () => {
                         <p className="text-text-secondary text-sm leading-relaxed max-w-sm">
                             {t('footer.brandDesc')}
                         </p>
-                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-semibold">
+                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-xs font-semibold">
                             <ShieldCheck size={14} className="shrink-0" />
                             <span>{t('footer.encrypted')}</span>
                         </div>
@@ -71,10 +72,14 @@ const Footer = () => {
                     </div>
                 </div>
 
-                <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-text-secondary">
-                    <p className="font-medium">
-                        {t('footer.copyright')}
-                    </p>
+                <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-5 text-xs text-text-secondary">
+                    <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
+                        <p className="font-medium">
+                            {t('footer.copyright')}
+                        </p>
+                        <span className="hidden sm:inline text-border">|</span>
+                        <ThemeToggle />
+                    </div>
                     <p className="max-w-xl text-center md:text-right leading-relaxed">
                         {t('footer.disclaimerText')}
                     </p>

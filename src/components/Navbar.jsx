@@ -1,12 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { 
-    User, LogOut, Menu, X, Globe, ChevronDown, 
-    BrainCircuit, Activity, Sparkles, ClipboardCheck, 
-    BookOpen, Newspaper, Users, HeartHandshake, 
-    HelpCircle, MessageSquare, BarChart3, ArrowRight, ShieldCheck
+    Menu, X, Globe, ChevronDown, ArrowRight 
 } from 'lucide-react';
-import ThemeToggle from './ThemeToggle';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -123,27 +119,23 @@ const Navbar = () => {
         {
             title: 'AI Wellness Chat',
             desc: 'Real-time conversational empathy with voice mode',
-            icon: BrainCircuit,
             href: '/chat',
             badge: 'Live AI'
         },
         {
             title: 'Daily Check-in',
             desc: 'Track mood, stress triggers, sleep & energy levels',
-            icon: Activity,
             href: '/checkin',
             badge: 'Daily'
         },
         {
             title: 'ZenQuest Activities',
             desc: 'Sensory grounding, Worry Box & soothing games',
-            icon: Sparkles,
             href: '/zenquest'
         },
         {
             title: 'Standardized Screenings',
             desc: 'Validated mental health screening assessments (PHQ-9, PSS-10)',
-            icon: ClipboardCheck,
             href: '/assessments'
         }
     ];
@@ -152,19 +144,16 @@ const Navbar = () => {
         {
             title: 'Wellness Library',
             desc: 'Guided routines, breathing exercises, calming nutrition',
-            icon: BookOpen,
             href: '/resources'
         },
         {
             title: 'MindPulse Journal',
             desc: 'Evidence-based articles and self-care strategies',
-            icon: Newspaper,
             href: '/blog'
         },
         {
             title: 'Verified Experts',
             desc: 'Connect with top mental health specialists across India',
-            icon: Users,
             href: '/experts',
             badge: 'India-Wide'
         }
@@ -174,19 +163,16 @@ const Navbar = () => {
         {
             title: 'About MindPulse',
             desc: 'Our mission, clinical approach, and philosophy',
-            icon: HeartHandshake,
             href: '/about'
         },
         {
             title: 'Frequently Asked',
             desc: 'Answers about security, data privacy & assessments',
-            icon: HelpCircle,
             href: '/faq'
         },
         {
             title: 'Get in Touch',
             desc: '24/7 customer priority support and inquiry form',
-            icon: MessageSquare,
             href: '/contact'
         }
     ];
@@ -214,7 +200,7 @@ const Navbar = () => {
                         <div className="flex flex-col">
                             <span className="font-extrabold text-xl tracking-tight text-text-primary flex items-center gap-1.5">
                                 MindPulse
-                                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse inline-block"></span>
+                                <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse inline-block"></span>
                             </span>
                             <span className="text-[11px] font-semibold text-text-secondary uppercase tracking-widest -mt-1">
                                 Wellness
@@ -246,7 +232,7 @@ const Navbar = () => {
                             </button>
 
                             <div
-                                className={`absolute left-0 mt-3 w-96 bg-surface rounded-2xl border border-border shadow-wysa p-3 z-50 transition-all duration-200 ease-out before:absolute before:-top-3 before:left-0 before:right-0 before:h-3 before:content-[''] ${
+                                className={`absolute left-0 mt-3 w-80 bg-surface rounded-2xl border border-border shadow-wysa p-2.5 z-50 transition-all duration-200 ease-out before:absolute before:-top-3 before:left-0 before:right-0 before:h-3 before:content-[''] ${
                                     activeDropdown === 'explore' 
                                         ? 'opacity-100 visible translate-y-0 pointer-events-auto' 
                                         : 'opacity-0 invisible pointer-events-none translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:pointer-events-auto'
@@ -255,7 +241,7 @@ const Navbar = () => {
                                 <div className="text-[11px] font-bold text-text-secondary px-3 py-1.5 uppercase tracking-wider">
                                     Interactive Wellness
                                 </div>
-                                <div className="space-y-1">
+                                <div className="space-y-0.5">
                                     {exploreItems.map((item) => (
                                         <Link
                                             key={item.title}
@@ -267,26 +253,21 @@ const Navbar = () => {
                                                 }
                                                 setActiveDropdown(null);
                                             }}
-                                            className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-surface-subtle transition-colors group/item"
+                                            className="p-2.5 px-3 rounded-xl hover:bg-surface-subtle transition-colors group/item block"
                                         >
-                                            <div className="p-2.5 rounded-xl bg-accent-light text-accent shrink-0 mt-0.5 group-hover/item:scale-110 transition-transform">
-                                                <item.icon size={18} />
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <div className="flex items-center gap-2">
-                                                    <span className="font-bold text-sm text-text-primary group-hover/item:text-accent transition-colors">
-                                                        {item.title}
+                                            <div className="flex items-center justify-between">
+                                                <span className="font-bold text-sm text-text-primary group-hover/item:text-accent transition-colors">
+                                                    {item.title}
+                                                </span>
+                                                {item.badge && (
+                                                    <span className="text-[10px] font-bold bg-accent/10 text-accent px-2 py-0.5 rounded-full">
+                                                        {item.badge}
                                                     </span>
-                                                    {item.badge && (
-                                                        <span className="text-[10px] font-bold bg-accent/10 text-accent px-2 py-0.5 rounded-full">
-                                                            {item.badge}
-                                                        </span>
-                                                    )}
-                                                </div>
-                                                <p className="text-xs text-text-secondary line-clamp-1 mt-0.5 font-normal">
-                                                    {item.desc}
-                                                </p>
+                                                )}
                                             </div>
+                                            <p className="text-xs text-text-secondary line-clamp-1 mt-0.5 font-normal">
+                                                {item.desc}
+                                            </p>
                                         </Link>
                                     ))}
                                 </div>
@@ -327,7 +308,7 @@ const Navbar = () => {
                             </button>
 
                             <div
-                                className={`absolute left-0 mt-3 w-96 bg-surface rounded-2xl border border-border shadow-wysa p-3 z-50 transition-all duration-200 ease-out before:absolute before:-top-3 before:left-0 before:right-0 before:h-3 before:content-[''] ${
+                                className={`absolute left-0 mt-3 w-80 bg-surface rounded-2xl border border-border shadow-wysa p-2.5 z-50 transition-all duration-200 ease-out before:absolute before:-top-3 before:left-0 before:right-0 before:h-3 before:content-[''] ${
                                     activeDropdown === 'resources' 
                                         ? 'opacity-100 visible translate-y-0 pointer-events-auto' 
                                         : 'opacity-0 invisible pointer-events-none translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:pointer-events-auto'
@@ -336,32 +317,27 @@ const Navbar = () => {
                                 <div className="text-[11px] font-bold text-text-secondary px-3 py-1.5 uppercase tracking-wider">
                                     Self-Care & Care Providers
                                 </div>
-                                <div className="space-y-1">
+                                <div className="space-y-0.5">
                                     {resourceItems.map((item) => (
                                         <Link
                                             key={item.title}
                                             to={item.href}
                                             onClick={() => setActiveDropdown(null)}
-                                            className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-surface-subtle transition-colors group/item"
+                                            className="p-2.5 px-3 rounded-xl hover:bg-surface-subtle transition-colors group/item block"
                                         >
-                                            <div className="p-2.5 rounded-xl bg-accent-light text-accent shrink-0 mt-0.5 group-hover/item:scale-110 transition-transform">
-                                                <item.icon size={18} />
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <div className="flex items-center gap-2">
-                                                    <span className="font-bold text-sm text-text-primary group-hover/item:text-accent transition-colors">
-                                                        {item.title}
+                                            <div className="flex items-center justify-between">
+                                                <span className="font-bold text-sm text-text-primary group-hover/item:text-accent transition-colors">
+                                                    {item.title}
+                                                </span>
+                                                {item.badge && (
+                                                    <span className="text-[10px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 px-2 py-0.5 rounded-full">
+                                                        {item.badge}
                                                     </span>
-                                                    {item.badge && (
-                                                        <span className="text-[10px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 px-2 py-0.5 rounded-full">
-                                                            {item.badge}
-                                                        </span>
-                                                    )}
-                                                </div>
-                                                <p className="text-xs text-text-secondary line-clamp-1 mt-0.5 font-normal">
-                                                    {item.desc}
-                                                </p>
+                                                )}
                                             </div>
+                                            <p className="text-xs text-text-secondary line-clamp-1 mt-0.5 font-normal">
+                                                {item.desc}
+                                            </p>
                                         </Link>
                                     ))}
                                 </div>
@@ -389,7 +365,7 @@ const Navbar = () => {
                             </button>
 
                             <div
-                                className={`absolute left-0 mt-3 w-88 bg-surface rounded-2xl border border-border shadow-wysa p-3 z-50 transition-all duration-200 ease-out before:absolute before:-top-3 before:left-0 before:right-0 before:h-3 before:content-[''] ${
+                                className={`absolute left-0 mt-3 w-80 bg-surface rounded-2xl border border-border shadow-wysa p-2.5 z-50 transition-all duration-200 ease-out before:absolute before:-top-3 before:left-0 before:right-0 before:h-3 before:content-[''] ${
                                     activeDropdown === 'platform' 
                                         ? 'opacity-100 visible translate-y-0 pointer-events-auto' 
                                         : 'opacity-0 invisible pointer-events-none translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:pointer-events-auto'
@@ -398,25 +374,20 @@ const Navbar = () => {
                                 <div className="text-[11px] font-bold text-text-secondary px-3 py-1.5 uppercase tracking-wider">
                                     About MindPulse
                                 </div>
-                                <div className="space-y-1">
+                                <div className="space-y-0.5">
                                     {platformItems.map((item) => (
                                         <Link
                                             key={item.title}
                                             to={item.href}
                                             onClick={() => setActiveDropdown(null)}
-                                            className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-surface-subtle transition-colors group/item"
+                                            className="p-2.5 px-3 rounded-xl hover:bg-surface-subtle transition-colors group/item block"
                                         >
-                                            <div className="p-2.5 rounded-xl bg-accent-light text-accent shrink-0 mt-0.5 group-hover/item:scale-110 transition-transform">
-                                                <item.icon size={18} />
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <span className="font-bold text-sm text-text-primary group-hover/item:text-accent transition-colors block">
-                                                    {item.title}
-                                                </span>
-                                                <p className="text-xs text-text-secondary line-clamp-1 mt-0.5 font-normal">
-                                                    {item.desc}
-                                                </p>
-                                            </div>
+                                            <span className="font-bold text-sm text-text-primary group-hover/item:text-accent transition-colors block">
+                                                {item.title}
+                                            </span>
+                                            <p className="text-xs text-text-secondary line-clamp-1 mt-0.5 font-normal">
+                                                {item.desc}
+                                            </p>
                                         </Link>
                                     ))}
                                 </div>
@@ -487,9 +458,6 @@ const Navbar = () => {
                         </div>
                     </div>
 
-                    {/* Dark/Light Theme Toggle */}
-                    <ThemeToggle />
-
                     {/* User Authentication Actions */}
                     <div className="hidden sm:block">
                         {user ? (
@@ -530,17 +498,15 @@ const Navbar = () => {
                                         <Link
                                             to="/dashboard"
                                             onClick={() => setActiveDropdown(null)}
-                                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium text-text-primary hover:bg-surface-subtle hover:text-accent transition-colors"
+                                            className="block px-3 py-2 rounded-xl text-sm font-medium text-text-primary hover:bg-surface-subtle hover:text-accent transition-colors"
                                         >
-                                            <BarChart3 size={16} className="text-accent" />
                                             <span>{t('navbar.dashboard')}</span>
                                         </Link>
                                         <Link
                                             to="/dashboard/analysis"
                                             onClick={() => setActiveDropdown(null)}
-                                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium text-text-primary hover:bg-surface-subtle hover:text-accent transition-colors"
+                                            className="block px-3 py-2 rounded-xl text-sm font-medium text-text-primary hover:bg-surface-subtle hover:text-accent transition-colors"
                                         >
-                                            <Activity size={16} className="text-emerald-500" />
                                             <span>Full Data Analysis</span>
                                         </Link>
                                         <button
@@ -548,9 +514,8 @@ const Navbar = () => {
                                                 logout();
                                                 setActiveDropdown(null);
                                             }}
-                                            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors mt-2 border-t border-border pt-2"
+                                            className="w-full text-left px-3 py-2 rounded-xl text-sm font-medium text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors mt-2 border-t border-border pt-2 cursor-pointer"
                                         >
-                                            <LogOut size={16} />
                                             <span>{t('navbar.signOut')}</span>
                                         </button>
                                     </div>
@@ -648,9 +613,7 @@ const Navbar = () => {
                                     onClick={() => toggleMobileSection('explore')}
                                     className="w-full p-4 flex items-center justify-between font-bold text-sm text-text-primary"
                                 >
-                                    <span className="flex items-center gap-2">
-                                        <BrainCircuit size={18} className="text-accent" /> Explore MindPulse
-                                    </span>
+                                    <span>Explore MindPulse</span>
                                     <ChevronDown size={16} className={`transition-transform ${mobileExpanded.explore ? 'rotate-180' : ''}`} />
                                 </button>
                                 {mobileExpanded.explore && (
@@ -666,9 +629,8 @@ const Navbar = () => {
                                                     }
                                                     setIsMobileMenuOpen(false);
                                                 }}
-                                                className="flex items-center gap-3 p-2.5 rounded-xl text-xs font-semibold text-text-primary hover:bg-surface transition-colors"
+                                                className="block p-2.5 rounded-xl text-xs font-semibold text-text-primary hover:bg-surface transition-colors"
                                             >
-                                                <item.icon size={16} className="text-accent" />
                                                 <span>{item.title}</span>
                                             </Link>
                                         ))}
@@ -682,10 +644,7 @@ const Navbar = () => {
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 className="w-full p-4 rounded-2xl border border-border bg-surface-subtle flex items-center justify-between font-bold text-sm text-text-primary hover:border-accent transition-colors"
                             >
-                                <span className="flex items-center gap-2">
-                                    <ClipboardCheck size={18} className="text-emerald-500" />
-                                    {t('navbar.assessments')}
-                                </span>
+                                <span>{t('navbar.assessments')}</span>
                                 <ArrowRight size={16} className="text-text-secondary" />
                             </Link>
 
@@ -695,9 +654,7 @@ const Navbar = () => {
                                     onClick={() => toggleMobileSection('resources')}
                                     className="w-full p-4 flex items-center justify-between font-bold text-sm text-text-primary"
                                 >
-                                    <span className="flex items-center gap-2">
-                                        <BookOpen size={18} className="text-accent" /> {t('navbar.resources')}
-                                    </span>
+                                    <span>{t('navbar.resources')}</span>
                                     <ChevronDown size={16} className={`transition-transform ${mobileExpanded.resources ? 'rotate-180' : ''}`} />
                                 </button>
                                 {mobileExpanded.resources && (
@@ -707,9 +664,8 @@ const Navbar = () => {
                                                 key={item.title}
                                                 to={item.href}
                                                 onClick={() => setIsMobileMenuOpen(false)}
-                                                className="flex items-center gap-3 p-2.5 rounded-xl text-xs font-semibold text-text-primary hover:bg-surface transition-colors"
+                                                className="block p-2.5 rounded-xl text-xs font-semibold text-text-primary hover:bg-surface transition-colors"
                                             >
-                                                <item.icon size={16} className="text-accent" />
                                                 <span>{item.title}</span>
                                             </Link>
                                         ))}
@@ -723,9 +679,7 @@ const Navbar = () => {
                                     onClick={() => toggleMobileSection('platform')}
                                     className="w-full p-4 flex items-center justify-between font-bold text-sm text-text-primary"
                                 >
-                                    <span className="flex items-center gap-2">
-                                        <HeartHandshake size={18} className="text-accent" /> Platform & Info
-                                    </span>
+                                    <span>Platform & Info</span>
                                     <ChevronDown size={16} className={`transition-transform ${mobileExpanded.platform ? 'rotate-180' : ''}`} />
                                 </button>
                                 {mobileExpanded.platform && (
@@ -735,9 +689,8 @@ const Navbar = () => {
                                                 key={item.title}
                                                 to={item.href}
                                                 onClick={() => setIsMobileMenuOpen(false)}
-                                                className="flex items-center gap-3 p-2.5 rounded-xl text-xs font-semibold text-text-primary hover:bg-surface transition-colors"
+                                                className="block p-2.5 rounded-xl text-xs font-semibold text-text-primary hover:bg-surface transition-colors"
                                             >
-                                                <item.icon size={16} className="text-accent" />
                                                 <span>{item.title}</span>
                                             </Link>
                                         ))}
